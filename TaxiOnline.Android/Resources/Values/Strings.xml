@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="ApplicationName">TaxiOnline</string>
+  <string name="ChooseCityToolTip">Choose city?</string>
+  <string name="NoCityFound">The city name doesn\'t match any of available one</string>
+  <string name="Cancel">Cancel</string>
+  <string name="Register">Register</string>
+  <string name="Pedestrian">pedestrian</string>
+  <string name="Driver">driver</string>
+  <string name="SkypeNumber">my Skype</string>
+  <string name="PhoneNumber">phone num.</string>
+  <string name="CarColor">car color</string>
+</resources>

@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TaxiOnline.Android</RootNamespace>
+    <AssemblyName>TaxiOnline.Android</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidApplication>true</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <AndroidUseLatestPlatformSdk />
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+    <JavaMaximumHeapSize />
+    <JavaOptions />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="OsmSharp">
+      <HintPath>..\Libs\OsmSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="OsmSharp.Android.UI">
+      <HintPath>..\Libs\OsmSharp.Android.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="OsmSharp.UI">
+      <HintPath>..\Libs\OsmSharp.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activities\AuthenticationActivity.cs" />
+    <Compile Include="Activities\DriverProfileActivity.cs" />
+    <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Activities\PedestrianProfileActivity.cs" />
+    <Compile Include="Activities\RegistrationActivity.cs" />
+    <Compile Include="Adapters\CitiesAdapter.cs" />
+    <Compile Include="Adapters\CitySuggestionsFilter.cs" />
+    <Compile Include="Adapters\DriverProfileAdapter.cs" />
+    <Compile Include="Adapters\PersonsAdapter.cs" />
+    <Compile Include="Common\AndroidAdaptersExtender.cs" />
+    <Compile Include="Helpers\UIHelper.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\CanvasView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutResources.txt" />
+    <None Include="Assets\AboutAssets.txt" />
+    <AndroidResource Include="Resources\Layout\MapLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\DriverProfileLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\CityInfoLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\AuthenticationLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\DriverReducedInfoLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\PedestrianReducedInfoLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\DriverSelfInfoLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\PedestrianInfoLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\RegistrationLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\MainLayout.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Values\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\AndroidManifest.xml" />
+    <AndroidResource Include="Resources\Drawable\PedestrianIcon.png" />
+    <AndroidResource Include="Resources\Drawable\SearchIcon.png" />
+    <AndroidResource Include="Resources\Drawable\DriverIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TaxiOnline.ClientAdapters.Android\TaxiOnline.ClientAdapters.Android.csproj">
+      <Project>{f5871e71-b120-49b7-8fe2-91eb698220e5}</Project>
+      <Name>TaxiOnline.ClientAdapters.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.ClientInfrastructure.Android\TaxiOnline.ClientInfrastructure.Android.csproj">
+      <Project>{de6f6d3d-2b2f-4b34-bf77-4a2aeef7bfda}</Project>
+      <Name>TaxiOnline.ClientInfrastructure.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.ClientInfrastructure\TaxiOnline.ClientInfrastructure.csproj">
+      <Project>{1ef43006-c403-4a27-8fb6-d72f2e39a808}</Project>
+      <Name>TaxiOnline.ClientInfrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.ClientServicesAdapter\TaxiOnline.ClientServicesAdapter.csproj">
+      <Project>{90f53c4b-cde0-4ce9-bfc3-e1420a203798}</Project>
+      <Name>TaxiOnline.ClientServicesAdapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.Logic\TaxiOnline.Logic.csproj">
+      <Project>{d674f7bf-1ec2-47da-ae85-1564ec5639ac}</Project>
+      <Name>TaxiOnline.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.Toolkit\TaxiOnline.Toolkit.csproj">
+      <Project>{8247f1d1-76c4-4ed7-a089-eb9c648fd885}</Project>
+      <Name>TaxiOnline.Toolkit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Values-ru\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+     Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

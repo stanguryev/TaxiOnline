@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D674F7BF-1EC2-47DA-AE85-1564EC5639AC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TaxiOnline.Logic</RootNamespace>
+    <AssemblyName>TaxiOnline.Logic</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\TaxiOnline.ClientInfrastructure\TaxiOnline.ClientInfrastructure.csproj">
+      <Project>{1EF43006-C403-4A27-8FB6-D72F2E39A808}</Project>
+      <Name>TaxiOnline.ClientInfrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.Toolkit\TaxiOnline.Toolkit.csproj">
+      <Project>{8247f1d1-76c4-4ed7-a089-eb9c648fd885}</Project>
+      <Name>TaxiOnline.Toolkit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\AdaptersExtender.cs" />
+    <Compile Include="Common\Enums\RequestErrors.cs" />
+    <Compile Include="Common\Enums\RequestState.cs" />
+    <Compile Include="Common\Exceptions\DataServiceException.cs" />
+    <Compile Include="Common\Exceptions\InvalidRequestException.cs" />
+    <Compile Include="Decorators\RequestDecorator.cs" />
+    <Compile Include="Helpers\UpdateHelper.cs" />
+    <Compile Include="Logic\CityLogic.cs" />
+    <Compile Include="Logic\DriverLogic.cs" />
+    <Compile Include="Logic\DriverProfileLogic.cs" />
+    <Compile Include="Logic\DriverProfileResponseLogic.cs" />
+    <Compile Include="Logic\DriverResponseLogic.cs" />
+    <Compile Include="Logic\InteractionLogic.cs" />
+    <Compile Include="Logic\MapLogic.cs" />
+    <Compile Include="Logic\PedestrianLogic.cs" />
+    <Compile Include="Logic\PedestrianProfileLogic.cs" />
+    <Compile Include="Logic\PedestrianProfileRequestLogic.cs" />
+    <Compile Include="Logic\PedestrianRequestLogic.cs" />
+    <Compile Include="Logic\ProfileLogic.cs" />
+    <Compile Include="Models\CityModel.cs" />
+    <Compile Include="Models\DriverModel.cs" />
+    <Compile Include="Models\DriverProfileModel.cs" />
+    <Compile Include="Models\DriverProfileResponseModel.cs" />
+    <Compile Include="Models\DriverResponseModel.cs" />
+    <Compile Include="Models\InteractionModel.cs" />
+    <Compile Include="Models\MapLocationModel.cs" />
+    <Compile Include="Models\MapModel.cs" />
+    <Compile Include="Models\PedestrianModel.cs" />
+    <Compile Include="Models\PedestrianProfileModel.cs" />
+    <Compile Include="Models\PedestrianProfileRequestModel.cs" />
+    <Compile Include="Models\PedestrianRequestModel.cs" />
+    <Compile Include="Models\PersonModel.cs" />
+    <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

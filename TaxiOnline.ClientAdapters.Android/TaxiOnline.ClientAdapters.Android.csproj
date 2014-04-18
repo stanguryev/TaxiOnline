@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F5871E71-B120-49B7-8FE2-91EB698220E5}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TaxiOnline.ClientAdapters.Android</RootNamespace>
+    <AssemblyName>TaxiOnline.ClientAdapters.Android</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk />
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="OsmSharp, Version=4.0.5.669, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\OsmSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="OsmSharp.Android.UI">
+      <HintPath>..\Libs\OsmSharp.Android.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="OsmSharp.UI">
+      <HintPath>..\Libs\OsmSharp.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AndroidServicesFactory.cs" />
+    <Compile Include="Services\Map\AndroidMapAdapter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutResources.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Values\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TaxiOnline.ClientInfrastructure.Android\TaxiOnline.ClientInfrastructure.Android.csproj">
+      <Project>{de6f6d3d-2b2f-4b34-bf77-4a2aeef7bfda}</Project>
+      <Name>TaxiOnline.ClientInfrastructure.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.ClientInfrastructure\TaxiOnline.ClientInfrastructure.csproj">
+      <Project>{1ef43006-c403-4a27-8fb6-d72f2e39a808}</Project>
+      <Name>TaxiOnline.ClientInfrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.ClientServicesAdapter\TaxiOnline.ClientServicesAdapter.csproj">
+      <Project>{90f53c4b-cde0-4ce9-bfc3-e1420a203798}</Project>
+      <Name>TaxiOnline.ClientServicesAdapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.Toolkit\TaxiOnline.Toolkit.csproj">
+      <Project>{8247f1d1-76c4-4ed7-a089-eb9c648fd885}</Project>
+      <Name>TaxiOnline.Toolkit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
