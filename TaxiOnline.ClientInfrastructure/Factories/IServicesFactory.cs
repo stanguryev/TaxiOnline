@@ -9,6 +9,7 @@ namespace TaxiOnline.ClientInfrastructure.Factories
 {
     public interface IServicesFactory
     {
+        void ConfigureDataService(string serverEndpointAddress);
         IMapService GetCurrentMapService();
         IDataService GetCurrentDataService();
     }

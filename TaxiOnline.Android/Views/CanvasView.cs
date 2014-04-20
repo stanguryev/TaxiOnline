@@ -52,6 +52,8 @@ namespace TaxiOnline.Android.Views
         protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
         {
             base.OnLayout(changed, left, top, right, bottom);
+            if (_adapter == null)
+                return;
             for (int i = 0; i < _adapter.Count; i++)
             {
                 View currentView = _adapter.GetView(i, null, this);

@@ -37,7 +37,7 @@
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <ProjectReference Include="..\TaxiOnline.Toolkit\TaxiOnline.Toolkit.csproj">
-      <Project>{8247f1d1-76c4-4ed7-a089-eb9c648fd885}</Project>
+      <Project>{8247F1D1-76C4-4ED7-A089-EB9C648FD885}</Project>
       <Name>TaxiOnline.Toolkit</Name>
     </ProjectReference>
   </ItemGroup>

@@ -76,10 +76,12 @@ namespace TaxiOnline.Android.Activities
 
         public void HookMapService(IAndroidMapService mapService)
         {
-            MapView map = FindViewById<MapView>(Resource.Id.map);
+            MapView map = new MapView(this, new MapViewSurface(this));//FindViewById<MapView>(Resource.Id.map);
+            LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
             map.Map = new OsmSharp.UI.Map.Map();
             map.MapCenter = new OsmSharp.Math.Geo.GeoCoordinate(_cityModel.InitialCenter.Latitude, _cityModel.InitialCenter.Longitude);
             map.MapZoom = (float)_cityModel.InitialZoom;
+            mapLayout.AddView(map);
         }
 
         private void GoDriverActivity(DriverProfileModel driverProfileModel)

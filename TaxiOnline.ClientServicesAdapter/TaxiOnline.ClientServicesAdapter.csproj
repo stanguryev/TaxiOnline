@@ -41,11 +41,11 @@
       <Name>TaxiOnline.ClientInfrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\TaxiOnline.ServiceContract\TaxiOnline.ServiceContract.csproj">
-      <Project>{b6b7ecb5-3ec4-4993-ae6c-87e8b94e9c37}</Project>
+      <Project>{B6B7ECB5-3EC4-4993-AE6C-87E8B94E9C37}</Project>
       <Name>TaxiOnline.ServiceContract</Name>
     </ProjectReference>
     <ProjectReference Include="..\TaxiOnline.Toolkit\TaxiOnline.Toolkit.csproj">
-      <Project>{8247f1d1-76c4-4ed7-a089-eb9c648fd885}</Project>
+      <Project>{8247F1D1-76C4-4ED7-A089-EB9C648FD885}</Project>
       <Name>TaxiOnline.Toolkit</Name>
     </ProjectReference>
   </ItemGroup>

@@ -14,7 +14,6 @@
     <FileAlignment>512</FileAlignment>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidUseLatestPlatformSdk />
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -25,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,14 +33,11 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="OsmSharp, Version=4.0.5.669, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\OsmSharp.dll</HintPath>
-    </Reference>
     <Reference Include="OsmSharp.Android.UI">
       <HintPath>..\Libs\OsmSharp.Android.UI.dll</HintPath>
     </Reference>
@@ -51,6 +48,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="OsmSharp">
+      <HintPath>..\Libs\OsmSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -66,19 +66,19 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TaxiOnline.ClientInfrastructure.Android\TaxiOnline.ClientInfrastructure.Android.csproj">
-      <Project>{de6f6d3d-2b2f-4b34-bf77-4a2aeef7bfda}</Project>
+      <Project>{DE6F6D3D-2B2F-4B34-BF77-4A2AEEF7BFDA}</Project>
       <Name>TaxiOnline.ClientInfrastructure.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\TaxiOnline.ClientInfrastructure\TaxiOnline.ClientInfrastructure.csproj">
-      <Project>{1ef43006-c403-4a27-8fb6-d72f2e39a808}</Project>
+      <Project>{1EF43006-C403-4A27-8FB6-D72F2E39A808}</Project>
       <Name>TaxiOnline.ClientInfrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\TaxiOnline.ClientServicesAdapter\TaxiOnline.ClientServicesAdapter.csproj">
-      <Project>{90f53c4b-cde0-4ce9-bfc3-e1420a203798}</Project>
+      <Project>{90F53C4B-CDE0-4CE9-BFC3-E1420A203798}</Project>
       <Name>TaxiOnline.ClientServicesAdapter</Name>
     </ProjectReference>
     <ProjectReference Include="..\TaxiOnline.Toolkit\TaxiOnline.Toolkit.csproj">
-      <Project>{8247f1d1-76c4-4ed7-a089-eb9c648fd885}</Project>
+      <Project>{8247F1D1-76C4-4ED7-A089-EB9C648FD885}</Project>
       <Name>TaxiOnline.Toolkit</Name>
     </ProjectReference>
   </ItemGroup>

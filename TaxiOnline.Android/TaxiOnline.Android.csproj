@@ -16,7 +16,6 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <AndroidUseLatestPlatformSdk />
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
@@ -32,7 +31,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -43,7 +41,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -81,9 +78,6 @@
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\Layout\MapLayout.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\DriverProfileLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -96,6 +90,9 @@
     <AndroidResource Include="Resources\Layout\DriverReducedInfoLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\maplayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Layout\PedestrianReducedInfoLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -106,6 +103,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\RegistrationLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\ActionBarLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -123,30 +123,31 @@
     <AndroidResource Include="Resources\Drawable\PedestrianIcon.png" />
     <AndroidResource Include="Resources\Drawable\SearchIcon.png" />
     <AndroidResource Include="Resources\Drawable\DriverIcon.png" />
+    <AndroidResource Include="Resources\Drawable\RefreshIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TaxiOnline.ClientAdapters.Android\TaxiOnline.ClientAdapters.Android.csproj">
-      <Project>{f5871e71-b120-49b7-8fe2-91eb698220e5}</Project>
+      <Project>{F5871E71-B120-49B7-8FE2-91EB698220E5}</Project>
       <Name>TaxiOnline.ClientAdapters.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\TaxiOnline.ClientInfrastructure.Android\TaxiOnline.ClientInfrastructure.Android.csproj">
-      <Project>{de6f6d3d-2b2f-4b34-bf77-4a2aeef7bfda}</Project>
+      <Project>{DE6F6D3D-2B2F-4B34-BF77-4A2AEEF7BFDA}</Project>
       <Name>TaxiOnline.ClientInfrastructure.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\TaxiOnline.ClientInfrastructure\TaxiOnline.ClientInfrastructure.csproj">
-      <Project>{1ef43006-c403-4a27-8fb6-d72f2e39a808}</Project>
+      <Project>{1EF43006-C403-4A27-8FB6-D72F2E39A808}</Project>
       <Name>TaxiOnline.ClientInfrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\TaxiOnline.ClientServicesAdapter\TaxiOnline.ClientServicesAdapter.csproj">
-      <Project>{90f53c4b-cde0-4ce9-bfc3-e1420a203798}</Project>
+      <Project>{90F53C4B-CDE0-4CE9-BFC3-E1420A203798}</Project>
       <Name>TaxiOnline.ClientServicesAdapter</Name>
     </ProjectReference>
     <ProjectReference Include="..\TaxiOnline.Logic\TaxiOnline.Logic.csproj">
-      <Project>{d674f7bf-1ec2-47da-ae85-1564ec5639ac}</Project>
+      <Project>{D674F7BF-1EC2-47DA-AE85-1564EC5639AC}</Project>
       <Name>TaxiOnline.Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\TaxiOnline.Toolkit\TaxiOnline.Toolkit.csproj">
-      <Project>{8247f1d1-76c4-4ed7-a089-eb9c648fd885}</Project>
+      <Project>{8247F1D1-76C4-4ED7-A089-EB9C648FD885}</Project>
       <Name>TaxiOnline.Toolkit</Name>
     </ProjectReference>
   </ItemGroup>

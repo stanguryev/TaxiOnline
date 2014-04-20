@@ -130,23 +130,6 @@ namespace TaxiOnline.Toolkit.Threading.Patterns
             });
         }
 
-#if false
-
-        protected async Task<ActionResult<TChannel>> ConnectAsync()
-        {
-            return await Task.Run(() =>
-            {
-                ActionResult result = TryConnect(notifyError: true);
-                _lastConnectionResult = result;
-                _waitConnectionCompleted.Set();
-                TChannel channel = _channel;
-                _notificationContext.Post(o => NotifyConnectionStateChanged(), null);
-                return result.IsValid ? ActionResult<TChannel>.GetValidResult(channel) : ActionResult<TChannel>.GetErrorResult(result);
-            });
-        }
-
-#endif
-
         protected void ProceedConnectionFaulted()
         {
             if (!_waitCurrentReconnection.WaitOne(1))
@@ -208,7 +191,7 @@ namespace TaxiOnline.Toolkit.Threading.Patterns
             {
                 if (_isDisposed)
                     return BuildErrorInfo(ErrorType.SessionIsClosedError);
-                using (_connectionLocker.EnterReadLock())
+                using (_connectionLocker.EnterUpgradeableReadLock())
                 {
                     if (channel == null || !IsConnectionAvailable())
                         return BuildErrorInfo(ErrorType.FailedToReconnect);
@@ -312,7 +295,7 @@ namespace TaxiOnline.Toolkit.Threading.Patterns
         {
             while (!TryConnect().IsValid && (!useCancellation || !cancellation.IsCancellationRequested))
             {
-                Task.Delay(1000);
+                Task.Delay(1000, cancellation);
                 if (_isDisposing)
                     return false;
             }

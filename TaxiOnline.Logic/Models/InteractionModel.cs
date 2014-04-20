@@ -65,6 +65,8 @@ namespace TaxiOnline.Logic.Models
 
         public event EventHandler CurrentProfileChanged;
 
+        public event ActionResultEventHandler EnumrateCitiesFailed;
+
         public event ActionResultEventHandler AuthenticationFailed;
 
         internal Func<ActionResult<IEnumerable<Logic.CityLogic>>> EnumerateCitiesDelegate;
@@ -82,6 +84,11 @@ namespace TaxiOnline.Logic.Models
         public void BeginLoadCities()
         {
             System.Threading.Tasks.Task.Factory.StartNew(() => _cities.FillItemsList());
+        }
+
+        public void NotifyEnumrateCitiesFailed(ActionResult errorResult)
+        {
+            OnEnumrateCitiesFailed(errorResult);
         }
 
         public void BeginAuthenticateAsPedestrian(string deviceId)
@@ -134,6 +141,13 @@ namespace TaxiOnline.Logic.Models
         protected virtual void OnAuthenticationFailed(ActionResult errorResult)
         {
             ActionResultEventHandler handler = AuthenticationFailed;
+            if (handler != null)
+                handler(this, new ActionResultEventArgs(errorResult));
+        }
+
+        protected virtual void OnEnumrateCitiesFailed(ActionResult errorResult)
+        {
+            ActionResultEventHandler handler = EnumrateCitiesFailed;
             if (handler != null)
                 handler(this, new ActionResultEventArgs(errorResult));
         }

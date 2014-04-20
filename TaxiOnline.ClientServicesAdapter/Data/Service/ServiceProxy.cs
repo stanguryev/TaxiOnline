@@ -19,25 +19,27 @@ namespace TaxiOnline.ClientServicesAdapter.Data.Service
         private readonly ChannelFactory<ITaxiOnlineService> _channelFactory;
         //private readonly InstanceContext _callbackInstance;
         private readonly CallbackWrapper _callbackWrapper;
+        private readonly string _serverEndpointAddress;
         
         public CallbackWrapper CallbackWrapper
         {
             get { return _callbackWrapper; }
         } 
 
-        public ServiceProxy()
+        public ServiceProxy(string serverEndpointAddress)
             : base()
         {
+            _serverEndpointAddress = serverEndpointAddress;
             _callbackWrapper = new CallbackWrapper();
             //_callbackInstance = new InstanceContext(_callbackWrapper);
             _channelFactory = CreateChannelFactory();
+            BeginConnect();
         }
 
         private ChannelFactory<ITaxiOnlineService> CreateChannelFactory()
         {
-            string strAddress = "";
-            System.ServiceModel.Channels.Binding binding = new BasicHttpBinding(); //NetTcpBinding(SecurityMode.None);
-            EndpointAddress address = new EndpointAddress(strAddress);
+            System.ServiceModel.Channels.Binding binding = new BasicHttpBinding(BasicHttpSecurityMode.None); //NetTcpBinding(SecurityMode.None);
+            EndpointAddress address = new EndpointAddress(_serverEndpointAddress);
             return new ChannelFactory<ITaxiOnlineService>(binding, address); //new DuplexChannelFactory<ITaxiOnlineService>(_callbackInstance, binding, address);
         }
 

@@ -11,13 +11,19 @@ namespace TaxiOnline.ClientServicesAdapter
     public abstract class ServicesFactoryBase : IServicesFactory
     {
         private readonly Lazy<IDataService> _dataService;
+        private string _serverEndpointAddress;
 
         public ServicesFactoryBase()
         {
-            _dataService = new Lazy<IDataService>(() => new TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.DataServiceImpl(), true);
+            _dataService = new Lazy<IDataService>(() => new TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.DataServiceImpl(_serverEndpointAddress), true);
         }
 
         public abstract IMapService GetCurrentMapService();
+
+        public void ConfigureDataService(string serverEndpointAddress)
+        {
+            _serverEndpointAddress = serverEndpointAddress;
+        }
 
         public IDataService GetCurrentDataService()
         {

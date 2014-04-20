@@ -12,6 +12,7 @@ using TaxiOnline.Android.Common;
 using TaxiOnline.Android.Adapters;
 using TaxiOnline.Android.Helpers;
 using System.Collections.Generic;
+using Android.Preferences;
 
 namespace TaxiOnline.Android.Activities
 {
@@ -19,6 +20,7 @@ namespace TaxiOnline.Android.Activities
     public class MainActivity : Activity
     {
         private readonly InteractionModel _model;
+        private ProgressDialog _connectionProgressDialog;
 
         public InteractionModel Model
         {
@@ -27,14 +29,31 @@ namespace TaxiOnline.Android.Activities
 
         public MainActivity()
         {
-            _model = new InteractionModel(new AndroidAdaptersExtender());
+            AndroidAdaptersExtender extender = new AndroidAdaptersExtender();
+            extender.ApplySettings(PreferenceManager.GetDefaultSharedPreferences(Application.Context));
+            _model = new InteractionModel(extender);
         }
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            SetContentView(Resource.Layout.MainLayout);//PreferenceManager
+            RequestWindowFeature(WindowFeatures.ActionBar);
+            SetContentView(Resource.Layout.MainLayout);
             HookModel();
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            ActionBar.SetDisplayShowCustomEnabled(true);
+            ActionBar.SetCustomView(Resource.Layout.ActionBarLayout);
+            ActionBar.Show();
+            ImageButton refreshCitiesButton = ActionBar.CustomView.FindViewById<ImageButton>(Resource.Id.refreshCitiesButton);
+            refreshCitiesButton.Click += (sender, e) =>
+            {
+                StartInidicateConnecting();
+                _model.BeginLoadCities();
+            };
+            return base.OnCreateOptionsMenu(menu);
         }
 
         protected override void OnDestroy()
@@ -45,6 +64,9 @@ namespace TaxiOnline.Android.Activities
 
         private void HookModel()
         {
+            _model.CitiesChanged += Model_CitiesChanged;
+            _model.EnumrateCitiesFailed += Model_EnumrateCitiesFailed;
+            StartInidicateConnecting();
             _model.BeginLoadCities();
             AutoCompleteTextView cityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.cityTextView);
             cityTextView.Adapter = new CitiesAdapter(this, _model);
@@ -69,6 +91,37 @@ namespace TaxiOnline.Android.Activities
             AutoCompleteTextView cityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.cityTextView);
             if (cityTextView.Adapter != null)
                 cityTextView.Adapter.Dispose();
+        }
+
+        private void StartInidicateConnecting()
+        {
+            if (_connectionProgressDialog == null)
+                _connectionProgressDialog = ProgressDialog.Show(this, Resources.GetString(Resource.String.ConnectingToServerTitle), Resources.GetString(Resource.String.ConnectingToServerMessage));
+        }
+
+        private void StopInidicateConnecting()
+        {
+            if (_connectionProgressDialog != null)
+            {
+                _connectionProgressDialog.Dismiss();
+                _connectionProgressDialog.Dispose();
+                _connectionProgressDialog = null;
+            }
+        }
+
+        private void Model_EnumrateCitiesFailed(object sender, Toolkit.Events.ActionResultEventArgs e)
+        {
+            RunOnUiThread(() =>
+            {
+                StopInidicateConnecting();
+                using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resources.GetString(Resource.String.ConnectToServerFailed), ToastLength.Short))
+                    errorToast.Show();
+            });
+        }
+
+        private void Model_CitiesChanged(object sender, EventArgs e)
+        {
+            RunOnUiThread(StopInidicateConnecting);
         }
     }
 }

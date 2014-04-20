@@ -38,6 +38,7 @@ namespace TaxiOnline.Logic.Logic
             model.AuthenticateAsPedestrianDelegate = AuthenticateAsPedestrian;
             _map = new MapLogic(new MapModel(_adaptersExtender.ServicesFactory.GetCurrentMapService()), _adaptersExtender, this);
             _cities = new UpdatableCollectionLoadDecorator<CityLogic, ICityInfo>(RetriveCities, CompareCityInfo, c => true, CreateCityLogic);
+            _cities.RequestFailed += Cities_RequestFailed;
         }
 
         public ActionResult AuthenticateAsPedestrian(string deviceId)
@@ -108,6 +109,11 @@ namespace TaxiOnline.Logic.Logic
                 InitialCenter = new ClientInfrastructure.Data.MapPoint(citySLO.InitialLatitude, citySLO.InitialLongitude),
                 InitialZoom = citySLO.InitialZoom
             }, _adaptersExtender, this);
+        }
+
+        private void Cities_RequestFailed(object sender, ActionResultEventArgs e)
+        {
+            _model.NotifyEnumrateCitiesFailed(e.Result);
         }
     }
 }

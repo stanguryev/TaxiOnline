@@ -60,7 +60,10 @@ namespace TaxiOnline.Android
 			public const int PedestrianIcon = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int SearchIcon = 2130837507;
+			public const int RefreshIcon = 2130837507;
+			
+			// aapt resource value: 0x7f020004
+			public const int SearchIcon = 2130837508;
 			
 			static Drawable()
 			{
@@ -75,29 +78,35 @@ namespace TaxiOnline.Android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f050007
-			public const int cancelRegistrationButton = 2131034119;
-			
-			// aapt resource value: 0x7f050004
-			public const int chooseCityButton = 2131034116;
-			
-			// aapt resource value: 0x7f050002
-			public const int cityNameTextView = 2131034114;
-			
-			// aapt resource value: 0x7f050003
-			public const int cityTextView = 2131034115;
+			// aapt resource value: 0x7f050009
+			public const int cancelRegistrationButton = 2131034121;
 			
 			// aapt resource value: 0x7f050006
-			public const int confirmRegistrationButton = 2131034118;
+			public const int chooseCityButton = 2131034118;
+			
+			// aapt resource value: 0x7f050004
+			public const int cityNameTextView = 2131034116;
 			
 			// aapt resource value: 0x7f050005
-			public const int map = 2131034117;
+			public const int cityTextView = 2131034117;
 			
-			// aapt resource value: 0x7f050000
-			public const int personsView = 2131034112;
+			// aapt resource value: 0x7f050008
+			public const int confirmRegistrationButton = 2131034120;
 			
 			// aapt resource value: 0x7f050001
-			public const int registerButton = 2131034113;
+			public const int connectionStateImageView = 2131034113;
+			
+			// aapt resource value: 0x7f050007
+			public const int mapLayout = 2131034119;
+			
+			// aapt resource value: 0x7f050002
+			public const int personsView = 2131034114;
+			
+			// aapt resource value: 0x7f050000
+			public const int refreshCitiesButton = 2131034112;
+			
+			// aapt resource value: 0x7f050003
+			public const int registerButton = 2131034115;
 			
 			static Id()
 			{
@@ -113,34 +122,37 @@ namespace TaxiOnline.Android
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int AuthenticationLayout = 2130903040;
+			public const int ActionBarLayout = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int CityInfoLayout = 2130903041;
+			public const int AuthenticationLayout = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int DriverProfileLayout = 2130903042;
+			public const int CityInfoLayout = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int DriverReducedInfoLayout = 2130903043;
+			public const int DriverProfileLayout = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int DriverSelfInfoLayout = 2130903044;
+			public const int DriverReducedInfoLayout = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int MainLayout = 2130903045;
+			public const int DriverSelfInfoLayout = 2130903045;
 			
 			// aapt resource value: 0x7f030006
-			public const int MapLayout = 2130903046;
+			public const int MainLayout = 2130903046;
 			
 			// aapt resource value: 0x7f030007
-			public const int PedestrianInfoLayout = 2130903047;
+			public const int maplayout = 2130903047;
 			
 			// aapt resource value: 0x7f030008
-			public const int PedestrianReducedInfoLayout = 2130903048;
+			public const int PedestrianInfoLayout = 2130903048;
 			
 			// aapt resource value: 0x7f030009
-			public const int RegistrationLayout = 2130903049;
+			public const int PedestrianReducedInfoLayout = 2130903049;
+			
+			// aapt resource value: 0x7f03000a
+			public const int RegistrationLayout = 2130903050;
 			
 			static Layout()
 			{
@@ -158,35 +170,44 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f040001
 			public const int ApplicationName = 2130968577;
 			
-			// aapt resource value: 0x7f040005
-			public const int Cancel = 2130968581;
+			// aapt resource value: 0x7f040008
+			public const int Cancel = 2130968584;
 			
-			// aapt resource value: 0x7f04000b
-			public const int CarColor = 2130968587;
+			// aapt resource value: 0x7f04000e
+			public const int CarColor = 2130968590;
+			
+			// aapt resource value: 0x7f040006
+			public const int ChooseCityToolTip = 2130968582;
+			
+			// aapt resource value: 0x7f040005
+			public const int ConnectToServerFailed = 2130968581;
+			
+			// aapt resource value: 0x7f040004
+			public const int ConnectingToServerMessage = 2130968580;
 			
 			// aapt resource value: 0x7f040003
-			public const int ChooseCityToolTip = 2130968579;
+			public const int ConnectingToServerTitle = 2130968579;
 			
-			// aapt resource value: 0x7f040008
-			public const int Driver = 2130968584;
+			// aapt resource value: 0x7f04000b
+			public const int Driver = 2130968587;
 			
 			// aapt resource value: 0x7f040000
 			public const int Hello = 2130968576;
 			
-			// aapt resource value: 0x7f040004
-			public const int NoCityFound = 2130968580;
-			
 			// aapt resource value: 0x7f040007
-			public const int Pedestrian = 2130968583;
+			public const int NoCityFound = 2130968583;
 			
 			// aapt resource value: 0x7f04000a
-			public const int PhoneNumber = 2130968586;
+			public const int Pedestrian = 2130968586;
 			
-			// aapt resource value: 0x7f040006
-			public const int Register = 2130968582;
+			// aapt resource value: 0x7f04000d
+			public const int PhoneNumber = 2130968589;
 			
 			// aapt resource value: 0x7f040009
-			public const int SkypeNumber = 2130968585;
+			public const int Register = 2130968585;
+			
+			// aapt resource value: 0x7f04000c
+			public const int SkypeNumber = 2130968588;
 			
 			// aapt resource value: 0x7f040002
 			public const int library_name = 2130968578;

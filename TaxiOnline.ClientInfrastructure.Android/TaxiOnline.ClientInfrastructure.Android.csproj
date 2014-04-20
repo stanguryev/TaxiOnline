@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -54,11 +56,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TaxiOnline.ClientInfrastructure\TaxiOnline.ClientInfrastructure.csproj">
-      <Project>{1ef43006-c403-4a27-8fb6-d72f2e39a808}</Project>
+      <Project>{1EF43006-C403-4A27-8FB6-D72F2E39A808}</Project>
       <Name>TaxiOnline.ClientInfrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\TaxiOnline.Toolkit\TaxiOnline.Toolkit.csproj">
-      <Project>{8247f1d1-76c4-4ed7-a089-eb9c648fd885}</Project>
+      <Project>{8247F1D1-76C4-4ED7-A089-EB9C648FD885}</Project>
       <Name>TaxiOnline.Toolkit</Name>
     </ProjectReference>
   </ItemGroup>

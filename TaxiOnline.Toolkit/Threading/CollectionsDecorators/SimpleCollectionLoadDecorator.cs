@@ -43,7 +43,7 @@ namespace TaxiOnline.Toolkit.Threading.CollectionsDecorators
         /// <summary>
         /// произошла ошибка в асинхронном запросе
         /// </summary>
-        public event EventHandler RequestFailed;
+        public event ActionResultEventHandler RequestFailed;
 
         /// <summary>
         /// изменения в коллекции
@@ -78,7 +78,7 @@ namespace TaxiOnline.Toolkit.Threading.CollectionsDecorators
             ActionResult<IEnumerable<TItem>> loadResult = _loadDelegate();
             if (!loadResult.IsValid)
             {
-                OnRequestFailed();
+                OnRequestFailed(ActionResult.GetErrorResult(loadResult));
                 return;
             }
             ReplaceItemsCollection(new ObservableCollection<TItem>(loadResult.Result));
@@ -114,11 +114,11 @@ namespace TaxiOnline.Toolkit.Threading.CollectionsDecorators
                 handler(this, EventArgs.Empty);
         }
 
-        protected virtual void OnRequestFailed()
+        protected virtual void OnRequestFailed(ActionResult errorResult)
         {
-            EventHandler handler = RequestFailed;
+            ActionResultEventHandler handler = RequestFailed;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler(this, new ActionResultEventArgs(errorResult));
         }
 
         protected virtual void OnItemsCollectionChanged(NotifyCollectionChangedEventArgs e)

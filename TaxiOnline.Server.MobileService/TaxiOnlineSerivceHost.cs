@@ -7,6 +7,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using TaxiOnline.ServerInfrastructure;
+using TaxiOnline.ServiceContract;
 
 namespace TaxiOnline.Server.MobileService
 {
@@ -17,7 +18,7 @@ namespace TaxiOnline.Server.MobileService
         public TaxiOnlineSerivceHost(ITaxiOnlineServer server)
             : base(new TaxiOnlineService(server), GetEndPointAddresses())
         {
-
+            AddServiceEndpoint(typeof(ITaxiOnlineService), new BasicHttpBinding(BasicHttpSecurityMode.None), GetEndPointAddresses().First());
         }
 
         private static Uri[] GetEndPointAddresses()

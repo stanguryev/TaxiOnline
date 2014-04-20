@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1D30B885-6D41-4167-8E3D-ED679E37AF68}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TaxiOnline.Server.Host</RootNamespace>
+    <AssemblyName>TaxiOnline.Server.Host</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TaxiOnline.ServiceContract\TaxiOnline.ServiceContract.csproj">
+      <Project>{B6B7ECB5-3EC4-4993-AE6C-87E8B94E9C37}</Project>
+      <Name>TaxiOnline.ServiceContract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.ServerInfrastructure\TaxiOnline.ServerInfrastructure.csproj">
+      <Project>{D7C0C773-0611-45E3-9F75-436FB5FF38C9}</Project>
+      <Name>TaxiOnline.ServerInfrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.Server.MobileService\TaxiOnline.Server.MobileService.csproj">
+      <Project>{37E8B26C-1ABD-483A-B34F-77BEB351F72C}</Project>
+      <Name>TaxiOnline.Server.MobileService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.Server.Data\TaxiOnline.Server.Data.csproj">
+      <Project>{D6A5DE27-42A0-455F-B474-27C9E0F63E9A}</Project>
+      <Name>TaxiOnline.Server.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.Server.Core\TaxiOnline.Server.Core.csproj">
+      <Project>{DB4BE707-B6E5-4718-A2F4-7F2F6AD845A0}</Project>
+      <Name>TaxiOnline.Server.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

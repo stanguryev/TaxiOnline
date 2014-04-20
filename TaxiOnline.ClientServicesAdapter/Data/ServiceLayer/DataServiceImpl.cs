@@ -33,9 +33,9 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
 
         public event EventHandler<ValueEventArgs<IDriverResponse>> DriverResponseChanged;
 
-        public DataServiceImpl()
+        public DataServiceImpl(string serverEndpointAddress)
         {
-
+            _proxy = new ServiceProxy(serverEndpointAddress);
         }
 
         public ActionResult<IEnumerable<ICityInfo>> EnumerateCities(string userCultureName)
@@ -96,6 +96,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
 
         private ActionResult<IEnumerable<TResult>> RequestCollection<TResult, TDataContract>(Func<ITaxiOnlineService, IEnumerable<TDataContract>> requestDelegate, Func<TDataContract, TResult> convertDelegate)
         {
+            _proxy.WaitConnectionCompleted();
             ITaxiOnlineService channel = _proxy.Channel;
             ActionResult<IEnumerable<TDataContract>> remoteResult = _proxy.RunRequestSafe(() => requestDelegate(channel), channel);
             return remoteResult.IsValid ? ActionResult<IEnumerable<TResult>>.GetValidResult(remoteResult.Result.Select(d => convertDelegate(d)).ToArray()) : ActionResult<IEnumerable<TResult>>.GetErrorResult(remoteResult);
