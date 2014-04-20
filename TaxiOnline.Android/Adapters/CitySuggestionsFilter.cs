@@ -19,7 +19,7 @@ namespace TaxiOnline.Android.Adapters
         protected override Filter.FilterResults PerformFiltering(Java.Lang.ICharSequence constraint)
         {
             string strConstraint = constraint == null ? null : constraint.ToString();
-            CityModel[] items = strConstraint == null ? _adapter.Items.ToArray() : _adapter.Items.Where(i => i.Name.Contains(strConstraint)).ToArray();
+            CityModel[] items = strConstraint == null ? _adapter.Items.ToArray() : _adapter.Items.Where(i => i.Name.ToLowerInvariant().Contains(strConstraint.ToLowerInvariant())).ToArray();
             FilterResults results = new FilterResults()
             {
                 Values = items.Select(i => i.Name).ToArray(),

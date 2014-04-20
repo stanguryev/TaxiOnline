@@ -42,7 +42,7 @@ namespace TaxiOnline.Android.Adapters
 
         public override Java.Lang.Object GetItem(int position)
         {
-            return position;
+            return _filteredItems[position].Name;
         }
 
         public override long GetItemId(int position)
@@ -78,6 +78,7 @@ namespace TaxiOnline.Android.Adapters
         {
             IEnumerable<CityModel> modelCollection = _model.Cities;
             _items = modelCollection == null ? new List<CityModel>() : modelCollection.ToList();
+            _filteredItems = _items;
             NotifyDataSetChanged();
         }
 

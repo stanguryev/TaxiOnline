@@ -33,7 +33,7 @@ namespace TaxiOnline.Android.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            SetContentView(Resource.Layout.MainLayout);
+            SetContentView(Resource.Layout.MainLayout);//PreferenceManager
             HookModel();
         }
 

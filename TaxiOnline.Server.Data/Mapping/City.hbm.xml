@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                    assembly="TaxiOnline.Server.Data"
+                   namespace="TaxiOnline.Server.Data.DataAccess">
+  <class name="CityDA" table="Cities" lazy="true">
+    <id name="Id" column="Id" type="Guid">
+      <generator class="native"></generator>
+    </id>
+    <property name="InitialLatitude" column="InitialLatitude" type="Double"/>
+    <property name="InitialLongitude" column="InitialLongitude" type="Double"/>
+    <property name="InitialZoom" column="InitialZoom" type="Double"/>
+  </class>
+</hibernate-mapping>
