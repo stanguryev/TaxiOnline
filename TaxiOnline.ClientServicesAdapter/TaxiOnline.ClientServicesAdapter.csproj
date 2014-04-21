@@ -53,6 +53,7 @@
     <Compile Include="Data\ServiceLayer\CallbackManager.cs" />
     <Compile Include="Data\ServiceLayer\DataServiceImpl.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\CitySLO.cs" />
+    <Compile Include="Data\ServiceLayer\ServiceLayerObjects\DriverSLO.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\PedestrianRequestSLO.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\PedestrianSLO.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\PersonSLO.cs" />

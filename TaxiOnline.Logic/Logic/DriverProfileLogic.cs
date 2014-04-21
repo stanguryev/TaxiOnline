@@ -17,8 +17,6 @@ namespace TaxiOnline.Logic.Logic
     internal class DriverProfileLogic : ProfileLogic
     {
         private readonly DriverProfileModel _model;
-        private readonly AdaptersExtender _adaptersExtender;
-        private readonly InteractionLogic _interaction;
         private readonly UpdatableCollectionLoadDecorator<PedestrianLogic, IPedestrianInfo> _pedestrians;
         private readonly UpdatableCollectionLoadDecorator<PedestrianRequestLogic, IPedestrianRequest> _pedestrianRequests;
         private readonly UpdatableCollectionLoadDecorator<DriverProfileResponseLogic, IDriverResponse> _currentResponses;
@@ -50,11 +48,10 @@ namespace TaxiOnline.Logic.Logic
             remove { _pedestrians.ItemsCollectionChanged -= value; }
         }
 
-        public DriverProfileLogic(DriverProfileModel model, AdaptersExtender adaptersExtender, InteractionLogic interaction)
+        internal DriverProfileLogic(DriverProfileModel model, AdaptersExtender adaptersExtender, CityLogic city)
+            : base(model, adaptersExtender, city)
         {
             _model = model;
-            _adaptersExtender = adaptersExtender;
-            _interaction = interaction;
             model.InitResponseDelegate = InitResponse;
             model.EnumeratePedestrianRequestsDelegate = EnumeratePedestrianRequests;
             model.EnumeratePedestriansDelegate = EnumeratePedestrians;
@@ -108,7 +105,7 @@ namespace TaxiOnline.Logic.Logic
 
         private ActionResult<IEnumerable<PedestrianLogic>> RetrivePedestrians()
         {
-            ActionResult<IEnumerable<IPedestrianInfo>> requestResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().EnumeratePedestrians();
+            ActionResult<IEnumerable<IPedestrianInfo>> requestResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().EnumeratePedestrians(_city.Model.Id);
             return requestResult.IsValid ? ActionResult<IEnumerable<PedestrianLogic>>.GetValidResult(requestResult.Result.Select(r => CreatePedestrianLogic(r)).ToArray())
                 : ActionResult<IEnumerable<PedestrianLogic>>.GetErrorResult(requestResult);
         }
@@ -123,12 +120,12 @@ namespace TaxiOnline.Logic.Logic
             return new PedestrianLogic(new PedestrianModel()
             {
                 PersonId = personSLO.PersonId
-            }, _adaptersExtender, _interaction);
+            }, _adaptersExtender, _city);
         }
 
         private ActionResult<IEnumerable<PedestrianRequestLogic>> RetrivePedestrianRequests()
         {
-            ActionResult<IEnumerable<IPedestrianRequest>> requestResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().EnumeratePedestrianRequests();
+            ActionResult<IEnumerable<IPedestrianRequest>> requestResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().EnumeratePedestrianRequests(_city.Model.Id);
             return requestResult.IsValid ? ActionResult<IEnumerable<PedestrianRequestLogic>>.GetValidResult(requestResult.Result.Select(r => CreatePedestrianRequestLogic(r)).Where(l => l != null).ToArray())
                 : ActionResult<IEnumerable<PedestrianRequestLogic>>.GetErrorResult(requestResult);
         }
@@ -157,7 +154,7 @@ namespace TaxiOnline.Logic.Logic
 
         private ActionResult<IEnumerable<DriverProfileResponseLogic>> RetriveDriverResponses()
         {
-            ActionResult<IEnumerable<IDriverResponse>> requestResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().EnumerateDriverResponses();
+            ActionResult<IEnumerable<IDriverResponse>> requestResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().EnumerateDriverResponses(_city.Model.Id);
             return requestResult.IsValid ? ActionResult<IEnumerable<DriverProfileResponseLogic>>.GetValidResult(requestResult.Result.Select(r => CreateDriverResponseLogic(r)).Where(l => l != null).ToArray())
                 : ActionResult<IEnumerable<DriverProfileResponseLogic>>.GetErrorResult(requestResult);
         }

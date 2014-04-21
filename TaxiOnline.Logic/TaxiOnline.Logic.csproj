@@ -64,6 +64,7 @@
     <Compile Include="Logic\PedestrianProfileLogic.cs" />
     <Compile Include="Logic\PedestrianProfileRequestLogic.cs" />
     <Compile Include="Logic\PedestrianRequestLogic.cs" />
+    <Compile Include="Logic\PersonLogic.cs" />
     <Compile Include="Logic\ProfileLogic.cs" />
     <Compile Include="Models\CityModel.cs" />
     <Compile Include="Models\DriverModel.cs" />

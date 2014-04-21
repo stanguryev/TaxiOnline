@@ -7,22 +7,19 @@ using TaxiOnline.Logic.Models;
 
 namespace TaxiOnline.Logic.Logic
 {
-    internal class PedestrianLogic
+    internal class PedestrianLogic : PersonLogic
     {
         private readonly PedestrianModel _model;
-        private readonly AdaptersExtender _adaptersExtender;
-        private readonly InteractionLogic _interaction;
 
         public PedestrianModel Model
         {
             get { return _model; }
-        } 
+        }
 
-        public PedestrianLogic(PedestrianModel model, AdaptersExtender adaptersExtender, InteractionLogic interaction)
+        public PedestrianLogic(PedestrianModel model, AdaptersExtender adaptersExtender, CityLogic city)
+            : base(model, adaptersExtender, city)
         {
             _model = model;
-            _adaptersExtender = adaptersExtender;
-            _interaction = interaction;
         }        
     }
 }

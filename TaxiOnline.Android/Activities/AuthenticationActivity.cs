@@ -66,6 +66,7 @@ namespace TaxiOnline.Android.Activities
         {
             if (_interactionModel == null || _cityModel == null)
                 return;
+            _cityModel.PersonsRequestFailed += CityModel_PersonsRequestFailed;
             _interactionModel.CurrentProfileChanged += InteractionModel_CurrentProfileChanged;
             Button registerButton = FindViewById<Button>(Resource.Id.registerButton);
             registerButton.Click += (sender, e) => UIHelper.GoResultActivity(this, typeof(RegistrationActivity), 1);
@@ -94,6 +95,12 @@ namespace TaxiOnline.Android.Activities
         {
             _activePedestrianProfileModel = pedestrianProfileModel;
             UIHelper.GoActivity(this, typeof(PedestrianProfileActivity));
+        }
+
+        private void CityModel_PersonsRequestFailed(object sender, Toolkit.Events.ActionResultEventArgs e)
+        {
+            using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resources.GetString(Resource.String.FailedToLoadPersons), ToastLength.Short))
+                errorToast.Show();
         }
 
         private void InteractionModel_CurrentProfileChanged(object sender, EventArgs e)

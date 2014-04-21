@@ -20,6 +20,7 @@ namespace TaxiOnline.Logic.Logic
     {
         private readonly InteractionModel _model;
         private readonly MapLogic _map;
+
         private readonly AdaptersExtender _adaptersExtender;
         private readonly UpdatableCollectionLoadDecorator<CityLogic, ICityInfo> _cities;
         private ProfileLogic _currentProfile;
@@ -27,58 +28,26 @@ namespace TaxiOnline.Logic.Logic
         public ProfileLogic CurrentProfile
         {
             get { return _currentProfile; }
+            set
+            {
+                _currentProfile = value;
+                _model.CurrentProfile = value.ProfileModel;
+            }
         }
+
+        public MapLogic Map
+        {
+            get { return _map; }
+        } 
 
         public InteractionLogic(InteractionModel model, AdaptersExtender adaptersExtender)
         {
             _model = model;
             _adaptersExtender = adaptersExtender;
             model.EnumerateCitiesDelegate = EnumerateCities;
-            model.AuthenticateAsDriverDelegate = AuthenticateAsDriver;
-            model.AuthenticateAsPedestrianDelegate = AuthenticateAsPedestrian;
             _map = new MapLogic(new MapModel(_adaptersExtender.ServicesFactory.GetCurrentMapService()), _adaptersExtender, this);
             _cities = new UpdatableCollectionLoadDecorator<CityLogic, ICityInfo>(RetriveCities, CompareCityInfo, c => true, CreateCityLogic);
             _cities.RequestFailed += Cities_RequestFailed;
-        }
-
-        public ActionResult AuthenticateAsPedestrian(string deviceId)
-        {
-            ActionResult<IPedestrianInfo> info = _adaptersExtender.ServicesFactory.GetCurrentDataService().AuthenticateAsPedestrian(deviceId);
-            if (info.IsValid)
-            {
-                PedestrianProfileModel profileModel = new PedestrianProfileModel
-                {
-                    Map = _map.Model,
-                    PersonId = info.Result.PersonId,
-                    //PhoneNumber = info.Result.
-                    //SkypeId = info.Result.
-                };
-                _currentProfile = new PedestrianProfileLogic(profileModel, _adaptersExtender, this);
-                _model.CurrentProfile = profileModel;
-                return ActionResult.ValidResult;
-            }
-            else
-                return ActionResult.GetErrorResult(info);
-        }
-
-        public ActionResult AuthenticateAsDriver(string deviceId)
-        {
-            ActionResult<IDriverInfo> info = _adaptersExtender.ServicesFactory.GetCurrentDataService().AuthenticateAsDriver(deviceId);
-            if (info.IsValid)
-            {
-                DriverProfileModel profileModel = new DriverProfileModel
-                {
-                    Map = _map.Model,
-                    PersonId = info.Result.PersonId,
-                    //PhoneNumber = info.Result.
-                    //SkypeId = info.Result.
-                };
-                _currentProfile = new DriverProfileLogic(profileModel, _adaptersExtender, this);
-                _model.CurrentProfile = profileModel;
-                return ActionResult.ValidResult;
-            }
-            else
-                return ActionResult.GetErrorResult(info);
         }
 
         private ActionResult<IEnumerable<CityLogic>> EnumerateCities()

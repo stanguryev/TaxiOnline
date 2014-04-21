@@ -14,12 +14,13 @@ namespace TaxiOnline.ClientInfrastructure.Services
         event EventHandler<ValueEventArgs<IPedestrianRequest>> PedestrianRequestChanged;
         event EventHandler<ValueEventArgs<IDriverResponse>> DriverResponseChanged;
         ActionResult<IEnumerable<ICityInfo>> EnumerateCities(string userCultureName);
-        ActionResult<IEnumerable<IPedestrianInfo>> EnumeratePedestrians();
-        ActionResult<IEnumerable<IPedestrianRequest>> EnumeratePedestrianRequests();
-        ActionResult<IEnumerable<IDriverResponse>> EnumerateDriverResponses();
+        ActionResult<IEnumerable<IPersonInfo>> EnumerateAllPersons(Guid cityId);
+        ActionResult<IEnumerable<IPedestrianInfo>> EnumeratePedestrians(Guid cityId);
+        ActionResult<IEnumerable<IPedestrianRequest>> EnumeratePedestrianRequests(Guid cityId);
+        ActionResult<IEnumerable<IDriverResponse>> EnumerateDriverResponses(Guid cityId);
         IPedestrianRequest CreatePedestrianRequest(Guid pedestrianId);
         ActionResult PushPedestrianRequest(IPedestrianRequest requestSLO);
-        ActionResult RemovePedestrianRequest(Guid pedestrianId);
+        ActionResult RemovePedestrianRequest(Guid requestId);
         ActionResult<IDriverResponse> ConfirmPedestrianRequest(Guid pedestrianRequestId, Guid driverId);
         ActionResult RemoveDriverResponse(Guid responseId);
         ActionResult<IPedestrianInfo> AuthenticateAsPedestrian(string deviceId);

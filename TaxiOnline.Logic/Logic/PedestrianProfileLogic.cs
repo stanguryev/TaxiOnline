@@ -17,13 +17,12 @@ namespace TaxiOnline.Logic.Logic
         public PedestrianProfileModel Model
         {
             get { return _model; }
-        } 
+        }
 
-        public PedestrianProfileLogic(PedestrianProfileModel model, AdaptersExtender adaptersExtender, InteractionLogic interaction)
+        public PedestrianProfileLogic(PedestrianProfileModel model, AdaptersExtender adaptersExtender, CityLogic city)
+            : base(model, adaptersExtender, city)
         {
             _model = model;
-            _adaptersExtender = adaptersExtender;
-            _interaction = interaction;
             model.InitRequestDelegate = InitRequest;
         }
 

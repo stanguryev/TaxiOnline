@@ -67,13 +67,7 @@ namespace TaxiOnline.Logic.Models
 
         public event ActionResultEventHandler EnumrateCitiesFailed;
 
-        public event ActionResultEventHandler AuthenticationFailed;
-
         internal Func<ActionResult<IEnumerable<Logic.CityLogic>>> EnumerateCitiesDelegate;
-
-        internal Func<string, ActionResult> AuthenticateAsPedestrianDelegate;
-
-        internal Func<string, ActionResult> AuthenticateAsDriverDelegate;
 
         public InteractionModel(AdaptersExtender adaptersExtender)
         {
@@ -89,34 +83,6 @@ namespace TaxiOnline.Logic.Models
         public void NotifyEnumrateCitiesFailed(ActionResult errorResult)
         {
             OnEnumrateCitiesFailed(errorResult);
-        }
-
-        public void BeginAuthenticateAsPedestrian(string deviceId)
-        {
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                Func<string, ActionResult> handler = AuthenticateAsPedestrianDelegate;
-                if (handler != null)
-                {
-                    ActionResult authResult = handler(deviceId);
-                    if (!authResult.IsValid)
-                        OnAuthenticationFailed(authResult);
-                }
-            });
-        }
-
-        public void BeginAuthenticateAsDriver(string deviceId)
-        {
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                Func<string, ActionResult> handler = AuthenticateAsDriverDelegate;
-                if (handler != null)
-                {
-                    ActionResult authResult = handler(deviceId);
-                    if (!authResult.IsValid)
-                        OnAuthenticationFailed(authResult);
-                }
-            });
         }
 
         private ActionResult<IEnumerable<CityModel>> EnumerateCities()
@@ -136,13 +102,6 @@ namespace TaxiOnline.Logic.Models
             EventHandler handler = CurrentProfileChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
-        }
-
-        protected virtual void OnAuthenticationFailed(ActionResult errorResult)
-        {
-            ActionResultEventHandler handler = AuthenticationFailed;
-            if (handler != null)
-                handler(this, new ActionResultEventArgs(errorResult));
         }
 
         protected virtual void OnEnumrateCitiesFailed(ActionResult errorResult)

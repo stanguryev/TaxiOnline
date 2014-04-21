@@ -24,12 +24,17 @@ namespace TaxiOnline.Server.MobileService
             return _server.EnumerateCities(userCultureName).Select(city => ConvertHelper.CreateCityDataContract(city)).ToArray();
         }
 
-        public IEnumerable<ServiceContract.DataContracts.PedestrianDataContract> EnumeratePedestrians()
+        public IEnumerable<ServiceContract.DataContracts.PersonDataContract> EnumerateAllPersons(Guid cityId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ServiceContract.DataContracts.PedestrianRequestDataContract> EnumeratePedestrianRequests()
+        public IEnumerable<ServiceContract.DataContracts.PedestrianDataContract> EnumeratePedestrians(Guid cityId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ServiceContract.DataContracts.PedestrianRequestDataContract> EnumeratePedestrianRequests(Guid cityId)
         {
             throw new NotImplementedException();
         }

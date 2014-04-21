@@ -43,17 +43,30 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
             return RequestCollection<ICityInfo, CityDataContract>(channel => channel.EnumerateCities(userCultureName), data => new CitySLO(data));
         }
 
-        public ActionResult<IEnumerable<IPedestrianInfo>> EnumeratePedestrians()
+        public ActionResult<IEnumerable<IPersonInfo>> EnumerateAllPersons(Guid cityId)
         {
-            return RequestCollection<IPedestrianInfo, PedestrianDataContract>(channel => channel.EnumeratePedestrians(), data => new PedestrianSLO(data));
+            return RequestCollection<IPersonInfo, PersonDataContract>(channel => channel.EnumerateAllPersons(cityId), data =>
+            {
+                if (data is PedestrianDataContract)
+                    return new PedestrianSLO((PedestrianDataContract)data);
+                else if (data is DriverDataContract)
+                    return new DriverSLO((DriverDataContract)data);
+                else
+                    throw new NotImplementedException();
+            });
         }
 
-        public ActionResult<IEnumerable<IPedestrianRequest>> EnumeratePedestrianRequests()
+        public ActionResult<IEnumerable<IPedestrianInfo>> EnumeratePedestrians(Guid cityId)
         {
-            return RequestCollection<IPedestrianRequest, PedestrianRequestDataContract>(channel => channel.EnumeratePedestrianRequests(), data => new PedestrianRequestSLO(data));
+            return RequestCollection<IPedestrianInfo, PedestrianDataContract>(channel => channel.EnumeratePedestrians(cityId), data => new PedestrianSLO(data));
         }
 
-        public ActionResult<IEnumerable<IDriverResponse>> EnumerateDriverResponses()
+        public ActionResult<IEnumerable<IPedestrianRequest>> EnumeratePedestrianRequests(Guid cityId)
+        {
+            return RequestCollection<IPedestrianRequest, PedestrianRequestDataContract>(channel => channel.EnumeratePedestrianRequests(cityId), data => new PedestrianRequestSLO(data));
+        }
+
+        public ActionResult<IEnumerable<IDriverResponse>> EnumerateDriverResponses(Guid cityId)
         {
             throw new NotImplementedException();
         }
@@ -69,7 +82,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
             return _proxy.RunRequestSafe(() => channel.PushPedestrianRequest(((PedestrianRequestSLO)requestSLO).GetDataContract()), channel);
         }
 
-        public ActionResult RemovePedestrianRequest(Guid pedestrianId)
+        public ActionResult RemovePedestrianRequest(Guid requestId)
         {
             throw new NotImplementedException();
         }

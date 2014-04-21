@@ -10,22 +10,19 @@ using TaxiOnline.Toolkit.Events;
 
 namespace TaxiOnline.Logic.Logic
 {
-    internal class DriverLogic
+    internal class DriverLogic : PersonLogic
     {
         private readonly DriverModel _model;
-        private readonly AdaptersExtender _adaptersExtender;
-        private readonly InteractionLogic _interaction;
 
         public DriverModel Model
         {
             get { return _model; }
         }
 
-        public DriverLogic(DriverModel model, AdaptersExtender adaptersExtender, InteractionLogic interaction)
+        public DriverLogic(DriverModel model, AdaptersExtender adaptersExtender, CityLogic city)
+            : base(model, adaptersExtender, city)
         {
             _model = model;
-            _adaptersExtender = adaptersExtender;
-            _interaction = interaction;
         }
     }
 }

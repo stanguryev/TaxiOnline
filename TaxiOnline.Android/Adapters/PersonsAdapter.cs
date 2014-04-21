@@ -24,6 +24,8 @@ namespace TaxiOnline.Android.Adapters
         {
             _context = context;
             _model = model;
+            _model.PersonsChanged += Model_PersonsChanged;
+            UpdatePersons();
         }
 
         public override Java.Lang.Object GetItem(int position)
@@ -58,6 +60,18 @@ namespace TaxiOnline.Android.Adapters
             int x = (int)(width / 2.0 + pixelsScale * (personModel.CurrentLocation.Longitude - mapCenter.Longitude));
             int y = (int)(height / 2.0 + pixelsScale * (personModel.CurrentLocation.Latitude - mapCenter.Latitude));
             view.LayoutParameters = new AbsoluteLayout.LayoutParams(view.Width, view.Height, x, y);
+        }
+
+        private void UpdatePersons()
+        {
+            IEnumerable<PersonModel> modelCollection = _model.Persons;
+            _items = modelCollection == null ? new List<PersonModel>() : modelCollection.ToList();
+            NotifyDataSetChanged();
+        }
+
+        private void Model_PersonsChanged(object sender, EventArgs e)
+        {
+            _context.RunOnUiThread(UpdatePersons);
         }
     }
 }

@@ -14,10 +14,13 @@ namespace TaxiOnline.ServiceContract
         IEnumerable<CityDataContract> EnumerateCities(string userCultureName);
 
         [OperationContract]
-        IEnumerable<PedestrianDataContract> EnumeratePedestrians();
+        IEnumerable<PersonDataContract> EnumerateAllPersons(Guid cityId);
 
         [OperationContract]
-        IEnumerable<PedestrianRequestDataContract> EnumeratePedestrianRequests();
+        IEnumerable<PedestrianDataContract> EnumeratePedestrians(Guid cityId);
+
+        [OperationContract]
+        IEnumerable<PedestrianRequestDataContract> EnumeratePedestrianRequests(Guid cityId);
 
         [OperationContract]
         void PushPedestrianRequest(PedestrianRequestDataContract request);
