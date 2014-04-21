@@ -13,6 +13,7 @@ using TaxiOnline.Android.Adapters;
 using TaxiOnline.Android.Helpers;
 using System.Collections.Generic;
 using Android.Preferences;
+using TaxiOnline.Android.Decorators;
 
 namespace TaxiOnline.Android.Activities
 {
@@ -20,7 +21,7 @@ namespace TaxiOnline.Android.Activities
     public class MainActivity : Activity
     {
         private readonly InteractionModel _model;
-        private ProgressDialog _connectionProgressDialog;
+        private ProgressDialogDecorator _connectionProgressDialogDecorator;
 
         public InteractionModel Model
         {
@@ -32,6 +33,7 @@ namespace TaxiOnline.Android.Activities
             AndroidAdaptersExtender extender = new AndroidAdaptersExtender();
             extender.ApplySettings(PreferenceManager.GetDefaultSharedPreferences(Application.Context));
             _model = new InteractionModel(extender);
+            _connectionProgressDialogDecorator = new ProgressDialogDecorator(this, Resources.GetString(Resource.String.ConnectingToServerTitle), Resources.GetString(Resource.String.ConnectingToServerMessage));
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -50,7 +52,7 @@ namespace TaxiOnline.Android.Activities
             ImageButton refreshCitiesButton = ActionBar.CustomView.FindViewById<ImageButton>(Resource.Id.refreshCitiesButton);
             refreshCitiesButton.Click += (sender, e) =>
             {
-                StartInidicateConnecting();
+                _connectionProgressDialogDecorator.Show();
                 _model.BeginLoadCities();
             };
             return base.OnCreateOptionsMenu(menu);
@@ -66,7 +68,7 @@ namespace TaxiOnline.Android.Activities
         {
             _model.CitiesChanged += Model_CitiesChanged;
             _model.EnumrateCitiesFailed += Model_EnumrateCitiesFailed;
-            StartInidicateConnecting();
+            _connectionProgressDialogDecorator.Show();
             _model.BeginLoadCities();
             AutoCompleteTextView cityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.cityTextView);
             cityTextView.Adapter = new CitiesAdapter(this, _model);
@@ -93,27 +95,27 @@ namespace TaxiOnline.Android.Activities
                 cityTextView.Adapter.Dispose();
         }
 
-        private void StartInidicateConnecting()
-        {
-            if (_connectionProgressDialog == null)
-                _connectionProgressDialog = ProgressDialog.Show(this, Resources.GetString(Resource.String.ConnectingToServerTitle), Resources.GetString(Resource.String.ConnectingToServerMessage));
-        }
+        //private void StartInidicateConnecting()
+        //{
+        //    if (_connectionProgressDialog == null)
+        //        _connectionProgressDialog = ProgressDialog.Show(this, Resources.GetString(Resource.String.ConnectingToServerTitle), Resources.GetString(Resource.String.ConnectingToServerMessage));
+        //}
 
-        private void StopInidicateConnecting()
-        {
-            if (_connectionProgressDialog != null)
-            {
-                _connectionProgressDialog.Dismiss();
-                _connectionProgressDialog.Dispose();
-                _connectionProgressDialog = null;
-            }
-        }
+        //private void StopInidicateConnecting()
+        //{
+        //    if (_connectionProgressDialog != null)
+        //    {
+        //        _connectionProgressDialog.Dismiss();
+        //        _connectionProgressDialog.Dispose();
+        //        _connectionProgressDialog = null;
+        //    }
+        //}
 
         private void Model_EnumrateCitiesFailed(object sender, Toolkit.Events.ActionResultEventArgs e)
         {
             RunOnUiThread(() =>
             {
-                StopInidicateConnecting();
+                _connectionProgressDialogDecorator.Hide();
                 using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resources.GetString(Resource.String.ConnectToServerFailed), ToastLength.Short))
                     errorToast.Show();
             });
@@ -121,7 +123,7 @@ namespace TaxiOnline.Android.Activities
 
         private void Model_CitiesChanged(object sender, EventArgs e)
         {
-            RunOnUiThread(StopInidicateConnecting);
+            RunOnUiThread(() => _connectionProgressDialogDecorator.Hide());
         }
     }
 }

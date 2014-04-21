@@ -10,9 +10,9 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
     internal class PedestrianSLO : PersonSLO, IPedestrianInfo
     {
         public PedestrianSLO(PedestrianDataContract dataContract)
+            : base(dataContract)
         {
-            base.PersonId = dataContract.PersonId;
-            base.IsOnline = dataContract.IsOnline;
-        }        
+
+        }
     }
 }

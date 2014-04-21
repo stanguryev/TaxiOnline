@@ -28,52 +28,26 @@ namespace TaxiOnline.Logic.Logic
             _adaptersExtender = adaptersExtender;
             _interaction = interaction;
             _persons = new UpdatableCollectionLoadDecorator<PersonLogic, IPersonInfo>(RetriveAllPersons, ComparePersonsInfo, p => p.IsOnline, CreatePersonsLogic);
-            model.AuthenticateAsDriverDelegate = AuthenticateAsDriver;
-            model.AuthenticateAsPedestrianDelegate = AuthenticateAsPedestrian;
+            model.AuthenticateDelegate = Authenticate;
             model.EnumeratePersonsDelegate = EnumeratePersons;
         }
 
         private ActionResult<IEnumerable<PersonLogic>> EnumeratePersons()
         {
+            if (_persons.Items == null)
+                _persons.FillItemsList();
             return ActionResult<IEnumerable<PersonLogic>>.GetValidResult(_persons.Items);
         }
 
-        public ActionResult AuthenticateAsPedestrian(string deviceId)
+        public ActionResult<ProfileLogic> Authenticate(AuthenticationRequestModel requestModel)
         {
-            ActionResult<IPedestrianInfo> info = _adaptersExtender.ServicesFactory.GetCurrentDataService().AuthenticateAsPedestrian(deviceId);
-            if (info.IsValid)
-            {
-                PedestrianProfileModel profileModel = new PedestrianProfileModel
-                {
-                    Map = _interaction.Map.Model,
-                    PersonId = info.Result.PersonId,
-                    //PhoneNumber = info.Result.
-                    //SkypeId = info.Result.
-                };
-                _interaction.CurrentProfile = new PedestrianProfileLogic(profileModel, _adaptersExtender, this);
-                return ActionResult.ValidResult;
-            }
-            else
-                return ActionResult.GetErrorResult(info);
-        }
-
-        public ActionResult AuthenticateAsDriver(string deviceId)
-        {
-            ActionResult<IDriverInfo> info = _adaptersExtender.ServicesFactory.GetCurrentDataService().AuthenticateAsDriver(deviceId);
-            if (info.IsValid)
-            {
-                DriverProfileModel profileModel = new DriverProfileModel
-                {
-                    Map = _interaction.Map.Model,
-                    PersonId = info.Result.PersonId,
-                    //PhoneNumber = info.Result.
-                    //SkypeId = info.Result.
-                };
-                _interaction.CurrentProfile = new DriverProfileLogic(profileModel, _adaptersExtender, this);
-                return ActionResult.ValidResult;
-            }
-            else
-                return ActionResult.GetErrorResult(info);
+            requestModel.DeviceId = _adaptersExtender.ServicesFactory.GetCurrentHardwareService().GetDeviceId();
+            requestModel.CurrentLocation = _adaptersExtender.ServicesFactory.GetCurrentHardwareService().GetCurrentLocation();
+            AuthenticationRequestLogic authenticationRequestLogic = AuthenticationRequestLogic.Create(requestModel, _adaptersExtender, this);
+            ActionResult<ProfileLogic> result = authenticationRequestLogic.Authenticate();
+            if (result.IsValid)
+                _interaction.CurrentProfile = result.Result;
+            return result;
         }
 
         private ActionResult<IEnumerable<PersonLogic>> RetriveAllPersons()

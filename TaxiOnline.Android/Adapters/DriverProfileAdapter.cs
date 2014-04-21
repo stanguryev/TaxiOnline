@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using TaxiOnline.Logic.Models;
+using TaxiOnline.Toolkit.Collections.Helpers;
 
 namespace TaxiOnline.Android.Adapters
 {
@@ -23,6 +24,9 @@ namespace TaxiOnline.Android.Adapters
         {
             _context = context;
             _model = model;
+            _model.PedestriansChanged += Model_PedestriansChanged;
+            _model.PedestriansCollectionChanged += Model_PedestriansCollectionChanged;
+            UpdatePedestrians();
         }
 
         public override Java.Lang.Object GetItem(int position)
@@ -53,12 +57,29 @@ namespace TaxiOnline.Android.Adapters
 
         private void HookCurrentModelToView(View view, ViewGroup parent)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void HookModelToView(View view, PedestrianModel pedestrianModel, ViewGroup parent)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+        }
+
+        private void UpdatePedestrians()
+        {
+            IEnumerable<PedestrianModel> modelCollection = _model.Pedestrians;
+            _items = modelCollection == null ? new List<PedestrianModel>() : modelCollection.ToList();
+            NotifyDataSetChanged();
+        }
+
+        private void Model_PedestriansChanged(object sender, EventArgs e)
+        {
+            _context.RunOnUiThread(UpdatePedestrians);
+        }
+
+        private void Model_PedestriansCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            _context.RunOnUiThread(() => ObservableCollectionHelper.ApplyChanges(e, _items));
         }
     }
 }

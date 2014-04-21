@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using TaxiOnline.Logic.Models;
 using TaxiOnline.Android.Helpers;
+using TaxiOnline.Android.Decorators;
 
 namespace TaxiOnline.Android.Activities
 {
@@ -18,6 +19,12 @@ namespace TaxiOnline.Android.Activities
     public class DriverProfileActivity : Activity
     {
         private DriverProfileModel _model;
+        private readonly ProgressDialogDecorator _loadProgressDialogDecorator;
+
+        public DriverProfileActivity()
+        {
+            _loadProgressDialogDecorator = new ProgressDialogDecorator(this, Resources.GetString(Resource.String.LoadTitle), Resources.GetString(Resource.String.LoadDataMessage));
+        }
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -33,7 +40,15 @@ namespace TaxiOnline.Android.Activities
         {
             if (_model == null)
                 return;
-
+            _model.LoadCompleted += (sender, e) => _loadProgressDialogDecorator.Hide();
+            _model.EnumratePedestriansFailed += (sender, e) =>
+            {
+                using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resources.GetString(Resource.String.FailedToEnumratePedestrians), ToastLength.Short))
+                    errorToast.Show();
+                _loadProgressDialogDecorator.Hide();
+            };
+            _loadProgressDialogDecorator.Show();
+            _model.BeginLoad();
         }
     }
 }

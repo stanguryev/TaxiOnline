@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.ClientInfrastructure.ServicesEntities.DataService;
 using TaxiOnline.Toolkit.Events;
 
@@ -16,6 +17,7 @@ namespace TaxiOnline.ClientInfrastructure.Services
         ActionResult<IEnumerable<ICityInfo>> EnumerateCities(string userCultureName);
         ActionResult<IEnumerable<IPersonInfo>> EnumerateAllPersons(Guid cityId);
         ActionResult<IEnumerable<IPedestrianInfo>> EnumeratePedestrians(Guid cityId);
+        ActionResult<IEnumerable<IDriverInfo>> EnumerateDrivers(Guid cityId);
         ActionResult<IEnumerable<IPedestrianRequest>> EnumeratePedestrianRequests(Guid cityId);
         ActionResult<IEnumerable<IDriverResponse>> EnumerateDriverResponses(Guid cityId);
         IPedestrianRequest CreatePedestrianRequest(Guid pedestrianId);
@@ -23,7 +25,7 @@ namespace TaxiOnline.ClientInfrastructure.Services
         ActionResult RemovePedestrianRequest(Guid requestId);
         ActionResult<IDriverResponse> ConfirmPedestrianRequest(Guid pedestrianRequestId, Guid driverId);
         ActionResult RemoveDriverResponse(Guid responseId);
-        ActionResult<IPedestrianInfo> AuthenticateAsPedestrian(string deviceId);
-        ActionResult<IDriverInfo> AuthenticateAsDriver(string deviceId);
+        IAuthenticationRequest CreateAuthenticationRequest(ParticipantTypes requestType, string deviceId, Guid cityId);
+        ActionResult<IPersonInfo> Authenticate(IAuthenticationRequest request);
     }
 }

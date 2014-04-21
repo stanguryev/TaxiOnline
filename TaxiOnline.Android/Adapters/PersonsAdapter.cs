@@ -55,10 +55,11 @@ namespace TaxiOnline.Android.Adapters
         {
             int width = upperView.Width;
             int height = upperView.Height;
-            double pixelsScale = 1.0;
+            double pixelsScaleX = 0.35 * Math.Pow(2.0, _model.Map.CurrentZoom);
+            double pixelsScaleY = 0.71 * Math.Pow(2.0, _model.Map.CurrentZoom);
             MapPoint mapCenter = _model.Map.CurrentCenter;
-            int x = (int)(width / 2.0 + pixelsScale * (personModel.CurrentLocation.Longitude - mapCenter.Longitude));
-            int y = (int)(height / 2.0 + pixelsScale * (personModel.CurrentLocation.Latitude - mapCenter.Latitude));
+            int x = (int)(width / 2.0 + pixelsScaleX * (personModel.CurrentLocation.Longitude - mapCenter.Longitude));
+            int y = (int)(height / 2.0 + pixelsScaleY * (personModel.CurrentLocation.Latitude - mapCenter.Latitude));
             view.LayoutParameters = new AbsoluteLayout.LayoutParams(view.Width, view.Height, x, y);
         }
 

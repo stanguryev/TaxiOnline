@@ -12,7 +12,7 @@ namespace TaxiOnline.Logic.Models
     {
         public DriverModel()
         {
-
+            
         }
     }
 }

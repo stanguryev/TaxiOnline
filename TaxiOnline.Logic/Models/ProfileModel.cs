@@ -9,7 +9,7 @@ namespace TaxiOnline.Logic.Models
     {
         private MapModel _map;
         private Guid _personId;
-        private string _skypeId;
+        private string _skypeNumber;
         private string _phoneNumber;
 
         public Guid PersonId
@@ -18,10 +18,10 @@ namespace TaxiOnline.Logic.Models
             internal set { _personId = value; }
         }
 
-        public string SkypeId
+        public string SkypeNumber
         {
-            get { return _skypeId; }
-            set { _skypeId = value; }
+            get { return _skypeNumber; }
+            set { _skypeNumber = value; }
         }
 
         public string PhoneNumber

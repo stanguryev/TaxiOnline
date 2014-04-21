@@ -19,6 +19,8 @@ namespace TaxiOnline.ClientServicesAdapter
         }
 
         public abstract IMapService GetCurrentMapService();
+        
+        public abstract IHardwareService GetCurrentHardwareService();
 
         public void ConfigureDataService(string serverEndpointAddress)
         {

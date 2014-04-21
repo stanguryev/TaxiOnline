@@ -12,5 +12,6 @@ namespace TaxiOnline.ClientInfrastructure.Factories
         void ConfigureDataService(string serverEndpointAddress);
         IMapService GetCurrentMapService();
         IDataService GetCurrentDataService();
+        IHardwareService GetCurrentHardwareService();
     }
 }

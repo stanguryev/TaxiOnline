@@ -7,7 +7,7 @@ using TaxiOnline.ServerInfrastructure.EntitiesInterfaces;
 
 namespace TaxiOnline.Server.Core.Objects
 {
-    public class CityInfo : ICityInfo
+    internal class CityInfo : ICityInfo
     {
         private readonly Guid _id;
 
@@ -44,7 +44,7 @@ namespace TaxiOnline.Server.Core.Objects
             get { return _initialZoom; }
             set { _initialZoom = value; }
         }
-
+        
         public CityInfo(Guid id)
         {
             _id = id;

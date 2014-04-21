@@ -5,7 +5,9 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using TaxiOnline.ServerInfrastructure;
+using TaxiOnline.ServerInfrastructure.EntitiesInterfaces;
 using TaxiOnline.ServiceContract;
+using TaxiOnline.ServiceContract.DataContracts;
 
 namespace TaxiOnline.Server.MobileService
 {
@@ -19,22 +21,48 @@ namespace TaxiOnline.Server.MobileService
             _server = server;
         }
 
-        public IEnumerable<ServiceContract.DataContracts.CityDataContract> EnumerateCities(string userCultureName)
+        public IEnumerable<CityDataContract> EnumerateCities(string userCultureName)
         {
             return _server.EnumerateCities(userCultureName).Select(city => ConvertHelper.CreateCityDataContract(city)).ToArray();
         }
 
-        public IEnumerable<ServiceContract.DataContracts.PersonDataContract> EnumerateAllPersons(Guid cityId)
+        public IEnumerable<PersonDataContract> EnumerateAllPersons(Guid cityId)
         {
+            return _server.Pedestrians.Select(p => ConvertHelper.CreatePedestrianDataContract(p)).Union<PersonDataContract>(_server.Drivers.Select(d => ConvertHelper.CreateDriverDataContract(d))).ToArray();
+        }
+
+        public PersonDataContract Authenticate(AuthenticationRequestDataContract request)
+        {
+            PedestrianAuthenticationRequestDataContract pedestrianRequest = request as PedestrianAuthenticationRequestDataContract;
+            if (pedestrianRequest != null)
+            {
+                IPedestrianInfo pedestrianInfo = _server.CreatePedestrianInfo();
+                ConvertHelper.FillPedestrianAuthenticationRequestInfo(pedestrianInfo, pedestrianRequest);
+                _server.ModifyPedestriansCollection(col => col.Add(pedestrianInfo));
+                return ConvertHelper.CreatePedestrianDataContract(pedestrianInfo);
+            }
+            DriverAuthenticationRequestDataContract driverRequest = request as DriverAuthenticationRequestDataContract;
+            if (driverRequest != null)
+            {
+                IDriverInfo driverInfo = _server.CreateDriverInfo();
+                ConvertHelper.FillDriverAuthenticationRequestInfo(driverInfo, driverRequest);
+                _server.ModifyDriversCollection(col => col.Add(driverInfo));
+                return ConvertHelper.CreateDriverDataContract(driverInfo);
+            }
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ServiceContract.DataContracts.PedestrianDataContract> EnumeratePedestrians(Guid cityId)
+        public IEnumerable<PedestrianDataContract> EnumeratePedestrians(Guid cityId)
         {
-            throw new NotImplementedException();
+            return _server.Pedestrians.Select(p => ConvertHelper.CreatePedestrianDataContract(p)).ToArray();
         }
 
-        public IEnumerable<ServiceContract.DataContracts.PedestrianRequestDataContract> EnumeratePedestrianRequests(Guid cityId)
+        public IEnumerable<DriverDataContract> EnumerateDrivers(Guid cityId)
+        {
+            return _server.Drivers.Select(d => ConvertHelper.CreateDriverDataContract(d)).ToArray();
+        }
+
+        public IEnumerable<PedestrianRequestDataContract> EnumeratePedestrianRequests(Guid cityId)
         {
             throw new NotImplementedException();
         }

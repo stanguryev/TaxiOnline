@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.Logic.Helpers;
+using TaxiOnline.Logic.Logic;
 using TaxiOnline.Toolkit.Events;
 using TaxiOnline.Toolkit.Threading.CollectionsDecorators;
 
@@ -74,9 +75,7 @@ namespace TaxiOnline.Logic.Models
             remove { _persons.RequestFailed -= value; }
         }
 
-        internal Func<string, ActionResult> AuthenticateAsPedestrianDelegate;
-
-        internal Func<string, ActionResult> AuthenticateAsDriverDelegate;
+        internal Func<AuthenticationRequestModel, ActionResult<ProfileLogic>> AuthenticateDelegate;
 
         internal Func<ActionResult<IEnumerable<Logic.PersonLogic>>> EnumeratePersonsDelegate;
 
@@ -86,30 +85,32 @@ namespace TaxiOnline.Logic.Models
             _persons = new SimpleCollectionLoadDecorator<PersonModel>(EnumeratePersons);
         }
 
-        public void BeginAuthenticateAsPedestrian(string deviceId)
+        public AuthenticationRequestModel CreateAuthenticationRequest(ParticipantTypes requestType)
         {
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            switch (requestType)
             {
-                Func<string, ActionResult> handler = AuthenticateAsPedestrianDelegate;
-                if (handler != null)
-                {
-                    ActionResult authResult = handler(deviceId);
-                    if (!authResult.IsValid)
-                        OnAuthenticationFailed(authResult);
-                }
-            });
+                case ParticipantTypes.Driver:
+                    return new DriverAuthenticationRequestModel();
+                    break;
+                case ParticipantTypes.Pedestrian:
+                    return new PedestrianAuthenticationRequestModel();
+                    break;
+                default:
+                    throw new NotImplementedException();
+                    break;
+            }
         }
 
-        public void BeginAuthenticateAsDriver(string deviceId)
+        public void BeginAuthenticate(AuthenticationRequestModel request)
         {
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                Func<string, ActionResult> handler = AuthenticateAsDriverDelegate;
+                Func<AuthenticationRequestModel, ActionResult<ProfileLogic>> handler = AuthenticateDelegate;
                 if (handler != null)
                 {
-                    ActionResult authResult = handler(deviceId);
+                    ActionResult<ProfileLogic> authResult = handler(request);
                     if (!authResult.IsValid)
-                        OnAuthenticationFailed(authResult);
+                        OnAuthenticationFailed(ActionResult.GetErrorResult(authResult));
                 }
             });
         }

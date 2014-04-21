@@ -15,20 +15,32 @@ using OsmSharp.Android.UI;
 using TaxiOnline.ClientInfrastructure.Android.Services;
 using TaxiOnline.Android.Views;
 using TaxiOnline.Android.Adapters;
+using TaxiOnline.Android.Decorators;
 
 namespace TaxiOnline.Android.Activities
 {
     [Activity(Label = "@string/ApplicationName")]
     public class AuthenticationActivity : Activity
     {
+        private enum Dialogs
+        {
+            Registration = 1
+        }
+
         private CityModel _cityModel;
         private InteractionModel _interactionModel;
         private DriverProfileModel _activeDriverProfileModel;
         private PedestrianProfileModel _activePedestrianProfileModel;
+        private ProgressDialogDecorator _authorizationProgressDialogDecorator;
 
         public InteractionModel InteractionModel
         {
             get { return _interactionModel; }
+        }
+
+        public CityModel CityModel
+        {
+            get { return _cityModel; }
         }
 
         public DriverProfileModel ActiveDriverProfileModel
@@ -39,6 +51,11 @@ namespace TaxiOnline.Android.Activities
         public PedestrianProfileModel ActivePedestrianProfileModel
         {
             get { return _activePedestrianProfileModel; }
+        }
+
+        public AuthenticationActivity()
+        {
+            _authorizationProgressDialogDecorator = new ProgressDialogDecorator(this, Resources.GetString(Resource.String.AuthorizingTitle), Resources.GetString(Resource.String.AuthorizingMessage));
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -58,8 +75,8 @@ namespace TaxiOnline.Android.Activities
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-            if (requestCode == 1 && resultCode == Result.Ok)
-                ;
+            if (requestCode == (int)Dialogs.Registration && resultCode == Result.Ok)
+                _authorizationProgressDialogDecorator.Show();
         }
 
         private void HookModel()
@@ -67,9 +84,10 @@ namespace TaxiOnline.Android.Activities
             if (_interactionModel == null || _cityModel == null)
                 return;
             _cityModel.PersonsRequestFailed += CityModel_PersonsRequestFailed;
+            _cityModel.AuthenticationFailed += CityModel_AuthenticationFailed;
             _interactionModel.CurrentProfileChanged += InteractionModel_CurrentProfileChanged;
             Button registerButton = FindViewById<Button>(Resource.Id.registerButton);
-            registerButton.Click += (sender, e) => UIHelper.GoResultActivity(this, typeof(RegistrationActivity), 1);
+            registerButton.Click += (sender, e) => UIHelper.GoResultActivity(this, typeof(RegistrationActivity), (int)Dialogs.Registration);
             HookMapService((IAndroidMapService)_cityModel.Map.MapService);
             CanvasView personsView = FindViewById<CanvasView>(Resource.Id.personsView);
             personsView.Adapter = new PersonsAdapter(this, _cityModel);
@@ -82,7 +100,19 @@ namespace TaxiOnline.Android.Activities
             map.Map = new OsmSharp.UI.Map.Map();
             map.MapCenter = new OsmSharp.Math.Geo.GeoCoordinate(_cityModel.InitialCenter.Latitude, _cityModel.InitialCenter.Longitude);
             map.MapZoom = (float)_cityModel.InitialZoom;
+            map.MapTilt = 0;
+            map.MapAllowTilt = false;
             mapLayout.AddView(map);
+        }
+
+        private void ActivateProfile()
+        {
+            DriverProfileModel driverProfileModel = _interactionModel.CurrentProfile as DriverProfileModel;
+            if (driverProfileModel != null)
+                GoDriverActivity(driverProfileModel);
+            PedestrianProfileModel pedestrianProfileModel = _interactionModel.CurrentProfile as PedestrianProfileModel;
+            if (pedestrianProfileModel != null)
+                GoPedestrianActivity(pedestrianProfileModel);
         }
 
         private void GoDriverActivity(DriverProfileModel driverProfileModel)
@@ -105,12 +135,21 @@ namespace TaxiOnline.Android.Activities
 
         private void InteractionModel_CurrentProfileChanged(object sender, EventArgs e)
         {
-            DriverProfileModel driverProfileModel = _interactionModel.CurrentProfile as DriverProfileModel;
-            if (driverProfileModel != null)
-                GoDriverActivity(driverProfileModel);
-            PedestrianProfileModel pedestrianProfileModel = _interactionModel.CurrentProfile as PedestrianProfileModel;
-            if (pedestrianProfileModel != null)
-                GoPedestrianActivity(pedestrianProfileModel);
+            RunOnUiThread(() =>
+            {
+                _authorizationProgressDialogDecorator.Hide();
+                ActivateProfile();
+            });
+        }
+
+        private void CityModel_AuthenticationFailed(object sender, Toolkit.Events.ActionResultEventArgs e)
+        {
+            RunOnUiThread(() =>
+            {
+                _authorizationProgressDialogDecorator.Hide();
+                using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resources.GetString(Resource.String.AuthenticationFailed), ToastLength.Short))
+                    errorToast.Show();
+            });
         }
     }
 }

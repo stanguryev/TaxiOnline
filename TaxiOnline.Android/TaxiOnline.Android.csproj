@@ -70,6 +70,7 @@
     <Compile Include="Adapters\DriverProfileAdapter.cs" />
     <Compile Include="Adapters\PersonsAdapter.cs" />
     <Compile Include="Common\AndroidAdaptersExtender.cs" />
+    <Compile Include="Decorators\ProgressDialogDecorator.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -106,6 +107,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\ActionBarLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\DriverInfoLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\PedestrianSelfInfoLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

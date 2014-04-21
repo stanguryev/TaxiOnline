@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+
+namespace TaxiOnline.ServiceContract.DataContracts
+{
+    [DataContract]
+    public class DriverAuthenticationRequestDataContract : AuthenticationRequestDataContract
+    {
+        [DataMember]
+        public string CarColor { get; set; }
+    }
+}

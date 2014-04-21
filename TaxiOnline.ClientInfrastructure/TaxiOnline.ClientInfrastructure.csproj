@@ -43,17 +43,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\MapPoint.cs" />
+    <Compile Include="Data\ParticipantTypes.cs" />
     <Compile Include="Exceptions\Enums\RemoteProxyErrors.cs" />
     <Compile Include="Exceptions\RemoteProxyException.cs" />
     <Compile Include="Factories\IServicesFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServicesEntities\DataService\IAuthenticationRequest.cs" />
     <Compile Include="ServicesEntities\DataService\ICityInfo.cs" />
+    <Compile Include="ServicesEntities\DataService\IDriverAuthenticationRequest.cs" />
     <Compile Include="ServicesEntities\DataService\IDriverInfo.cs" />
     <Compile Include="ServicesEntities\DataService\IDriverResponse.cs" />
+    <Compile Include="ServicesEntities\DataService\IPedestrianAuthenticationRequest.cs" />
     <Compile Include="ServicesEntities\DataService\IPedestrianInfo.cs" />
     <Compile Include="ServicesEntities\DataService\IPedestrianRequest.cs" />
     <Compile Include="ServicesEntities\DataService\IPersonInfo.cs" />
     <Compile Include="Services\IDataService.cs" />
+    <Compile Include="Services\IHardwareService.cs" />
     <Compile Include="Services\IMapService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

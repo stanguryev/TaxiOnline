@@ -17,7 +17,13 @@ namespace TaxiOnline.ServiceContract
         IEnumerable<PersonDataContract> EnumerateAllPersons(Guid cityId);
 
         [OperationContract]
+        PersonDataContract Authenticate(AuthenticationRequestDataContract request);
+
+        [OperationContract]
         IEnumerable<PedestrianDataContract> EnumeratePedestrians(Guid cityId);
+
+        [OperationContract]
+        IEnumerable<DriverDataContract> EnumerateDrivers(Guid cityId);
 
         [OperationContract]
         IEnumerable<PedestrianRequestDataContract> EnumeratePedestrianRequests(Guid cityId);

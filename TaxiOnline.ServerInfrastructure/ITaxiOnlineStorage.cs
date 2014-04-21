@@ -10,5 +10,6 @@ namespace TaxiOnline.ServerInfrastructure
     public interface ITaxiOnlineStorage
     {
         IEnumerable<ICityInfo> EnumerateCities(string userCultureName);
+        IEnumerable<IPedestrianInfo> EnumeratePedestrians(Guid cityId);
     }
 }

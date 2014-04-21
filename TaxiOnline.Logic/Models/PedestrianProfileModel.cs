@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
+using TaxiOnline.Logic.Helpers;
 using TaxiOnline.Toolkit.Events;
+using TaxiOnline.Toolkit.Threading.CollectionsDecorators;
 
 namespace TaxiOnline.Logic.Models
 {
@@ -10,6 +13,7 @@ namespace TaxiOnline.Logic.Models
     {
         private PedestrianProfileRequestModel _currentRequest;
         private PedestrianProfileRequestModel _pendingRequest;
+        private readonly SimpleCollectionLoadDecorator<DriverModel> _drivers;
 
         public PedestrianProfileRequestModel CurrentRequest
         {
@@ -37,15 +41,34 @@ namespace TaxiOnline.Logic.Models
             }
         }
 
-        internal Func<Logic.PedestrianProfileRequestLogic> InitRequestDelegate { get; set; }
+        public IEnumerable<DriverModel> Drivers
+        {
+            get { return _drivers.Items; }
+        }
 
         public event EventHandler CurrentRequestChanged;
 
         public event EventHandler PendingRequestChanged;
 
+        public event EventHandler DriversChanged
+        {
+            add { _drivers.ItemsChanged += value; }
+            remove { _drivers.ItemsChanged -= value; }
+        }
+
+        public event NotifyCollectionChangedEventHandler DriversCollectionChanged
+        {
+            add { _drivers.ItemsCollectionChanged += value; }
+            remove { _drivers.ItemsCollectionChanged -= value; }
+        }
+
+        internal Func<Logic.PedestrianProfileRequestLogic> InitRequestDelegate { get; set; }
+
+        internal Func<ActionResult<IEnumerable<Logic.DriverLogic>>> EnumerateDriversDelegate { get; set; }
+
         internal PedestrianProfileModel()
         {
-
+            _drivers = new SimpleCollectionLoadDecorator<DriverModel>(EnumerateDrivers);
         }
 
         public ActionResult<PedestrianProfileRequestModel> InitRequest()
@@ -58,6 +81,16 @@ namespace TaxiOnline.Logic.Models
             }
             else
                 return ActionResult<PedestrianProfileRequestModel>.GetErrorResult(new NotSupportedException());
+        }
+
+        internal void ModifyDriversCollection(Action<IList<DriverModel>> modificationDelegate)
+        {
+            _drivers.ModifyCollection(modificationDelegate);
+        }
+
+        private ActionResult<IEnumerable<DriverModel>> EnumerateDrivers()
+        {
+            return UpdateHelper.EnumerateModels(EnumerateDriversDelegate, l => l.Model);
         }
 
         protected virtual void OnCurrentRequestChanged()

@@ -62,6 +62,7 @@ namespace TaxiOnline.Logic.Logic
             _adaptersExtender.ServicesFactory.GetCurrentDataService().PedestrianRequestChanged += InteractionLogic_PedestrianRequestChanged;
             _adaptersExtender.ServicesFactory.GetCurrentDataService().PedestrianInfoChanged += InteractionLogic_PedestrianInfoChanged;
             _pedestrians.ItemsCollectionChanged += Pedestrians_ItemsCollectionChanged;
+            _pedestrians.RequestFailed += Pedestrians_RequestFailed;
         }
 
         public void SetResponse(DriverProfileResponseLogic response)
@@ -90,16 +91,22 @@ namespace TaxiOnline.Logic.Logic
 
         private ActionResult<IEnumerable<PedestrianRequestLogic>> EnumeratePedestrianRequests()
         {
+            if (_pedestrianRequests.Items == null)
+                _pedestrianRequests.FillItemsList();
             return ActionResult<IEnumerable<PedestrianRequestLogic>>.GetValidResult(_pedestrianRequests.Items);
         }
 
         private ActionResult<IEnumerable<PedestrianLogic>> EnumeratePedestrians()
         {
+            if (_pedestrians.Items == null)
+                _pedestrians.FillItemsList();
             return ActionResult<IEnumerable<PedestrianLogic>>.GetValidResult(_pedestrians.Items);
         }
 
         private ActionResult<IEnumerable<DriverProfileResponseLogic>> EnumerateCurrentResponses()
         {
+            if (_currentResponses.Items == null)
+                _currentResponses.FillItemsList();
             return ActionResult<IEnumerable<DriverProfileResponseLogic>>.GetValidResult(_currentResponses.Items);
         }
 
@@ -119,7 +126,10 @@ namespace TaxiOnline.Logic.Logic
         {
             return new PedestrianLogic(new PedestrianModel()
             {
-                PersonId = personSLO.PersonId
+                PersonId = personSLO.PersonId,
+                CurrentLocation = personSLO.CurrentLocation,
+                PhoneNumber = personSLO.PhoneNumber,
+                SkypeNumber = personSLO.SkypeNumber
             }, _adaptersExtender, _city);
         }
 
@@ -188,6 +198,11 @@ namespace TaxiOnline.Logic.Logic
         private void Pedestrians_ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             _model.ModifyPedestriansCollection(col => ObservableCollectionHelper.ApplyChangesByObjects<PedestrianLogic, PedestrianModel>(e, col, l => l.Model, l => l.Model));
+        }
+
+        private void Pedestrians_RequestFailed(object sender, ActionResultEventArgs e)
+        {
+            _model.NotifyEnumratePedestriansFailed(e.Result);
         }
     }
 }

@@ -35,5 +35,19 @@ namespace TaxiOnline.Server.Data
                 yield return city;
             }
         }
+
+        public IEnumerable<IPedestrianInfo> EnumeratePedestrians(Guid cityId)
+        {
+            IList<PedestrianInfoDA> pedestrians = _dataProxy.Session.CreateCriteria<PedestrianInfoDA>().List<PedestrianInfoDA>();
+            foreach (PedestrianInfoDA pedesrtian in pedestrians)
+            {
+                IPedestrianInfo pedesrtianInfo = _server.CreatePedestrianInfo(pedesrtian.PedestrianAccount.Person.Id);
+                pedesrtianInfo.PhoneNumber = pedesrtian.PedestrianAccount.Person.PhoneNumber;
+                pedesrtianInfo.SkypeNumber = pedesrtian.PedestrianAccount.Person.SkypeNumber;
+                pedesrtianInfo.CurrentLocationLatidude = pedesrtian.Latitude;
+                pedesrtianInfo.CurrentLocationLongidude = pedesrtian.Longitude;
+                yield return pedesrtianInfo;
+            }
+        }
     }
 }

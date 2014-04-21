@@ -38,9 +38,12 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataContracts\AuthenticationRequestDataContract.cs" />
     <Compile Include="DataContracts\CityDataContract.cs" />
+    <Compile Include="DataContracts\DriverAuthenticationRequestDataContract.cs" />
     <Compile Include="DataContracts\DriverDataContract.cs" />
     <Compile Include="DataContracts\DriverResponseDataContract.cs" />
+    <Compile Include="DataContracts\PedestrianAuthenticationRequestDataContract.cs" />
     <Compile Include="DataContracts\PedestrianDataContract.cs" />
     <Compile Include="DataContracts\PedestrianRequestDataContract.cs" />
     <Compile Include="DataContracts\PersonDataContract.cs" />

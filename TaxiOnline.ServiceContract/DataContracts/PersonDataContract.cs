@@ -15,5 +15,17 @@ namespace TaxiOnline.ServiceContract.DataContracts
 
         [DataMember]
         public bool IsOnline { get; set; }
+
+        [DataMember]
+        public double CurrentLocationLatidude { get; set; }
+
+        [DataMember]
+        public double CurrentLocationLongitude { get; set; }
+
+        [DataMember]
+        public string PhoneNumber { get; set; }
+
+        [DataMember]
+        public string SkypeNumber { get; set; }
     }
 }

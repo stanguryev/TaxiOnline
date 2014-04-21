@@ -7,6 +7,7 @@
   <string name="ChooseCityToolTip">Choose a city?</string>
   <string name="NoCityFound">The city name doesn\'t match any of available one</string>
   <string name="FailedToLoadPersons">Pedestrians and drivers information load has failed</string>
+  <string name="NoParticipationRole">The participation role isn\'t specified. Please choose driver or pedestrian</string>
   <string name="Cancel">Cancel</string>
   <string name="Register">Register</string>
   <string name="Pedestrian">pedestrian</string>
@@ -14,4 +15,10 @@
   <string name="SkypeNumber">my Skype</string>
   <string name="PhoneNumber">phone num.</string>
   <string name="CarColor">car color</string>
+  <string name="AuthorizingTitle">Authorizing</string>
+  <string name="AuthorizingMessage">Authorization is running...</string>
+  <string name="AuthenticationFailed">Failed to authenticate</string>
+  <string name="LoadTitle">Loading</string>
+  <string name="LoadDataMessage">Loading the data...</string>
+  <string name="FailedToEnumratePedestrians">Failed to load pedestrians location data</string>
 </resources>

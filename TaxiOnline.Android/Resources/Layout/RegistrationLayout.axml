@@ -9,11 +9,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <RadioButton
+            android:id="@+id/pedestrianRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:text="@string/Pedestrian" />
         <RadioButton
+            android:id="@+id/driverRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="1"
@@ -30,10 +32,12 @@
             android:layout_height="fill_parent"
             android:layout_weight="1">
             <EditText
+                android:id="@+id/pedestrianSkypeNumberEditText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/SkypeNumber" />
             <EditText
+                android:id="@+id/pedestrianPhoneNumberEditText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/PhoneNumber" />
@@ -48,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:hint="" />
             <EditText
+                android:id="@+id/carColorEditText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/CarColor" />
@@ -60,10 +65,12 @@
                 android:layout_height="wrap_content"
                 android:hint="" />
             <EditText
+                android:id="@+id/driverSkypeNumberEditText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/SkypeNumber" />
             <EditText
+                android:id="@+id/driverPhoneNumberEditText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/PhoneNumber" />

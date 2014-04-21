@@ -19,6 +19,7 @@ namespace TaxiOnline.Server.Host
             server.InitMobileService(srv => new TaxiOnlineSerivceHost(srv));
             ITaxiOnlineStorage storage = server.Storage;
             ITaxiOnlineMobileService mobileService = server.MobileService;
+            server.LoadPersistentState();
             mobileService.Open();
             Console.ReadLine();
         }

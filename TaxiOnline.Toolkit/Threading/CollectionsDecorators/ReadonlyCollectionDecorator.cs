@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using TaxiOnline.Toolkit.Collections.Helpers;
 using TaxiOnline.Toolkit.Collections.Special;
 using TaxiOnline.Toolkit.Patterns;
 using TaxiOnline.Toolkit.Threading.Lock;
@@ -17,7 +18,7 @@ namespace TaxiOnline.Toolkit.Threading.CollectionsDecorators
         protected readonly ReadWriteBox _itemsLocker = new ReadWriteBox();
         protected volatile bool _itemsAreModified;
         protected volatile ReadOnlyCollection<TItem> _stableItems;
-        protected volatile ObservableCollection<TItem> _items = new ObservableCollection<TItem>();
+        protected readonly ObservableCollection<TItem> _items = new ObservableCollection<TItem>();
         private RegistryBase<TItem> _registry;
 
         /// <summary>
@@ -65,6 +66,24 @@ namespace TaxiOnline.Toolkit.Threading.CollectionsDecorators
                     {
                         _itemsAreModified = true;
                         modificationDelegate(_items);
+                    }
+        }
+
+        public void ModifyCollection<TModificationItem>(Action<IList<TModificationItem>> modificationDelegate)
+        {
+            IDisposable safeUsageOperation = EnterSafeUsage();
+            if (safeUsageOperation == null)
+                return;
+            using (safeUsageOperation)
+                if (_items != null)
+                    using (_itemsLocker.EnterWriteLock())
+                    {
+                        _itemsAreModified = true;
+                        ObservableCollection<TModificationItem> proxyCollection = new ObservableCollection<TModificationItem>(_items.Cast<TModificationItem>());
+                        NotifyCollectionChangedEventHandler changesHandler = (sender, e) => ObservableCollectionHelper.ApplyChangesByNumbers<TModificationItem, TItem>(e, _items, mi => (TItem)(object)mi);
+                        proxyCollection.CollectionChanged += changesHandler;
+                        modificationDelegate(proxyCollection);
+                        proxyCollection.CollectionChanged -= changesHandler;
                     }
         }
         

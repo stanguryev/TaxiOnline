@@ -9,6 +9,7 @@ namespace TaxiOnline.ServiceContract.DataContracts
     [DataContract]
     public class DriverDataContract : PersonDataContract
     {
-        
+        [DataMember]
+        public string CarColor { get; set; }
     }
 }

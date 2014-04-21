@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TaxiOnline.Logic.Helpers;
 using TaxiOnline.Toolkit.Collections.Special;
 using TaxiOnline.Toolkit.Events;
@@ -15,6 +17,7 @@ namespace TaxiOnline.Logic.Models
         private readonly SimpleCollectionLoadDecorator<DriverProfileResponseModel> _currentResponses;
         private readonly SimpleCollectionLoadDecorator<PedestrianRequestModel> _pedestrianRequests;
         private readonly SimpleCollectionLoadDecorator<PedestrianModel> _pedestrians;
+        private string _carColor;
 
         public IEnumerable<DriverProfileResponseModel> PendingResponses
         {
@@ -31,6 +34,28 @@ namespace TaxiOnline.Logic.Models
             get { return _pedestrians.Items; }
         }
 
+        public string CarColor
+        {
+            get { return _carColor; }
+            set { _carColor = value; }
+        }
+
+        public event EventHandler LoadCompleted;
+
+        public event EventHandler PedestriansChanged
+        {
+            add { _pedestrians.ItemsChanged += value; }
+            remove { _pedestrians.ItemsChanged -= value; }
+        }
+
+        public event NotifyCollectionChangedEventHandler PedestriansCollectionChanged
+        {
+            add { _pedestrians.ItemsCollectionChanged += value; }
+            remove { _pedestrians.ItemsCollectionChanged -= value; }
+        }
+
+        public event ActionResultEventHandler EnumratePedestriansFailed;
+
         internal Func<Guid, ActionResult<Logic.DriverProfileResponseLogic>> InitResponseDelegate { get; set; }
 
         internal Func<ActionResult<IEnumerable<Logic.PedestrianRequestLogic>>> EnumeratePedestrianRequestsDelegate { get; set; }
@@ -43,6 +68,16 @@ namespace TaxiOnline.Logic.Models
         {
             _pedestrians = new SimpleCollectionLoadDecorator<PedestrianModel>(EnumeratePedestrians);
             _pedestrianRequests = new SimpleCollectionLoadDecorator<PedestrianRequestModel>(EnumeratePedestrianRequests);
+        }
+
+        public void BeginLoad()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                _pedestrians.FillItemsList();
+                _pedestrianRequests.FillItemsList();
+                OnLoadCompleted();
+            });
         }
 
         public ActionResult InitResponse(PedestrianRequestModel request)
@@ -60,6 +95,11 @@ namespace TaxiOnline.Logic.Models
         internal void ModifyPedestriansCollection(Action<IList<PedestrianModel>> modificationDelegate)
         {
             _pedestrians.ModifyCollection(modificationDelegate);
+        }
+
+        internal void NotifyEnumratePedestriansFailed(ActionResult actionResult)
+        {
+            OnEnumratePedestriansFailed(actionResult);
         }
 
         internal void AddCurrentResponse(DriverProfileResponseModel response)
@@ -97,6 +137,18 @@ namespace TaxiOnline.Logic.Models
             return UpdateHelper.EnumerateModels(EnumerateCurrentResponsesDelegate, l => l.Model);
         }
 
-        
+        protected virtual void OnLoadCompleted()
+        {
+            EventHandler handler = LoadCompleted;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnEnumratePedestriansFailed(ActionResult errorResult)
+        {
+            ActionResultEventHandler handler = EnumratePedestriansFailed;
+            if (handler != null)
+                handler(this, new ActionResultEventArgs(errorResult));
+        }
     }
 }

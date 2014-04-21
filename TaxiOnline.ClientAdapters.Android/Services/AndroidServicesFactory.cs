@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using TaxiOnline.ClientServicesAdapter;
 using TaxiOnline.ClientInfrastructure.Services;
+using TaxiOnline.ClientAdapters.Android.Services.Hardware;
 
 namespace TaxiOnline.ClientAdapters.Android.Services
 {
@@ -19,6 +20,11 @@ namespace TaxiOnline.ClientAdapters.Android.Services
         public override IMapService GetCurrentMapService()
         {
             return null;
+        }
+
+        public override IHardwareService GetCurrentHardwareService()
+        {
+            return new AndroidHardwareAdapter();
         }
     }
 }

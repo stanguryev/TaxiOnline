@@ -25,7 +25,7 @@ namespace TaxiOnline.Logic.Models
             internal set { _currentLocation = value; }
         }
 
-        public string SkypeId
+        public string SkypeNumber
         {
             get { return _skypeId; }
             internal set { _skypeId = value; }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.ClientInfrastructure.Services;
 using TaxiOnline.ClientInfrastructure.ServicesEntities.DataService;
 using TaxiOnline.ClientServicesAdapter.Data.Service;
@@ -61,6 +62,11 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
             return RequestCollection<IPedestrianInfo, PedestrianDataContract>(channel => channel.EnumeratePedestrians(cityId), data => new PedestrianSLO(data));
         }
 
+        public ActionResult<IEnumerable<IDriverInfo>> EnumerateDrivers(Guid cityId)
+        {
+            return RequestCollection<IDriverInfo, DriverDataContract>(channel => channel.EnumerateDrivers(cityId), data => new DriverSLO(data));
+        }
+
         public ActionResult<IEnumerable<IPedestrianRequest>> EnumeratePedestrianRequests(Guid cityId)
         {
             return RequestCollection<IPedestrianRequest, PedestrianRequestDataContract>(channel => channel.EnumeratePedestrianRequests(cityId), data => new PedestrianRequestSLO(data));
@@ -97,14 +103,12 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
             throw new NotImplementedException();
         }
 
-        public ActionResult<IPedestrianInfo> AuthenticateAsPedestrian(string deviceId)
+        public ActionResult<IPersonInfo> Authenticate(IAuthenticationRequest request)
         {
             throw new NotImplementedException();
-        }
-
-        public ActionResult<IDriverInfo> AuthenticateAsDriver(string deviceId)
-        {
-            throw new NotImplementedException();
+            ITaxiOnlineService channel = _proxy.Channel;
+            ActionResult<PersonDataContract> result = _proxy.RunRequestSafe(() => channel.Authenticate(((AuthenticationRequestSLO)request).CreateDataContract()), channel);
+            return result.IsValid ? ActionResult<IPersonInfo>.GetValidResult(CreatePersonInfo(result.Result)) : ActionResult<IPersonInfo>.GetErrorResult(result);
         }
 
         private ActionResult<IEnumerable<TResult>> RequestCollection<TResult, TDataContract>(Func<ITaxiOnlineService, IEnumerable<TDataContract>> requestDelegate, Func<TDataContract, TResult> convertDelegate)
@@ -113,6 +117,33 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
             ITaxiOnlineService channel = _proxy.Channel;
             ActionResult<IEnumerable<TDataContract>> remoteResult = _proxy.RunRequestSafe(() => requestDelegate(channel), channel);
             return remoteResult.IsValid ? ActionResult<IEnumerable<TResult>>.GetValidResult(remoteResult.Result.Select(d => convertDelegate(d)).ToArray()) : ActionResult<IEnumerable<TResult>>.GetErrorResult(remoteResult);
+        }
+
+        public IAuthenticationRequest CreateAuthenticationRequest(ParticipantTypes requestType, string deviceId, Guid cityId)
+        {
+            switch (requestType)
+            {
+                case ParticipantTypes.Driver:
+                    return new DriverAuthenticationRequestSLO(cityId);
+                    break;
+                case ParticipantTypes.Pedestrian:
+                    return new PedestrianAuthenticationRequestSLO(cityId);
+                    break;
+                default:
+                    throw new NotImplementedException();
+                    break;
+            }
+        }
+
+        private IPersonInfo CreatePersonInfo(PersonDataContract personDataContract)
+        {
+            DriverDataContract driverDataContract = personDataContract as DriverDataContract;
+            if (driverDataContract != null)
+                return new DriverSLO(driverDataContract);
+            PedestrianDataContract pedestrianDataContract = personDataContract as PedestrianDataContract;
+            if (pedestrianDataContract != null)
+                return new PedestrianSLO(pedestrianDataContract);
+            throw new NotImplementedException();
         }
     }
 }

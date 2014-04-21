@@ -56,6 +56,7 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AndroidServicesFactory.cs" />
+    <Compile Include="Services\Hardware\AndroidHardwareAdapter.cs" />
     <Compile Include="Services\Map\AndroidMapAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
