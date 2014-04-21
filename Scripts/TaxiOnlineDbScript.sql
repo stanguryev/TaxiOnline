@@ -158,3 +158,67 @@ CREATE TABLE [dbo].[CityNames](
 
 GO
 
+USE [TaxiOnline]
+GO
+
+/****** Object:  Table [dbo].[PersonAccounts]    Script Date: 21.04.2014 21:00:46 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[PersonAccounts](
+	[Id] [uniqueidentifier] NOT NULL,
+	[PhoneNumber] [nvarchar](50) NULL,
+	[SkypeNumber] [nvarchar](50) NULL,
+ CONSTRAINT [PK_PersonAccounts] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+USE [TaxiOnline]
+GO
+
+/****** Object:  Table [dbo].[PedestrianAccounts]    Script Date: 21.04.2014 21:05:57 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[PedestrianAccounts](
+	[Id] [int] NOT NULL,
+	[PersonId] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_PedestrianAccounts] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+USE [TaxiOnline]
+GO
+
+/****** Object:  Table [dbo].[PedestriansInfo]    Script Date: 21.04.2014 21:06:08 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[PedestriansInfo](
+	[Id] [int] NOT NULL,
+	[PedestrianAccountId] [int] NOT NULL,
+ CONSTRAINT [PK_PedestriansInfo] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+

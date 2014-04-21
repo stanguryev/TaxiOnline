@@ -10,6 +10,8 @@ namespace TaxiOnline.Server.Core.Objects
     {
         private readonly Guid _id;
         private bool _isOnline;
+        private double _currentLocationLatidude;
+        private double _currentLocationLongidude;
         private string _phoneNumber;
         private string _skypeNumber;
 
@@ -22,6 +24,18 @@ namespace TaxiOnline.Server.Core.Objects
         {
             get { return _isOnline; }
             internal set { _isOnline = value; }
+        }
+
+        public double CurrentLocationLatidude
+        {
+            get { return _currentLocationLatidude; }
+            set { _currentLocationLatidude = value; }
+        }
+
+        public double CurrentLocationLongidude
+        {
+            get { return _currentLocationLongidude; }
+            set { _currentLocationLongidude = value; }
         }
 
         public string PhoneNumber
@@ -40,5 +54,7 @@ namespace TaxiOnline.Server.Core.Objects
         {
             _id = id;
         }
+
+
     }
 }

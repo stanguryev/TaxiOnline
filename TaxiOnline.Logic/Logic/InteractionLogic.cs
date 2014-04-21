@@ -8,6 +8,7 @@ using System.Text;
 using TaxiOnline.ClientInfrastructure.ServicesEntities.DataService;
 using TaxiOnline.Logic.Common;
 using TaxiOnline.Logic.Common.Enums;
+using TaxiOnline.Logic.Common.Exceptions;
 using TaxiOnline.Logic.Models;
 using TaxiOnline.Toolkit.Collections.Helpers;
 using TaxiOnline.Toolkit.Collections.Special;
@@ -54,7 +55,7 @@ namespace TaxiOnline.Logic.Logic
         {
             if (_cities.Items == null)
                 _cities.FillItemsList();
-            return ActionResult<IEnumerable<CityLogic>>.GetValidResult(_cities.Items);
+            return _cities.Items == null ? ActionResult<IEnumerable<CityLogic>>.GetErrorResult(new DataServiceException(new Exception())): ActionResult<IEnumerable<CityLogic>>.GetValidResult(_cities.Items);
         }
 
         private ActionResult<IEnumerable<CityLogic>> RetriveCities()

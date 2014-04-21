@@ -12,6 +12,8 @@ using TaxiOnline.ServiceContract.DataContracts;
 namespace TaxiOnline.Server.MobileService
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    [ServiceKnownType(typeof(DriverAuthenticationRequestDataContract))]
+    [ServiceKnownType(typeof(PedestrianAuthenticationRequestDataContract))]
     internal class TaxiOnlineService : ITaxiOnlineService
     {
         private readonly ITaxiOnlineServer _server;

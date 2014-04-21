@@ -27,7 +27,7 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Hardware
         {
             using (LocationManager locationManager = (LocationManager)Application.Context.GetSystemService(Application.LocationService))
             using (Location location = locationManager.GetLastKnownLocation(LocationManager.GpsProvider))
-                return new MapPoint(location.Latitude, location.Longitude);
+                return location == null ? new MapPoint() : new MapPoint(location.Latitude, location.Longitude);
         }
     }
 }

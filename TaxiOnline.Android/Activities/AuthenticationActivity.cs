@@ -52,15 +52,11 @@ namespace TaxiOnline.Android.Activities
         {
             get { return _activePedestrianProfileModel; }
         }
-
-        public AuthenticationActivity()
-        {
-            _authorizationProgressDialogDecorator = new ProgressDialogDecorator(this, Resources.GetString(Resource.String.AuthorizingTitle), Resources.GetString(Resource.String.AuthorizingMessage));
-        }
-
+        
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            _authorizationProgressDialogDecorator = new ProgressDialogDecorator(this, Resources.GetString(Resource.String.AuthorizingTitle), Resources.GetString(Resource.String.AuthorizingMessage));
             MainActivity mainActiviy = UIHelper.GetUpperActivity<MainActivity>(this, bundle);
             if (mainActiviy != null)
             {
@@ -96,7 +92,7 @@ namespace TaxiOnline.Android.Activities
         public void HookMapService(IAndroidMapService mapService)
         {
             MapView map = new MapView(this, new MapViewSurface(this));//FindViewById<MapView>(Resource.Id.map);
-            LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
+            RelativeLayout mapLayout = FindViewById<RelativeLayout>(Resource.Id.mapLayout);
             map.Map = new OsmSharp.UI.Map.Map();
             map.MapCenter = new OsmSharp.Math.Geo.GeoCoordinate(_cityModel.InitialCenter.Latitude, _cityModel.InitialCenter.Longitude);
             map.MapZoom = (float)_cityModel.InitialZoom;

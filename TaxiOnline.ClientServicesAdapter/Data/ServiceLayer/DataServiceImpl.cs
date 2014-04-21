@@ -105,7 +105,6 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
 
         public ActionResult<IPersonInfo> Authenticate(IAuthenticationRequest request)
         {
-            throw new NotImplementedException();
             ITaxiOnlineService channel = _proxy.Channel;
             ActionResult<PersonDataContract> result = _proxy.RunRequestSafe(() => channel.Authenticate(((AuthenticationRequestSLO)request).CreateDataContract()), channel);
             return result.IsValid ? ActionResult<IPersonInfo>.GetValidResult(CreatePersonInfo(result.Result)) : ActionResult<IPersonInfo>.GetErrorResult(result);

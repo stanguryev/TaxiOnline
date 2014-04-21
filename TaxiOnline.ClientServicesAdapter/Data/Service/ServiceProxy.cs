@@ -20,11 +20,11 @@ namespace TaxiOnline.ClientServicesAdapter.Data.Service
         //private readonly InstanceContext _callbackInstance;
         private readonly CallbackWrapper _callbackWrapper;
         private readonly string _serverEndpointAddress;
-        
+
         public CallbackWrapper CallbackWrapper
         {
             get { return _callbackWrapper; }
-        } 
+        }
 
         public ServiceProxy(string serverEndpointAddress)
             : base()
@@ -117,7 +117,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.Service
 
         protected override void NotifyConnectionStateChanged()
         {
-            
+
         }
 
         protected override Tuple<RemoteProxy<ITaxiOnlineService>.ConnectionCheckDecision, Toolkit.Events.ActionResult> CheckConnectionCore(ITaxiOnlineService channel)
@@ -144,12 +144,12 @@ namespace TaxiOnline.ClientServicesAdapter.Data.Service
 
         protected override void HookChannel(ITaxiOnlineService channel)
         {
-           
+
         }
 
         protected override void UnhookChannel(ITaxiOnlineService channel)
         {
-            
+
         }
 
         protected override void DisposeCore()
@@ -181,7 +181,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.Service
                 channel = null;
                 _channel = null;
             }
-           // _callbackInstance.Close();
+            // _callbackInstance.Close();
         }
 
         protected override void AbortCore(ITaxiOnlineService channel)

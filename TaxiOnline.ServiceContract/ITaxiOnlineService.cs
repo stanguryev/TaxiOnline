@@ -17,6 +17,8 @@ namespace TaxiOnline.ServiceContract
         IEnumerable<PersonDataContract> EnumerateAllPersons(Guid cityId);
 
         [OperationContract]
+        [ServiceKnownType(typeof(DriverAuthenticationRequestDataContract))]
+        [ServiceKnownType(typeof(PedestrianAuthenticationRequestDataContract))]
         PersonDataContract Authenticate(AuthenticationRequestDataContract request);
 
         [OperationContract]

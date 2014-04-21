@@ -39,9 +39,14 @@ namespace TaxiOnline.Android.Activities
             {
                 RunAuthentication();
                 SetResult(Result.Ok);
+                Finish();
             };
             Button cancelRegistrationButton = FindViewById<Button>(Resource.Id.cancelRegistrationButton);
-            cancelRegistrationButton.Click += (sender, e) => SetResult(Result.Canceled);
+            cancelRegistrationButton.Click += (sender, e) =>
+            {
+                SetResult(Result.Canceled);
+                Finish();
+            };
         }
 
         private void RunAuthentication()

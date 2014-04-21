@@ -33,12 +33,12 @@ namespace TaxiOnline.Android.Activities
             AndroidAdaptersExtender extender = new AndroidAdaptersExtender();
             extender.ApplySettings(PreferenceManager.GetDefaultSharedPreferences(Application.Context));
             _model = new InteractionModel(extender);
-            _connectionProgressDialogDecorator = new ProgressDialogDecorator(this, Resources.GetString(Resource.String.ConnectingToServerTitle), Resources.GetString(Resource.String.ConnectingToServerMessage));
         }
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            _connectionProgressDialogDecorator = new ProgressDialogDecorator(this, Resources.GetString(Resource.String.ConnectingToServerTitle), Resources.GetString(Resource.String.ConnectingToServerMessage));
             RequestWindowFeature(WindowFeatures.ActionBar);
             SetContentView(Resource.Layout.MainLayout);
             HookModel();
@@ -68,7 +68,7 @@ namespace TaxiOnline.Android.Activities
         {
             _model.CitiesChanged += Model_CitiesChanged;
             _model.EnumrateCitiesFailed += Model_EnumrateCitiesFailed;
-            _connectionProgressDialogDecorator.Show();
+            //_connectionProgressDialogDecorator.Show();
             _model.BeginLoadCities();
             AutoCompleteTextView cityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.cityTextView);
             cityTextView.Adapter = new CitiesAdapter(this, _model);
