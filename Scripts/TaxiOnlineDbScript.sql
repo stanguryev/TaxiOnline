@@ -3,11 +3,10 @@ GO
 
 /****** Object:  Database [TaxiOnline]    Script Date: 20.04.2014 11:00:04 ******/
 CREATE DATABASE [TaxiOnline]
- CONTAINMENT = NONE
  ON  PRIMARY 
-( NAME = N'TaxiOnline', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\TaxiOnline.mdf' , SIZE = 5120KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+( NAME = N'TaxiOnline', FILENAME = N'C:\temp\DATA\TaxiOnline.mdf' , SIZE = 5120KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
  LOG ON 
-( NAME = N'TaxiOnline_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\TaxiOnline_log.ldf' , SIZE = 2048KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+( NAME = N'TaxiOnline_log', FILENAME = N'C:\temp\DATA\TaxiOnline_log.ldf' , SIZE = 2048KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
 GO
 
 ALTER DATABASE [TaxiOnline] SET COMPATIBILITY_LEVEL = 110
@@ -120,7 +119,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[Cities](
-	[Id] [uniqueidentifier] NOT NULL,
+	[Id] [uniqueidentifier] NOT NULL default newid(),
 	[InitialLatitude] [float] NOT NULL,
 	[InitialLongitude] [float] NOT NULL,
 	[InitialZoom] [float] NOT NULL,
@@ -158,6 +157,13 @@ CREATE TABLE [dbo].[CityNames](
 
 GO
 
+ALTER TABLE [dbo].[CityNames]  WITH CHECK ADD  CONSTRAINT [FK_CityNames_Cities] FOREIGN KEY([CityId])
+REFERENCES [dbo].[Cities] ([Id])
+GO
+
+ALTER TABLE [dbo].[CityNames] CHECK CONSTRAINT [FK_CityNames_Cities]
+GO
+
 USE [TaxiOnline]
 GO
 
@@ -169,7 +175,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[PersonAccounts](
-	[Id] [uniqueidentifier] NOT NULL,
+	[Id] [uniqueidentifier] NOT NULL default newid(),
 	[PhoneNumber] [nvarchar](50) NULL,
 	[SkypeNumber] [nvarchar](50) NULL,
  CONSTRAINT [PK_PersonAccounts] PRIMARY KEY CLUSTERED 
@@ -178,6 +184,44 @@ CREATE TABLE [dbo].[PersonAccounts](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
+GO
+
+USE [TaxiOnline]
+GO
+
+/****** Object:  Table [dbo].[PersonsInfo]    Script Date: 04/22/2014 13:50:06 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[PersonsInfo](
+	[Id] [int] NOT NULL,
+	[PersonId] [uniqueidentifier] NOT NULL,
+	[CityId] [uniqueidentifier] NOT NULL,
+	[Latitude] [float] NULL,
+	[Longitude] [float] NULL,
+ CONSTRAINT [PK_PersonsInfo] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[PersonsInfo]  WITH CHECK ADD  CONSTRAINT [FK_PersonsInfo_Cities] FOREIGN KEY([CityId])
+REFERENCES [dbo].[Cities] ([Id])
+GO
+
+ALTER TABLE [dbo].[PersonsInfo] CHECK CONSTRAINT [FK_PersonsInfo_Cities]
+GO
+
+ALTER TABLE [dbo].[PersonsInfo]  WITH CHECK ADD  CONSTRAINT [FK_PersonsInfo_PersonAccounts] FOREIGN KEY([PersonId])
+REFERENCES [dbo].[PersonAccounts] ([Id])
+GO
+
+ALTER TABLE [dbo].[PersonsInfo] CHECK CONSTRAINT [FK_PersonsInfo_PersonAccounts]
 GO
 
 USE [TaxiOnline]
@@ -201,6 +245,13 @@ CREATE TABLE [dbo].[PedestrianAccounts](
 
 GO
 
+ALTER TABLE [dbo].[PedestrianAccounts]  WITH CHECK ADD  CONSTRAINT [FK_PedestrianAccounts_PersonAccounts] FOREIGN KEY([PersonId])
+REFERENCES [dbo].[PersonAccounts] ([Id])
+GO
+
+ALTER TABLE [dbo].[PedestrianAccounts] CHECK CONSTRAINT [FK_PedestrianAccounts_PersonAccounts]
+GO
+
 USE [TaxiOnline]
 GO
 
@@ -213,12 +264,19 @@ GO
 
 CREATE TABLE [dbo].[PedestriansInfo](
 	[Id] [int] NOT NULL,
-	[PedestrianAccountId] [int] NOT NULL,
+	[PersonInfo] [int] NOT NULL,
  CONSTRAINT [PK_PedestriansInfo] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
+GO
+
+ALTER TABLE [dbo].[PedestriansInfo]  WITH CHECK ADD  CONSTRAINT [FK_PedestriansInfo_PersonsInfo] FOREIGN KEY([PersonsInfo])
+REFERENCES [dbo].[PersonsInfo] ([Id])
+GO
+
+ALTER TABLE [dbo].[PedestriansInfo] CHECK CONSTRAINT [FK_PedestriansInfo_PersonsInfo]
 GO
 

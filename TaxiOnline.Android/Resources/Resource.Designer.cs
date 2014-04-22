@@ -81,23 +81,23 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f050007
 			public const int callToDriverButton = 2131034119;
 			
-			// aapt resource value: 0x7f050013
-			public const int cancelRegistrationButton = 2131034131;
+			// aapt resource value: 0x7f050014
+			public const int cancelRegistrationButton = 2131034132;
 			
-			// aapt resource value: 0x7f05000f
-			public const int carColorEditText = 2131034127;
+			// aapt resource value: 0x7f050010
+			public const int carColorEditText = 2131034128;
 			
-			// aapt resource value: 0x7f050009
-			public const int chooseCityButton = 2131034121;
+			// aapt resource value: 0x7f05000a
+			public const int chooseCityButton = 2131034122;
 			
 			// aapt resource value: 0x7f050004
 			public const int cityNameTextView = 2131034116;
 			
-			// aapt resource value: 0x7f050008
-			public const int cityTextView = 2131034120;
+			// aapt resource value: 0x7f050009
+			public const int cityTextView = 2131034121;
 			
-			// aapt resource value: 0x7f050012
-			public const int confirmRegistrationButton = 2131034130;
+			// aapt resource value: 0x7f050013
+			public const int confirmRegistrationButton = 2131034131;
 			
 			// aapt resource value: 0x7f050001
 			public const int connectionStateImageView = 2131034113;
@@ -108,26 +108,26 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f050005
 			public const int driverIconImageView = 2131034117;
 			
-			// aapt resource value: 0x7f050011
-			public const int driverPhoneNumberEditText = 2131034129;
-			
-			// aapt resource value: 0x7f05000c
-			public const int driverRadioButton = 2131034124;
-			
-			// aapt resource value: 0x7f050010
-			public const int driverSkypeNumberEditText = 2131034128;
-			
-			// aapt resource value: 0x7f05000a
-			public const int mapLayout = 2131034122;
-			
-			// aapt resource value: 0x7f05000e
-			public const int pedestrianPhoneNumberEditText = 2131034126;
-			
-			// aapt resource value: 0x7f05000b
-			public const int pedestrianRadioButton = 2131034123;
+			// aapt resource value: 0x7f050012
+			public const int driverPhoneNumberEditText = 2131034130;
 			
 			// aapt resource value: 0x7f05000d
-			public const int pedestrianSkypeNumberEditText = 2131034125;
+			public const int driverRadioButton = 2131034125;
+			
+			// aapt resource value: 0x7f050011
+			public const int driverSkypeNumberEditText = 2131034129;
+			
+			// aapt resource value: 0x7f05000b
+			public const int mapLayout = 2131034123;
+			
+			// aapt resource value: 0x7f05000f
+			public const int pedestrianPhoneNumberEditText = 2131034127;
+			
+			// aapt resource value: 0x7f05000c
+			public const int pedestrianRadioButton = 2131034124;
+			
+			// aapt resource value: 0x7f05000e
+			public const int pedestrianSkypeNumberEditText = 2131034126;
 			
 			// aapt resource value: 0x7f050002
 			public const int personsView = 2131034114;
@@ -137,6 +137,9 @@ namespace TaxiOnline.Android
 			
 			// aapt resource value: 0x7f050003
 			public const int registerButton = 2131034115;
+			
+			// aapt resource value: 0x7f050008
+			public const int sendMessageToDriverButton = 2131034120;
 			
 			static Id()
 			{
@@ -185,13 +188,16 @@ namespace TaxiOnline.Android
 			public const int PedestrianInfoLayout = 2130903050;
 			
 			// aapt resource value: 0x7f03000b
-			public const int PedestrianReducedInfoLayout = 2130903051;
+			public const int PedestrianProfileRequestLayout = 2130903051;
 			
 			// aapt resource value: 0x7f03000c
-			public const int PedestrianSelfInfoLayout = 2130903052;
+			public const int PedestrianReducedInfoLayout = 2130903052;
 			
 			// aapt resource value: 0x7f03000d
-			public const int RegistrationLayout = 2130903053;
+			public const int PedestrianSelfInfoLayout = 2130903053;
+			
+			// aapt resource value: 0x7f03000e
+			public const int RegistrationLayout = 2130903054;
 			
 			static Layout()
 			{
@@ -274,6 +280,9 @@ namespace TaxiOnline.Android
 			
 			// aapt resource value: 0x7f04000b
 			public const int Register = 2130968587;
+			
+			// aapt resource value: 0x7f040019
+			public const int SendMessageToDriver = 2130968601;
 			
 			// aapt resource value: 0x7f04000e
 			public const int SkypeNumber = 2130968590;

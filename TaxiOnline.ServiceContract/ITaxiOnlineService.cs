@@ -10,7 +10,7 @@ namespace TaxiOnline.ServiceContract
     [ServiceKnownType(typeof(DriverAuthenticationRequestDataContract))]
     [ServiceKnownType(typeof(PedestrianAuthenticationRequestDataContract))]
     [ServiceContract]//CallbackContract = typeof(ITaxiOnlineCallback))]
-    public interface ITaxiOnlineService
+    public interface ITaxiOnlineService //: IDisposable
     {
         [OperationContract]
         IEnumerable<CityDataContract> EnumerateCities(string userCultureName);

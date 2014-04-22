@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="TaxiOnline.Server.Data" namespace="TaxiOnline.Server.Data.DataAccess">
+  <class name="PersonInfoDA" table="PersonsInfo" lazy="false">
+    <id name="Id" column="Id" type="int">
+      <generator class="native"></generator>
+    </id>
+    <property name="Latitude" column="Latitude" type="Double"/>
+    <property name="Longitude" column="Longitude" type="Double"/>
+    <many-to-one name="Person" column="PersonId" not-null="true" class="PersonAccountDA"/>
+    <many-to-one name="City" column="CityId" not-null="true" class="CityDA"/>
+  </class>
+</hibernate-mapping>

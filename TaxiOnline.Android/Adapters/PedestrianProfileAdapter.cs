@@ -11,6 +11,9 @@ using Android.Views;
 using Android.Widget;
 using TaxiOnline.Logic.Models;
 using TaxiOnline.Toolkit.Collections.Helpers;
+using TaxiOnline.Toolkit.Events;
+using TaxiOnline.Android.Helpers;
+using TaxiOnline.Android.Activities;
 
 namespace TaxiOnline.Android.Adapters
 {
@@ -19,7 +22,6 @@ namespace TaxiOnline.Android.Adapters
         private readonly Activity _context;
         private readonly PedestrianProfileModel _model;
         private List<DriverModel> _items;
-        private Toast _driverInfoToast;
 
         public PedestrianProfileAdapter(Activity context, PedestrianProfileModel model)
         {
@@ -80,29 +82,41 @@ namespace TaxiOnline.Android.Adapters
 
         private void ShowDriverInfoToast(DriverModel driverModel, View briefView)
         {
-            if (_driverInfoToast == null)
-            {
-                _driverInfoToast = new Toast(_context.Application.BaseContext)
+            using (Toast driverInfoToast = new Toast(_context.Application.BaseContext)
                 {
                     View = _context.LayoutInflater.Inflate(Resource.Layout.DriverPopupDetailsLayout, null),
                     Duration = ToastLength.Long
-                };
-                _driverInfoToast.SetGravity(GravityFlags.Center, 0, 0);
-                HookModelToDetailsView(_driverInfoToast.View, driverModel);
-                _driverInfoToast.Show();
-                _driverInfoToast.Dispose();
-                _driverInfoToast = null;
+                })
+            {
+                driverInfoToast.SetGravity(GravityFlags.Center, 0, 0);
+                HookModelToDetailsView(driverInfoToast.View, driverModel);
+                driverInfoToast.Show();
             }
         }
 
         private void HookModelToDetailsView(View view, DriverModel driverModel)
         {
+            view.Click += (sender, e) => UIHelper.GoResultActivity(_context, typeof(PedestrianProfileRequestActivity), 1);
+            return;
             Button callToDriverButton = view.FindViewById<Button>(Resource.Id.callToDriverButton);
             callToDriverButton.Click += (sender, e) =>
             {
                 if (!_model.CallToDriver(driverModel).IsValid)
                     using (Toast errorToast = Toast.MakeText(Application.Context, Resource.String.PhoneCallError, ToastLength.Short))
                         errorToast.Show();
+            };
+            Button sendMessageToDriverButton = view.FindViewById<Button>(Resource.Id.sendMessageToDriverButton);
+            sendMessageToDriverButton.Click += (sender, e) =>
+            {
+                ActionResult<PedestrianProfileRequestModel> requestResult = _model.InitRequest();
+                if (!requestResult.IsValid)
+                {
+
+                    return;
+                }
+                //requestResult.Result.PaymentAmount = ;
+                //requestResult.Result.Target = ;
+                requestResult.Result.Confirm();
             };
         }
 

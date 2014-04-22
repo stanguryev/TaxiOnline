@@ -38,14 +38,16 @@ namespace TaxiOnline.Server.Data
 
         public IEnumerable<IPedestrianInfo> EnumeratePedestrians(Guid cityId)
         {
-            IList<PedestrianInfoDA> pedestrians = _dataProxy.Session.CreateCriteria<PedestrianInfoDA>().List<PedestrianInfoDA>();
-            foreach (PedestrianInfoDA pedesrtian in pedestrians)
+            IList<PedestrianAccountDA> accounts = _dataProxy.Session.CreateCriteria<PedestrianAccountDA>().List<PedestrianAccountDA>();
+            IList<PedestrianInfoDA> pedestrians = _dataProxy.Session.CreateCriteria<PedestrianInfoDA>()/*.Add(Expression.Where<PersonInfoDA>(p => p.City.Id == cityId))*/.List<PedestrianInfoDA>();
+            foreach (var info in accounts.Join(pedestrians, account => account.Person.Id, pedestrian => pedestrian.PersonInfo.Person.Id,
+                (account, pedestrian) => new { AccountInfo = account, PedestrianInfo = pedestrian }))
             {
-                IPedestrianInfo pedesrtianInfo = _server.CreatePedestrianInfo(pedesrtian.PedestrianAccount.Person.Id);
-                pedesrtianInfo.PhoneNumber = pedesrtian.PedestrianAccount.Person.PhoneNumber;
-                pedesrtianInfo.SkypeNumber = pedesrtian.PedestrianAccount.Person.SkypeNumber;
-                pedesrtianInfo.CurrentLocationLatidude = pedesrtian.Latitude;
-                pedesrtianInfo.CurrentLocationLongidude = pedesrtian.Longitude;
+                IPedestrianInfo pedesrtianInfo = _server.CreatePedestrianInfo(info.AccountInfo.Person.Id);
+                pedesrtianInfo.PhoneNumber = info.AccountInfo.Person.PhoneNumber;
+                pedesrtianInfo.SkypeNumber = info.AccountInfo.Person.SkypeNumber;
+                pedesrtianInfo.CurrentLocationLatidude = info.PedestrianInfo.PersonInfo.Latitude;
+                pedesrtianInfo.CurrentLocationLongidude = info.PedestrianInfo.PersonInfo.Longitude;
                 yield return pedesrtianInfo;
             }
         }

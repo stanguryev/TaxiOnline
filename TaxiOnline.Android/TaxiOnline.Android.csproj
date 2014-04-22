@@ -64,6 +64,7 @@
     <Compile Include="Activities\DriverProfileActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\PedestrianProfileActivity.cs" />
+    <Compile Include="Activities\PedestrianProfileRequestActivity.cs" />
     <Compile Include="Activities\RegistrationActivity.cs" />
     <Compile Include="Adapters\CitiesAdapter.cs" />
     <Compile Include="Adapters\CitySuggestionsFilter.cs" />
@@ -117,6 +118,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\DriverPopupDetailsLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\PedestrianProfileRequestLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

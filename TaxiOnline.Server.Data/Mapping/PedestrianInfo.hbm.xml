@@ -4,6 +4,6 @@
     <id name="Id" column="Id" type="int">
       <generator class="native"></generator>
     </id>
-    <many-to-one name="PedestrianAccount" column="PedestrianAccountId" not-null="true" class="PedestrianAccountDA"/>
+    <many-to-one name="PersonInfo" column="PersonInfo" not-null="true" class="PersonInfoDA"/>
   </class>
 </hibernate-mapping>
