@@ -46,11 +46,27 @@ namespace TaxiOnline.Android.Views
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+            base.OnMeasure(widthMeasureSpec, heightMeasureSpec); 
+            for (int i = 0; i < ChildCount; i++)
+            {
+                View currentView = GetChildAt(i);
+                currentView.Measure(widthMeasureSpec, heightMeasureSpec);
+            }
         }
 
         protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
         {
+            for (int i = 0; i < ChildCount; i++)
+            {
+                View currentView = GetChildAt(i);
+                AbsoluteLayout.LayoutParams layoutParameters = (AbsoluteLayout.LayoutParams)currentView.LayoutParameters;
+                int viewLeft = layoutParameters.X;
+                int viewTop = layoutParameters.Y;
+                int viewRight = layoutParameters.X + layoutParameters.Width;
+                int viewBottom = layoutParameters.Y + layoutParameters.Height;
+                currentView.Layout(viewLeft, viewTop, viewRight, viewBottom);
+            }
+            return;
             base.OnLayout(changed, left, top, right, bottom);
             if (_adapter == null)
                 return;
@@ -62,6 +78,7 @@ namespace TaxiOnline.Android.Views
                 int viewTop = layoutParameters.Y;
                 int viewRight = layoutParameters.X + layoutParameters.Width;
                 int viewBottom = layoutParameters.Y + layoutParameters.Height;
+                currentView.Measure(int.MaxValue, int.MaxValue);
                 currentView.Layout(viewLeft, viewTop, viewRight, viewBottom);
             }
             Invalidate();

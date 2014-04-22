@@ -26,6 +26,7 @@ namespace TaxiOnline.Android.Adapters
             _model = model;
             _model.PersonsChanged += Model_PersonsChanged;
             UpdatePersons();
+            model.BeginLoadPersons();
         }
 
         public override Java.Lang.Object GetItem(int position)

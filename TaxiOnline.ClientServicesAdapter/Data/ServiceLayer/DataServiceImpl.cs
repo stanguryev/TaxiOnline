@@ -46,7 +46,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
 
         public ActionResult<IEnumerable<IPersonInfo>> EnumerateAllPersons(Guid cityId)
         {
-            return RequestCollection<IPersonInfo, PersonDataContract>(channel => channel.EnumerateAllPersons(cityId), data =>
+            return RequestCollection<IPersonInfo, PersonDataContract>(channel => channel.EnumeratePedestrians(cityId), data =>
             {
                 if (data is PedestrianDataContract)
                     return new PedestrianSLO((PedestrianDataContract)data);
