@@ -28,8 +28,9 @@ namespace TaxiOnline.Logic.Logic
             : base(model, adaptersExtender, city)
         {
             _model = model;
-            model.InitRequestDelegate = InitRequest; 
+            model.InitRequestDelegate = InitRequest;
             model.EnumerateDriversDelegate = EnumerateDrivers;
+            model.CallToDriverDelegate = CallToDriver;
             _drivers = new UpdatableCollectionLoadDecorator<DriverLogic, IDriverInfo>(RetriveDrivers, CompareDriversInfo, p => p.IsOnline, CreateDriverLogic);
             _drivers.ItemsCollectionChanged += Drivers_ItemsCollectionChanged;
         }
@@ -55,6 +56,15 @@ namespace TaxiOnline.Logic.Logic
         public void ResetConfirmedRequest(PedestrianProfileRequestLogic request)
         {
             _model.CurrentRequest = null;
+        }
+
+        private ActionResult CallToDriver(DriverModel driverModel)
+        {
+            string phoneNumber = driverModel.PhoneNumber;
+            if (!string.IsNullOrWhiteSpace(phoneNumber) && phoneNumber.Cast<char>().Any(c => char.IsDigit(c)))
+                return _adaptersExtender.ServicesFactory.GetCurrentHardwareService().PhoneCall(phoneNumber);
+            else
+                return ActionResult.GetErrorResult(new InvalidOperationException());
         }
 
         private ActionResult<IEnumerable<DriverLogic>> EnumerateDrivers()

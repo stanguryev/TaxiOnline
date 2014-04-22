@@ -7,7 +7,9 @@ using TaxiOnline.ServiceContract.DataContracts;
 
 namespace TaxiOnline.ServiceContract
 {
-    [System.ServiceModel.ServiceContract()]//CallbackContract = typeof(ITaxiOnlineCallback))]
+    [ServiceKnownType(typeof(DriverAuthenticationRequestDataContract))]
+    [ServiceKnownType(typeof(PedestrianAuthenticationRequestDataContract))]
+    [ServiceContract]//CallbackContract = typeof(ITaxiOnlineCallback))]
     public interface ITaxiOnlineService
     {
         [OperationContract]
@@ -17,8 +19,6 @@ namespace TaxiOnline.ServiceContract
         IEnumerable<PersonDataContract> EnumerateAllPersons(Guid cityId);
 
         [OperationContract]
-        [ServiceKnownType(typeof(DriverAuthenticationRequestDataContract))]
-        [ServiceKnownType(typeof(PedestrianAuthenticationRequestDataContract))]
         PersonDataContract Authenticate(AuthenticationRequestDataContract request);
 
         [OperationContract]

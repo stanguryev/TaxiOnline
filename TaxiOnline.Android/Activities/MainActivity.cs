@@ -68,7 +68,7 @@ namespace TaxiOnline.Android.Activities
         {
             _model.CitiesChanged += Model_CitiesChanged;
             _model.EnumrateCitiesFailed += Model_EnumrateCitiesFailed;
-            //_connectionProgressDialogDecorator.Show();
+            _connectionProgressDialogDecorator.Show();
             _model.BeginLoadCities();
             AutoCompleteTextView cityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.cityTextView);
             cityTextView.Adapter = new CitiesAdapter(this, _model);
@@ -94,22 +94,6 @@ namespace TaxiOnline.Android.Activities
             if (cityTextView.Adapter != null)
                 cityTextView.Adapter.Dispose();
         }
-
-        //private void StartInidicateConnecting()
-        //{
-        //    if (_connectionProgressDialog == null)
-        //        _connectionProgressDialog = ProgressDialog.Show(this, Resources.GetString(Resource.String.ConnectingToServerTitle), Resources.GetString(Resource.String.ConnectingToServerMessage));
-        //}
-
-        //private void StopInidicateConnecting()
-        //{
-        //    if (_connectionProgressDialog != null)
-        //    {
-        //        _connectionProgressDialog.Dismiss();
-        //        _connectionProgressDialog.Dispose();
-        //        _connectionProgressDialog = null;
-        //    }
-        //}
 
         private void Model_EnumrateCitiesFailed(object sender, Toolkit.Events.ActionResultEventArgs e)
         {

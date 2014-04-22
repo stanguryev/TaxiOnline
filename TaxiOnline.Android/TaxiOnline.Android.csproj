@@ -68,6 +68,7 @@
     <Compile Include="Adapters\CitiesAdapter.cs" />
     <Compile Include="Adapters\CitySuggestionsFilter.cs" />
     <Compile Include="Adapters\DriverProfileAdapter.cs" />
+    <Compile Include="Adapters\PedestrianProfileAdapter.cs" />
     <Compile Include="Adapters\PersonsAdapter.cs" />
     <Compile Include="Common\AndroidAdaptersExtender.cs" />
     <Compile Include="Decorators\ProgressDialogDecorator.cs" />
@@ -113,6 +114,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\PedestrianSelfInfoLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\DriverPopupDetailsLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

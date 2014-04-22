@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.ClientInfrastructure.Services;
+using TaxiOnline.Toolkit.Events;
 
 namespace TaxiOnline.ClientServicesAdapter.Hardware
 {
@@ -13,5 +14,7 @@ namespace TaxiOnline.ClientServicesAdapter.Hardware
         public abstract string GetDeviceId();
 
         public abstract MapPoint GetCurrentLocation();
+
+        public abstract ActionResult PhoneCall(string number);
     }
 }

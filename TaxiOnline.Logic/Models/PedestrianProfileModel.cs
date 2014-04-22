@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TaxiOnline.Logic.Helpers;
 using TaxiOnline.Toolkit.Events;
 using TaxiOnline.Toolkit.Threading.CollectionsDecorators;
@@ -66,6 +67,8 @@ namespace TaxiOnline.Logic.Models
 
         internal Func<ActionResult<IEnumerable<Logic.DriverLogic>>> EnumerateDriversDelegate { get; set; }
 
+        internal Func<DriverModel, ActionResult> CallToDriverDelegate { get; set; }
+
         internal PedestrianProfileModel()
         {
             _drivers = new SimpleCollectionLoadDecorator<DriverModel>(EnumerateDrivers);
@@ -81,6 +84,17 @@ namespace TaxiOnline.Logic.Models
             }
             else
                 return ActionResult<PedestrianProfileRequestModel>.GetErrorResult(new NotSupportedException());
+        }
+
+        public ActionResult CallToDriver(DriverModel driverModel)
+        {
+            Func<DriverModel, ActionResult> callToDriverDelegate = CallToDriverDelegate;
+            if (callToDriverDelegate == null)
+            {
+                return callToDriverDelegate(driverModel);
+            }
+            else
+                return ActionResult.GetErrorResult(new NotSupportedException());
         }
 
         internal void ModifyDriversCollection(Action<IList<DriverModel>> modificationDelegate)
