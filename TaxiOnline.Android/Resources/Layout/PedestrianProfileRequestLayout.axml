@@ -3,5 +3,19 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-
+    <Button
+        android:text="@string/CallToDriver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/callToDriverButton" />
+    <Button
+        android:text="@string/SendMessageToDriver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sendMessageToDriverButton" />
+    <Button
+        android:text="@string/CancelMessageToDriver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancelMessageToDriverButton" />
 </LinearLayout>

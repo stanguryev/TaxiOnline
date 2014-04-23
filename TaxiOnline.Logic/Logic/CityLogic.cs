@@ -65,12 +65,12 @@ namespace TaxiOnline.Logic.Logic
         private PersonLogic CreatePersonsLogic(IPersonInfo personSLO)
         {
             if (personSLO is IPedestrianInfo)
-                return new PedestrianLogic(new PedestrianModel()
+                return new PedestrianLogic(new PedestrianModel((IPedestrianInfo)personSLO)
                 {
                     PersonId = personSLO.PersonId
                 }, _adaptersExtender, this);
             if (personSLO is IDriverInfo)
-                return new DriverLogic(new DriverModel()
+                return new DriverLogic(new DriverModel((IDriverInfo)personSLO)
                 {
                     PersonId = personSLO.PersonId
                 }, _adaptersExtender, this);

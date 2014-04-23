@@ -7,8 +7,6 @@ using TaxiOnline.ServiceContract.DataContracts;
 
 namespace TaxiOnline.ServiceContract
 {
-    [ServiceKnownType(typeof(DriverAuthenticationRequestDataContract))]
-    [ServiceKnownType(typeof(PedestrianAuthenticationRequestDataContract))]
     [ServiceContract]//CallbackContract = typeof(ITaxiOnlineCallback))]
     public interface ITaxiOnlineService //: IDisposable
     {
@@ -16,10 +14,10 @@ namespace TaxiOnline.ServiceContract
         IEnumerable<CityDataContract> EnumerateCities(string userCultureName);
 
         [OperationContract]
-        IEnumerable<PersonDataContract> EnumerateAllPersons(Guid cityId);
+        PedestrianDataContract AuthenticateAsPedestrian(PedestrianAuthenticationRequestDataContract request);
 
         [OperationContract]
-        PersonDataContract Authenticate(AuthenticationRequestDataContract request);
+        DriverDataContract AuthenticateAsDriver(DriverAuthenticationRequestDataContract request);
 
         [OperationContract]
         IEnumerable<PedestrianDataContract> EnumeratePedestrians(Guid cityId);
@@ -32,5 +30,8 @@ namespace TaxiOnline.ServiceContract
 
         [OperationContract]
         void PushPedestrianRequest(PedestrianRequestDataContract request);
+
+        [OperationContract]
+        DriverResponseDataContract ConfirmPedestrianRequest(Guid pedestrianRequestId);
     }
 }

@@ -11,6 +11,7 @@ namespace TaxiOnline.ClientInfrastructure.ServicesEntities.DataService
     {
         Guid Id { get; }
         Guid PedestrianId { get; }
+        Guid DriverId { get; }
         string TargetName { get; set; }
         MapPoint TargetLocation { get; set; }
         decimal PaymentAmount { get; set; }

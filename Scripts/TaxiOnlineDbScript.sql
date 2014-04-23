@@ -280,3 +280,64 @@ GO
 ALTER TABLE [dbo].[PedestriansInfo] CHECK CONSTRAINT [FK_PedestriansInfo_PersonsInfo]
 GO
 
+USE [TaxiOnline]
+GO
+
+/****** Object:  Table [dbo].[DriverAccounts]    Script Date: 04/23/2014 14:31:42 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[DriverAccounts](
+	[Id] [int] NOT NULL,
+	[PersonId] [uniqueidentifier] NOT NULL,
+	[PersonName] [nvarchar](100) NULL,
+	[CarColor] [nvarchar](50) NULL,
+	[CarBrand] [nvarchar](50) NULL,
+	[CarNumber] [nvarchar](50) NULL,
+ CONSTRAINT [PK_DriverAccounts] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[DriverAccounts]  WITH CHECK ADD  CONSTRAINT [FK_DriverAccounts_PersonAccounts] FOREIGN KEY([PersonId])
+REFERENCES [dbo].[PersonAccounts] ([Id])
+GO
+
+ALTER TABLE [dbo].[DriverAccounts] CHECK CONSTRAINT [FK_DriverAccounts_PersonAccounts]
+GO
+
+USE [TaxiOnline]
+GO
+
+/****** Object:  Table [dbo].[DriversInfo]    Script Date: 04/23/2014 14:33:58 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[DriversInfo](
+	[Id] [int] NOT NULL,
+	[PersonInfo] [int] NOT NULL,
+ CONSTRAINT [PK_DriversInfo] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[DriversInfo]  WITH CHECK ADD  CONSTRAINT [FK_DriversInfo_PersonsInfo] FOREIGN KEY([PersonInfo])
+REFERENCES [dbo].[PersonsInfo] ([Id])
+GO
+
+ALTER TABLE [dbo].[DriversInfo] CHECK CONSTRAINT [FK_DriversInfo_PersonsInfo]
+GO
+
+

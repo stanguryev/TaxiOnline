@@ -16,6 +16,9 @@ namespace TaxiOnline.ServiceContract.DataContracts
         public Guid PedestrianId { get; set; }
 
         [DataMember]
+        public Guid DriverId { get; set; }
+
+        [DataMember]
         public bool IsCanceled { get; set; }
     }
 }

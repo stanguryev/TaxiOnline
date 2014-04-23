@@ -11,7 +11,7 @@ namespace TaxiOnline.Logic.Models
     {
         private Guid _responseId;
         private DriverModel _responseAuthor;
-        private PedestrianRequestModel _request;
+        private PedestrianProfileRequestModel _request;
 
         public Guid ResponseId
         {
@@ -19,7 +19,7 @@ namespace TaxiOnline.Logic.Models
             internal set { _responseId = value; }
         }
 
-        public DriverResponseModel(PedestrianRequestModel request, DriverModel responseAuthor)
+        public DriverResponseModel(PedestrianProfileRequestModel request, DriverModel responseAuthor)
         {
             _responseAuthor = responseAuthor;
             _request = request;

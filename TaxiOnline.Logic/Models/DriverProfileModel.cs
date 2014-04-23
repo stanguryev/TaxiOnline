@@ -17,7 +17,10 @@ namespace TaxiOnline.Logic.Models
         private readonly SimpleCollectionLoadDecorator<DriverProfileResponseModel> _currentResponses;
         private readonly SimpleCollectionLoadDecorator<PedestrianRequestModel> _pedestrianRequests;
         private readonly SimpleCollectionLoadDecorator<PedestrianModel> _pedestrians;
+        private string _personName;
         private string _carColor;
+        private string _carBrand;
+        private string _carNumber;
 
         public IEnumerable<DriverProfileResponseModel> PendingResponses
         {
@@ -34,10 +37,28 @@ namespace TaxiOnline.Logic.Models
             get { return _pedestrians.Items; }
         }
 
+        public string PersonName
+        {
+            get { return _personName; }
+            set { _personName = value; }
+        }
+
         public string CarColor
         {
             get { return _carColor; }
             set { _carColor = value; }
+        }
+
+        public string CarBrand
+        {
+            get { return _carBrand; }
+            set { _carBrand = value; }
+        }
+
+        public string CarNumber
+        {
+            get { return _carNumber; }
+            set { _carNumber = value; }
         }
 
         public event EventHandler LoadCompleted;
@@ -54,7 +75,21 @@ namespace TaxiOnline.Logic.Models
             remove { _pedestrians.ItemsCollectionChanged -= value; }
         }
 
+        public event EventHandler PedestrianRequestsChanged
+        {
+            add { _pedestrianRequests.ItemsChanged += value; }
+            remove { _pedestrianRequests.ItemsChanged -= value; }
+        }
+
+        public event NotifyCollectionChangedEventHandler PedestrianRequestsCollectionChanged
+        {
+            add { _pedestrianRequests.ItemsCollectionChanged += value; }
+            remove { _pedestrianRequests.ItemsCollectionChanged -= value; }
+        }
+
         public event ActionResultEventHandler EnumratePedestriansFailed;
+
+        public event ActionResultEventHandler EnumratePedestrianRequestsFailed;
 
         internal Func<Guid, ActionResult<Logic.DriverProfileResponseLogic>> InitResponseDelegate { get; set; }
 
@@ -102,6 +137,16 @@ namespace TaxiOnline.Logic.Models
             OnEnumratePedestriansFailed(actionResult);
         }
 
+        internal void ModifyPedestrianRequestsCollection(Action<IList<PedestrianRequestModel>> modificationDelegate)
+        {
+            _pedestrianRequests.ModifyCollection(modificationDelegate);
+        }
+
+        internal void NotifyEnumratePedestrianRequestsFailed(ActionResult actionResult)
+        {
+            OnEnumratePedestrianRequestsFailed(actionResult);
+        }
+
         internal void AddCurrentResponse(DriverProfileResponseModel response)
         {
             _currentResponses.ModifyCollection(col => col.Add(response));
@@ -147,6 +192,13 @@ namespace TaxiOnline.Logic.Models
         protected virtual void OnEnumratePedestriansFailed(ActionResult errorResult)
         {
             ActionResultEventHandler handler = EnumratePedestriansFailed;
+            if (handler != null)
+                handler(this, new ActionResultEventArgs(errorResult));
+        }
+
+        protected virtual void OnEnumratePedestrianRequestsFailed(ActionResult errorResult)
+        {
+            ActionResultEventHandler handler = EnumratePedestrianRequestsFailed;
             if (handler != null)
                 handler(this, new ActionResultEventArgs(errorResult));
         }

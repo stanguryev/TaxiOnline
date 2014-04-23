@@ -19,6 +19,11 @@ namespace TaxiOnline.Logic.Models
         private MapLocationModel _target = new MapLocationModel();
         private bool _isCancelled;
 
+        public Guid AuthorId
+        {
+            get { return _requestAuthor.PersonId; }
+        }
+
         public Guid RequestId
         {
             get { return _requestId; }

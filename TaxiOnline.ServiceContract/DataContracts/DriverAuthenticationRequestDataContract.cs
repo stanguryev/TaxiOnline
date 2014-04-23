@@ -10,6 +10,15 @@ namespace TaxiOnline.ServiceContract.DataContracts
     public class DriverAuthenticationRequestDataContract : AuthenticationRequestDataContract
     {
         [DataMember]
+        public string PersonName { get; set; }
+
+        [DataMember]
         public string CarColor { get; set; }
+
+        [DataMember]
+        public string CarBrand { get; set; }
+
+        [DataMember]
+        public string CarNumber { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TaxiOnline.ClientInfrastructure.Data;
+using TaxiOnline.ClientInfrastructure.ServicesEntities.DataService;
 
 namespace TaxiOnline.Logic.Models
 {
@@ -10,7 +11,7 @@ namespace TaxiOnline.Logic.Models
     {
         private Guid _personId;
         private MapPoint _currentLocation;
-        private string _skypeId;
+        private string _skypeNumber;
         private string _phoneNumber;
 
         public Guid PersonId
@@ -27,8 +28,8 @@ namespace TaxiOnline.Logic.Models
 
         public string SkypeNumber
         {
-            get { return _skypeId; }
-            internal set { _skypeId = value; }
+            get { return _skypeNumber; }
+            internal set { _skypeNumber = value; }
         }
 
         public string PhoneNumber
@@ -37,9 +38,12 @@ namespace TaxiOnline.Logic.Models
             internal set { _phoneNumber = value; }
         }
 
-        public PersonModel()
+        public PersonModel(IPersonInfo info)
         {
-            
+            _personId = info.PersonId;
+            _phoneNumber = info.PhoneNumber;
+            _skypeNumber = info.SkypeNumber;
+            _currentLocation = info.CurrentLocation;            
         }
     }
 }

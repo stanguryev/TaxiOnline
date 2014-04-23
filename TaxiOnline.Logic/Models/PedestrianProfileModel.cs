@@ -15,6 +15,20 @@ namespace TaxiOnline.Logic.Models
         private PedestrianProfileRequestModel _currentRequest;
         private PedestrianProfileRequestModel _pendingRequest;
         private readonly SimpleCollectionLoadDecorator<DriverModel> _drivers;
+        private DriverModel _selectedDriver;
+
+        public DriverModel SelectedDriver
+        {
+            get { return _selectedDriver; }
+            set
+            {
+                if (_selectedDriver != value)
+                {
+                    _selectedDriver = value;
+                    OnSelectedDriverChanged();
+                }
+            }
+        }
 
         public PedestrianProfileRequestModel CurrentRequest
         {
@@ -63,7 +77,9 @@ namespace TaxiOnline.Logic.Models
             remove { _drivers.ItemsCollectionChanged -= value; }
         }
 
-        internal Func<Logic.PedestrianProfileRequestLogic> InitRequestDelegate { get; set; }
+        public event EventHandler SelectedDriverChanged;
+
+        internal Func<DriverModel, Logic.PedestrianProfileRequestLogic> InitRequestDelegate { get; set; }
 
         internal Func<ActionResult<IEnumerable<Logic.DriverLogic>>> EnumerateDriversDelegate { get; set; }
 
@@ -74,13 +90,13 @@ namespace TaxiOnline.Logic.Models
             _drivers = new SimpleCollectionLoadDecorator<DriverModel>(EnumerateDrivers);
         }
 
-        public ActionResult<PedestrianProfileRequestModel> InitRequest()
+        public ActionResult<PedestrianProfileRequestModel> InitRequest(DriverModel driver)
         {
-            Func<Logic.PedestrianProfileRequestLogic> initRequestDelegate = InitRequestDelegate;
+            Func<DriverModel, Logic.PedestrianProfileRequestLogic> initRequestDelegate = InitRequestDelegate;
             if (initRequestDelegate != null)
             {
-                Logic.PedestrianProfileRequestLogic logic = initRequestDelegate();
-                return ActionResult<PedestrianProfileRequestModel>.GetValidResult(logic.Model);
+                Logic.PedestrianProfileRequestLogic logic = initRequestDelegate(driver);
+                return logic == null ? ActionResult<PedestrianProfileRequestModel>.GetErrorResult(new KeyNotFoundException()) : ActionResult<PedestrianProfileRequestModel>.GetValidResult(logic.Model);
             }
             else
                 return ActionResult<PedestrianProfileRequestModel>.GetErrorResult(new NotSupportedException());
@@ -90,9 +106,7 @@ namespace TaxiOnline.Logic.Models
         {
             Func<DriverModel, ActionResult> callToDriverDelegate = CallToDriverDelegate;
             if (callToDriverDelegate == null)
-            {
                 return callToDriverDelegate(driverModel);
-            }
             else
                 return ActionResult.GetErrorResult(new NotSupportedException());
         }
@@ -117,6 +131,13 @@ namespace TaxiOnline.Logic.Models
         protected virtual void OnPendingRequestChanged()
         {
             EventHandler handler = PendingRequestChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnSelectedDriverChanged()
+        {
+            EventHandler handler = SelectedDriverChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }

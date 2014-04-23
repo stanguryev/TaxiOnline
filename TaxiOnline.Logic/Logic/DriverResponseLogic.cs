@@ -14,15 +14,15 @@ namespace TaxiOnline.Logic.Logic
     {
         private readonly DriverResponseModel _model;
         private readonly AdaptersExtender _adaptersExtender;
-        private readonly PedestrianRequestLogic _request;
-        private readonly DriverProfileLogic _responseAuthor;
+        private readonly PedestrianProfileRequestLogic _request;
+        private readonly DriverLogic _responseAuthor;
 
         public DriverResponseModel Model
         {
             get { return _model; }
         }
 
-        public DriverResponseLogic(DriverResponseModel model, AdaptersExtender adaptersExtender, PedestrianRequestLogic request, DriverProfileLogic responseAuthor)
+        public DriverResponseLogic(DriverResponseModel model, AdaptersExtender adaptersExtender, PedestrianProfileRequestLogic request, DriverLogic responseAuthor)
         {
             _model = model;
             _adaptersExtender = adaptersExtender;

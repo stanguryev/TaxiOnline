@@ -16,7 +16,7 @@ namespace TaxiOnline.Logic.Logic
     {
         private readonly PedestrianProfileModel _model;
         private readonly AdaptersExtender _adaptersExtender;
-        private readonly InteractionLogic _interaction;
+        private readonly CityLogic _city;
         private readonly UpdatableCollectionLoadDecorator<DriverLogic, IDriverInfo> _drivers;
 
         public PedestrianProfileModel Model
@@ -24,10 +24,17 @@ namespace TaxiOnline.Logic.Logic
             get { return _model; }
         }
 
+        public CityLogic City
+        {
+            get { return _city; }
+        } 
+
         public PedestrianProfileLogic(PedestrianProfileModel model, AdaptersExtender adaptersExtender, CityLogic city)
             : base(model, adaptersExtender, city)
         {
             _model = model;
+            _adaptersExtender = adaptersExtender;
+            _city = city;
             model.InitRequestDelegate = InitRequest;
             model.EnumerateDriversDelegate = EnumerateDrivers;
             model.CallToDriverDelegate = CallToDriver;
@@ -35,11 +42,12 @@ namespace TaxiOnline.Logic.Logic
             _drivers.ItemsCollectionChanged += Drivers_ItemsCollectionChanged;
         }
 
-        public PedestrianProfileRequestLogic InitRequest()
+        public PedestrianProfileRequestLogic InitRequest(DriverModel driver)
         {
             PedestrianProfileRequestModel requestModel = new PedestrianProfileRequestModel(_model);
             _model.PendingRequest = requestModel;
-            return new PedestrianProfileRequestLogic(requestModel, _adaptersExtender, this);
+            DriverLogic driverLogic = _drivers.Items.SingleOrDefault(d => d.Model == driver);
+            return driverLogic == null ? null : new PedestrianProfileRequestLogic(requestModel, _adaptersExtender, this, driverLogic);
         }
 
         public void SetRequest(PedestrianProfileRequestLogic request)
@@ -88,7 +96,7 @@ namespace TaxiOnline.Logic.Logic
 
         private DriverLogic CreateDriverLogic(IDriverInfo personSLO)
         {
-            return new DriverLogic(new DriverModel()
+            return new DriverLogic(new DriverModel(personSLO)
             {
                 PersonId = personSLO.PersonId
             }, _adaptersExtender, _city);

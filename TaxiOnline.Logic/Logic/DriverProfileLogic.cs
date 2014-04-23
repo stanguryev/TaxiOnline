@@ -59,10 +59,12 @@ namespace TaxiOnline.Logic.Logic
             _pedestrians = new UpdatableCollectionLoadDecorator<PedestrianLogic, IPedestrianInfo>(RetrivePedestrians, ComparePedestriansInfo, p => p.IsOnline, CreatePedestrianLogic);
             _pedestrianRequests = new UpdatableCollectionLoadDecorator<PedestrianRequestLogic, IPedestrianRequest>(RetrivePedestrianRequests, ComparePedestrianRequests, ValidatePedestrianRequest, CreatePedestrianRequestLogic);
             _currentResponses = new UpdatableCollectionLoadDecorator<DriverProfileResponseLogic, IDriverResponse>(RetriveDriverResponses, CompareDriverResponses, ValidateDriverResponse, CreateDriverResponseLogic);
-            _adaptersExtender.ServicesFactory.GetCurrentDataService().PedestrianRequestChanged += InteractionLogic_PedestrianRequestChanged;
-            _adaptersExtender.ServicesFactory.GetCurrentDataService().PedestrianInfoChanged += InteractionLogic_PedestrianInfoChanged;
+            _adaptersExtender.ServicesFactory.GetCurrentDataService().PedestrianRequestChanged += DataService_PedestrianRequestChanged;
+            _adaptersExtender.ServicesFactory.GetCurrentDataService().PedestrianInfoChanged += DataService_PedestrianInfoChanged;
             _pedestrians.ItemsCollectionChanged += Pedestrians_ItemsCollectionChanged;
             _pedestrians.RequestFailed += Pedestrians_RequestFailed;
+            _pedestrianRequests.ItemsCollectionChanged += PedestrianRequests_ItemsCollectionChanged;
+            _pedestrianRequests.RequestFailed += PedestrianRequests_RequestFailed;
         }
 
         public void SetResponse(DriverProfileResponseLogic response)
@@ -124,7 +126,7 @@ namespace TaxiOnline.Logic.Logic
 
         private PedestrianLogic CreatePedestrianLogic(IPedestrianInfo personSLO)
         {
-            return new PedestrianLogic(new PedestrianModel()
+            return new PedestrianLogic(new PedestrianModel(personSLO)
             {
                 PersonId = personSLO.PersonId,
                 CurrentLocation = personSLO.CurrentLocation,
@@ -185,12 +187,12 @@ namespace TaxiOnline.Logic.Logic
             return request == null ? null : new DriverProfileResponseLogic(new DriverProfileResponseModel(request.Model, _model), _adaptersExtender, request, this);
         }
 
-        private void InteractionLogic_PedestrianRequestChanged(object sender, ValueEventArgs<IPedestrianRequest> e)
+        private void DataService_PedestrianRequestChanged(object sender, ValueEventArgs<IPedestrianRequest> e)
         {
             _pedestrianRequests.Update(e.Value);
         }
 
-        private void InteractionLogic_PedestrianInfoChanged(object sender, ValueEventArgs<IPedestrianInfo> e)
+        private void DataService_PedestrianInfoChanged(object sender, ValueEventArgs<IPedestrianInfo> e)
         {
             _pedestrians.Update(e.Value);
         }
@@ -203,6 +205,30 @@ namespace TaxiOnline.Logic.Logic
         private void Pedestrians_RequestFailed(object sender, ActionResultEventArgs e)
         {
             _model.NotifyEnumratePedestriansFailed(e.Result);
+        }
+
+        private void PedestrianRequests_ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+                foreach(PedestrianRequestLogic request in e.NewItems.OfType<PedestrianRequestLogic>().ToArray())
+                {
+                    PedestrianLogic author = _pedestrians.Items.SingleOrDefault(p => p.Model.PersonId == request.Model.AuthorId);
+                    if (author != null)
+                        author.ResetCurrentRequest();
+                }
+            if (e.NewItems != null)
+                foreach(PedestrianRequestLogic request in e.NewItems.OfType<PedestrianRequestLogic>().ToArray())
+                {
+                    PedestrianLogic author = _pedestrians.Items.SingleOrDefault(p => p.Model.PersonId == request.Model.AuthorId);
+                    if (author != null)
+                        author.SetCurrentRequest(request);
+                }
+            _model.ModifyPedestrianRequestsCollection(col => ObservableCollectionHelper.ApplyChangesByObjects<PedestrianRequestLogic, PedestrianRequestModel>(e, col, l => l.Model, l => l.Model));
+        }
+
+        private void PedestrianRequests_RequestFailed(object sender, ActionResultEventArgs e)
+        {
+            _model.NotifyEnumratePedestrianRequestsFailed(e.Result);
         }
     }
 }

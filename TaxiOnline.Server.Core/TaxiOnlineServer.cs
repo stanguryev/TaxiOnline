@@ -49,7 +49,9 @@ namespace TaxiOnline.Server.Core
         public void LoadPersistentState()
         {
             List<IPedestrianInfo> pedestrians = _storage.Value.EnumeratePedestrians(Guid.Empty).ToList();
+            List<IDriverInfo> drivers = _storage.Value.EnumerateDrivers(Guid.Empty).ToList();
             _pedestrians.ModifyCollection<IPedestrianInfo>(col => pedestrians.ForEach(p => col.Add(p)));
+            _drivers.ModifyCollection<IDriverInfo>(col => drivers.ForEach(d => col.Add(d)));
         }
 
         public void InitMobileService(Func<ITaxiOnlineServer, ITaxiOnlineMobileService> mobileServiceInitDelegate)
@@ -85,12 +87,17 @@ namespace TaxiOnline.Server.Core
             return CreatePedestrianInfo(Guid.NewGuid());
         }
 
-        public IDriverInfo CreateDriverInfo()
+        public IDriverInfo CreateDriverInfo(Guid id)
         {
-            return new DriverInfo(Guid.NewGuid())
+            return new DriverInfo(id)
             {
                 IsOnline = true
             };
+        }
+
+        public IDriverInfo CreateDriverInfo()
+        {
+            return CreateDriverInfo(Guid.NewGuid());
         }
 
         public void ModifyPedestriansCollection(Action<IList<IPedestrianInfo>> modificationDelegate)

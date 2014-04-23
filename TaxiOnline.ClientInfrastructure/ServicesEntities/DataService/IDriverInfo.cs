@@ -7,6 +7,9 @@ namespace TaxiOnline.ClientInfrastructure.ServicesEntities.DataService
 {
     public interface IDriverInfo : IPersonInfo
     {
+        string PersonName { get; }
         string CarColor { get; }
+        string CarBrand { get; }
+        string CarNumber { get; }
     }
 }

@@ -9,35 +9,35 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/d1TextView" />
+        android:id="@+id/driverPopupPersonNameTextView" />
     <TextView
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/driverPopupCarColorTextView" />
     <TextView
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/driverPopupCarBrandTextView" />
     <TextView
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/driverPopupCarNumberTextView" />
     <TextView
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/driverPopupPhoneNumberTextView" />
     <TextView
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/driverPopupSkypeNumberTextView" />
     <Button
         android:text="@string/CallToDriver"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/callToDriverButton" />
-    <Button
-        android:text="@string/SendMessageToDriver"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/sendMessageToDriverButton" />
+        android:id="@+id/quickCallToDriverButton" />
 </LinearLayout>

@@ -56,7 +56,7 @@ namespace TaxiOnline.Logic.Logic
 
         private ActionResult ConfirmCore()
         {
-            ActionResult<IDriverResponse> confirmResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().ConfirmPedestrianRequest(_request.Model.RequestId, _responseAuthor.Model.PersonId);
+            ActionResult<IDriverResponse> confirmResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().ConfirmPedestrianRequest(_request.Model.RequestId);
             if (confirmResult.IsValid)
                 _model.ResponseId = confirmResult.Result.Id;
             return confirmResult.IsValid ? ActionResult.ValidResult : ActionResult.GetErrorResult(confirmResult);

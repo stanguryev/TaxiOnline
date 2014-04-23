@@ -20,10 +20,10 @@ namespace TaxiOnline.ClientInfrastructure.Services
         ActionResult<IEnumerable<IDriverInfo>> EnumerateDrivers(Guid cityId);
         ActionResult<IEnumerable<IPedestrianRequest>> EnumeratePedestrianRequests(Guid cityId);
         ActionResult<IEnumerable<IDriverResponse>> EnumerateDriverResponses(Guid cityId);
-        IPedestrianRequest CreatePedestrianRequest(Guid pedestrianId);
+        IPedestrianRequest CreatePedestrianRequest(Guid pedestrianId, Guid driverId);
         ActionResult PushPedestrianRequest(IPedestrianRequest requestSLO);
         ActionResult RemovePedestrianRequest(Guid requestId);
-        ActionResult<IDriverResponse> ConfirmPedestrianRequest(Guid pedestrianRequestId, Guid driverId);
+        ActionResult<IDriverResponse> ConfirmPedestrianRequest(Guid pedestrianRequestId);
         ActionResult RemoveDriverResponse(Guid responseId);
         IAuthenticationRequest CreateAuthenticationRequest(ParticipantTypes requestType, string deviceId, Guid cityId);
         ActionResult<IPersonInfo> Authenticate(IAuthenticationRequest request);

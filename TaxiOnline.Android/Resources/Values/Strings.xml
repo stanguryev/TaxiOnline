@@ -14,7 +14,10 @@
   <string name="Driver">driver</string>
   <string name="SkypeNumber">my Skype</string>
   <string name="PhoneNumber">phone num.</string>
+  <string name="PersonName">person name</string>
   <string name="CarColor">car color</string>
+  <string name="CarBrand">car brand</string>
+  <string name="CarNumber">car number</string>
   <string name="AuthorizingTitle">Authorizing</string>
   <string name="AuthorizingMessage">Authorization is running...</string>
   <string name="AuthenticationFailed">Failed to authenticate</string>
@@ -24,4 +27,6 @@
   <string name="CallToDriver">Call to the driver</string>
   <string name="PhoneCallError">Call failed</string>
   <string name="SendMessageToDriver">Add comment</string>
+  <string name="CancelMessageToDriver">Cancel comment</string>
+  <string name="FailedToInitRequest">Failed to init request</string>
 </resources>

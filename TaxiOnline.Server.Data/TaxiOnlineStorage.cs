@@ -51,5 +51,25 @@ namespace TaxiOnline.Server.Data
                 yield return pedesrtianInfo;
             }
         }
+
+        public IEnumerable<IDriverInfo> EnumerateDrivers(Guid cityId)
+        {
+            IList<DriverAccountDA> accounts = _dataProxy.Session.CreateCriteria<DriverAccountDA>().List<DriverAccountDA>();
+            IList<DriverInfoDA> drivers = _dataProxy.Session.CreateCriteria<DriverInfoDA>()/*.Add(Expression.Where<PersonInfoDA>(p => p.City.Id == cityId))*/.List<DriverInfoDA>();
+            foreach (var info in accounts.Join(drivers, account => account.Person.Id, driver => driver.PersonInfo.Person.Id,
+                (account, driver) => new { AccountInfo = account, DriverInfo = driver }))
+            {
+                IDriverInfo driverInfo = _server.CreateDriverInfo(info.AccountInfo.Person.Id);
+                driverInfo.PhoneNumber = info.AccountInfo.Person.PhoneNumber;
+                driverInfo.SkypeNumber = info.AccountInfo.Person.SkypeNumber;
+                driverInfo.CurrentLocationLatidude = info.DriverInfo.PersonInfo.Latitude;
+                driverInfo.CurrentLocationLongidude = info.DriverInfo.PersonInfo.Longitude;
+                driverInfo.PersonName = info.AccountInfo.PersonName;
+                driverInfo.CarColor = info.AccountInfo.CarColor;
+                driverInfo.CarBrand = info.AccountInfo.CarBrand;
+                driverInfo.CarNumber = info.AccountInfo.CarNumber;
+                yield return driverInfo;
+            }
+        }
     }
 }

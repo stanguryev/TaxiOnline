@@ -84,11 +84,17 @@ namespace TaxiOnline.Android.Activities
         private void FillDriverRequest(DriverAuthenticationRequestModel driverAuthenticationRequestModel)
         {
             EditText driverSkypeNumberEditText = FindViewById<EditText>(Resource.Id.driverSkypeNumberEditText);
-            EditText driverPhoneNumberEditText = FindViewById<EditText>(Resource.Id.driverPhoneNumberEditText);
-            EditText carColorEditText = FindViewById<EditText>(Resource.Id.carColorEditText);
+            EditText driverPhoneNumberEditText = FindViewById<EditText>(Resource.Id.driverPhoneNumberEditText);         
+            EditText personNameEditText = FindViewById<EditText>(Resource.Id.personNameEditText);
+            EditText carColorEditText = FindViewById<EditText>(Resource.Id.carColorEditText);               
+            EditText carBrandEditText = FindViewById<EditText>(Resource.Id.carBrandEditText);            
+            EditText carNumberEditText = FindViewById<EditText>(Resource.Id.carNumberEditText);    
             driverAuthenticationRequestModel.SkypeNumber = driverSkypeNumberEditText.Text;
             driverAuthenticationRequestModel.PhoneNumber = driverPhoneNumberEditText.Text;
+            driverAuthenticationRequestModel.PersonName = personNameEditText.Text;
             driverAuthenticationRequestModel.CarColor = carColorEditText.Text;
+            driverAuthenticationRequestModel.CarBrand = carBrandEditText.Text;
+            driverAuthenticationRequestModel.CarNumber = carNumberEditText.Text;
         }
     }
 }

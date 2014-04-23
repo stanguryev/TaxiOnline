@@ -17,6 +17,7 @@ namespace TaxiOnline.ServerInfrastructure
         IPedestrianInfo CreatePedestrianInfo();
         IPedestrianInfo CreatePedestrianInfo(Guid id);
         IDriverInfo CreateDriverInfo();
+        IDriverInfo CreateDriverInfo(Guid id);
         void ModifyPedestriansCollection(Action<IList<IPedestrianInfo>> modificationDelegate);
         void ModifyDriversCollection(Action<IList<IDriverInfo>> modificationDelegate);
 

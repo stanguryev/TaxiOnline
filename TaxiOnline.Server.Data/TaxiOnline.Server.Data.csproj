@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="DataAccess\CityDA.cs" />
     <Compile Include="DataAccess\CityNameDA.cs" />
+    <Compile Include="DataAccess\DriverAccountDA.cs" />
+    <Compile Include="DataAccess\DriverInfoDA.cs" />
     <Compile Include="DataAccess\PedestrianAccountDA.cs" />
     <Compile Include="DataAccess\PedestrianInfoDA.cs" />
     <Compile Include="DataAccess\PersonAccountDA.cs" />
@@ -77,6 +79,10 @@
     <EmbeddedResource Include="Mapping\PedestrianAccount.hbm.xml" />
     <EmbeddedResource Include="Mapping\PedestrianInfo.hbm.xml" />
     <EmbeddedResource Include="Mapping\PersonInfo.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\DriverAccount.hbm.xml" />
+    <EmbeddedResource Include="Mapping\DriverInfo.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

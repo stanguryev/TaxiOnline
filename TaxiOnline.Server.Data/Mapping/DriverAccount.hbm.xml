@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="TaxiOnline.Server.Data" namespace="TaxiOnline.Server.Data.DataAccess">
+  <class name="DriverAccountDA" table="DriverAccounts" lazy="false">
+    <id name="Id" column="Id" type="int">
+      <generator class="native"></generator>
+    </id>
+    <property name="PersonName" column="PersonName" type="String" length="100"/>
+    <property name="CarColor" column="CarColor" type="String" length="50"/>
+    <property name="CarBrand" column="CarBrand" type="String" length="50"/>
+    <property name="CarNumber" column="CarNumber" type="String" length="20"/>
+    <many-to-one name="Person" column="PersonId" not-null="true" class="PersonAccountDA"/>
+  </class>
+</hibernate-mapping>

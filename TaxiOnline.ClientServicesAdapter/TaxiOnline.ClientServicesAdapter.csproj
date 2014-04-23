@@ -55,6 +55,7 @@
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\AuthenticationRequestSLO.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\CitySLO.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\DriverAuthenticationRequestSLO.cs" />
+    <Compile Include="Data\ServiceLayer\ServiceLayerObjects\DriverResponseSLO.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\DriverSLO.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\PedestrianAuthenticationRequestSLO.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\PedestrianRequestSLO.cs" />

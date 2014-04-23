@@ -46,7 +46,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
 
         public ActionResult<IEnumerable<IPersonInfo>> EnumerateAllPersons(Guid cityId)
         {
-            return RequestCollection<IPersonInfo, PersonDataContract>(channel => channel.EnumeratePedestrians(cityId), data =>
+            return RequestCollection<IPersonInfo, PersonDataContract>(channel => channel.EnumeratePedestrians(cityId).Union<PersonDataContract>(channel.EnumerateDrivers(cityId)), data =>
             {
                 if (data is PedestrianDataContract)
                     return new PedestrianSLO((PedestrianDataContract)data);
@@ -77,9 +77,9 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
             throw new NotImplementedException();
         }
 
-        public IPedestrianRequest CreatePedestrianRequest(Guid pedestrianId)
+        public IPedestrianRequest CreatePedestrianRequest(Guid pedestrianId, Guid driverId)
         {
-            return new PedestrianRequestSLO(pedestrianId);
+            return new PedestrianRequestSLO(pedestrianId, driverId);
         }
 
         public ActionResult PushPedestrianRequest(IPedestrianRequest requestSLO)
@@ -93,9 +93,11 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
             throw new NotImplementedException();
         }
 
-        public ActionResult<IDriverResponse> ConfirmPedestrianRequest(Guid pedestrianRequestId, Guid driverId)
+        public ActionResult<IDriverResponse> ConfirmPedestrianRequest(Guid pedestrianRequestId)
         {
-            throw new NotImplementedException();
+            ITaxiOnlineService channel = _proxy.Channel;
+            ActionResult<DriverResponseDataContract> confirmResult = _proxy.RunRequestSafe(() => channel.ConfirmPedestrianRequest(pedestrianRequestId), channel);
+            return confirmResult.IsValid ? ActionResult<IDriverResponse>.GetValidResult(new DriverResponseSLO(confirmResult.Result)) : ActionResult<IDriverResponse>.GetErrorResult(confirmResult);
         }
 
         public ActionResult RemoveDriverResponse(Guid responseId)
@@ -106,7 +108,15 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
         public ActionResult<IPersonInfo> Authenticate(IAuthenticationRequest request)
         {
             ITaxiOnlineService channel = _proxy.Channel;
-            ActionResult<PersonDataContract> result = _proxy.RunRequestSafe(() => channel.Authenticate(((AuthenticationRequestSLO)request).CreateDataContract()), channel);
+            ActionResult<PersonDataContract> result = _proxy.RunRequestSafe(() =>
+            {
+                if (request is IPedestrianAuthenticationRequest)
+                    return (PersonDataContract)channel.AuthenticateAsPedestrian((PedestrianAuthenticationRequestDataContract)((AuthenticationRequestSLO)request).CreateDataContract());
+                else if (request is IDriverAuthenticationRequest)
+                    return (PersonDataContract)channel.AuthenticateAsDriver((DriverAuthenticationRequestDataContract)((AuthenticationRequestSLO)request).CreateDataContract());
+                else
+                    throw new NotImplementedException();
+            }, channel);
             return result.IsValid ? ActionResult<IPersonInfo>.GetValidResult(CreatePersonInfo(result.Result)) : ActionResult<IPersonInfo>.GetErrorResult(result);
         }
 

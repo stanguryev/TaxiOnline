@@ -31,7 +31,10 @@ namespace TaxiOnline.Logic.Logic
             {
                 SkypeNumber = personInfo.SkypeNumber,
                 PhoneNumber = personInfo.PhoneNumber,
-                CarColor = driverInfo.PhoneNumber
+                PersonName = driverInfo.PersonName,
+                CarColor = driverInfo.CarColor,
+                CarBrand = driverInfo.CarBrand,
+                CarNumber = driverInfo.CarNumber
             }, _adaptersExtender, _city);
         }
 
@@ -40,7 +43,10 @@ namespace TaxiOnline.Logic.Logic
             IDriverAuthenticationRequest driverRequest = (IDriverAuthenticationRequest)request;
             driverRequest.PhoneNumber = _model.PhoneNumber;
             driverRequest.SkypeNumber = _model.SkypeNumber;
+            driverRequest.PersonName = _model.PersonName;
             driverRequest.CarColor = _model.CarColor;
+            driverRequest.CarBrand = _model.CarBrand;
+            driverRequest.CarNumber = _model.CarNumber;
         }
     }
 }

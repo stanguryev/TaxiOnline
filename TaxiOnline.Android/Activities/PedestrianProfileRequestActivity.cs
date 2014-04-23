@@ -10,6 +10,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using TaxiOnline.Logic.Models;
+using TaxiOnline.Toolkit.Events;
+using TaxiOnline.Android.Helpers;
 
 namespace TaxiOnline.Android.Activities
 {
@@ -21,6 +23,36 @@ namespace TaxiOnline.Android.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            PedestrianProfileActivity pedestrianProfileActivity = UIHelper.GetUpperActivity<PedestrianProfileActivity>(this, bundle);
+            ActionResult<PedestrianProfileRequestModel> initResult = pedestrianProfileActivity.Model.InitRequest(pedestrianProfileActivity.Model.SelectedDriver);
+            if (!initResult.IsValid)
+            {
+                using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resource.String.FailedToInitRequest, ToastLength.Short))
+                    errorToast.Show();
+                Finish();
+            }
+            if (pedestrianProfileActivity != null)
+                _model = initResult.Result;
+            SetContentView(Resource.Layout.PedestrianProfileRequestLayout);
+            HookModel();
+        }
+
+        private void HookModel()
+        {
+            if (_model == null)
+                return;
+            Button quickCallToDriverButton = FindViewById<Button>(Resource.Id.callToDriverButton);
+            quickCallToDriverButton.Click += (sender, e) =>
+            {
+                if (!_model.CallToDriver().IsValid)
+                    using (Toast errorToast = Toast.MakeText(Application.Context, Resource.String.PhoneCallError, ToastLength.Short))
+                        errorToast.Show();
+            };
+            Button sendMessageToDriverButton = FindViewById<Button>(Resource.Id.sendMessageToDriverButton);
+            sendMessageToDriverButton.Click += (sender, e) => _model.Confirm();
+            Button cancelMessageToDriverButton = FindViewById<Button>(Resource.Id.cancelMessageToDriverButton);
+            cancelMessageToDriverButton.Click += (sender, e) => _model.Cancel();
+
         }
     }
 }

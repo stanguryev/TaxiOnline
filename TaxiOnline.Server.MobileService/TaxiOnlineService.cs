@@ -28,30 +28,46 @@ namespace TaxiOnline.Server.MobileService
             return _server.EnumerateCities(userCultureName).Select(city => ConvertHelper.CreateCityDataContract(city)).ToArray();
         }
 
-        public IEnumerable<PersonDataContract> EnumerateAllPersons(Guid cityId)
+        //public IEnumerable<PersonDataContract> EnumerateAllPersons(Guid cityId)
+        //{
+        //    return _server.Pedestrians.Select(p => ConvertHelper.CreatePedestrianDataContract(p)).Union<PersonDataContract>(_server.Drivers.Select(d => ConvertHelper.CreateDriverDataContract(d))).ToArray();
+        //}
+
+        //public PersonDataContract Authenticate(AuthenticationRequestDataContract request)
+        //{
+        //    PedestrianAuthenticationRequestDataContract pedestrianRequest = request as PedestrianAuthenticationRequestDataContract;
+        //    if (pedestrianRequest != null)
+        //    {
+        //        IPedestrianInfo pedestrianInfo = _server.CreatePedestrianInfo();
+        //        ConvertHelper.FillPedestrianAuthenticationRequestInfo(pedestrianInfo, pedestrianRequest);
+        //        _server.ModifyPedestriansCollection(col => col.Add(pedestrianInfo));
+        //        return ConvertHelper.CreatePedestrianDataContract(pedestrianInfo);
+        //    }
+        //    DriverAuthenticationRequestDataContract driverRequest = request as DriverAuthenticationRequestDataContract;
+        //    if (driverRequest != null)
+        //    {
+        //        IDriverInfo driverInfo = _server.CreateDriverInfo();
+        //        ConvertHelper.FillDriverAuthenticationRequestInfo(driverInfo, driverRequest);
+        //        _server.ModifyDriversCollection(col => col.Add(driverInfo));
+        //        return ConvertHelper.CreateDriverDataContract(driverInfo);
+        //    }
+        //    throw new NotImplementedException();
+        //}
+
+        public PedestrianDataContract AuthenticateAsPedestrian(PedestrianAuthenticationRequestDataContract request)
         {
-            return _server.Pedestrians.Select(p => ConvertHelper.CreatePedestrianDataContract(p)).Union<PersonDataContract>(_server.Drivers.Select(d => ConvertHelper.CreateDriverDataContract(d))).ToArray();
+            IPedestrianInfo pedestrianInfo = _server.CreatePedestrianInfo();
+            ConvertHelper.FillPedestrianAuthenticationRequestInfo(pedestrianInfo, request);
+            _server.ModifyPedestriansCollection(col => col.Add(pedestrianInfo));
+            return ConvertHelper.CreatePedestrianDataContract(pedestrianInfo);
         }
 
-        public PersonDataContract Authenticate(AuthenticationRequestDataContract request)
+        public DriverDataContract AuthenticateAsDriver(DriverAuthenticationRequestDataContract request)
         {
-            PedestrianAuthenticationRequestDataContract pedestrianRequest = request as PedestrianAuthenticationRequestDataContract;
-            if (pedestrianRequest != null)
-            {
-                IPedestrianInfo pedestrianInfo = _server.CreatePedestrianInfo();
-                ConvertHelper.FillPedestrianAuthenticationRequestInfo(pedestrianInfo, pedestrianRequest);
-                _server.ModifyPedestriansCollection(col => col.Add(pedestrianInfo));
-                return ConvertHelper.CreatePedestrianDataContract(pedestrianInfo);
-            }
-            DriverAuthenticationRequestDataContract driverRequest = request as DriverAuthenticationRequestDataContract;
-            if (driverRequest != null)
-            {
-                IDriverInfo driverInfo = _server.CreateDriverInfo();
-                ConvertHelper.FillDriverAuthenticationRequestInfo(driverInfo, driverRequest);
-                _server.ModifyDriversCollection(col => col.Add(driverInfo));
-                return ConvertHelper.CreateDriverDataContract(driverInfo);
-            }
-            throw new NotImplementedException();
+            IDriverInfo driverInfo = _server.CreateDriverInfo();
+            ConvertHelper.FillDriverAuthenticationRequestInfo(driverInfo, request);
+            _server.ModifyDriversCollection(col => col.Add(driverInfo));
+            return ConvertHelper.CreateDriverDataContract(driverInfo);
         }
 
         public IEnumerable<PedestrianDataContract> EnumeratePedestrians(Guid cityId)
@@ -70,6 +86,11 @@ namespace TaxiOnline.Server.MobileService
         }
 
         public void PushPedestrianRequest(ServiceContract.DataContracts.PedestrianRequestDataContract request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DriverResponseDataContract ConfirmPedestrianRequest(Guid pedestrianRequestId)
         {
             throw new NotImplementedException();
         }

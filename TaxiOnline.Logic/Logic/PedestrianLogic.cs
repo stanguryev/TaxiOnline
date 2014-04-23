@@ -20,6 +20,16 @@ namespace TaxiOnline.Logic.Logic
             : base(model, adaptersExtender, city)
         {
             _model = model;
-        }        
+        }
+
+        public void SetCurrentRequest(PedestrianRequestLogic request)
+        {
+            _model.CurrentRequest = request.Model;
+        }
+
+        public void ResetCurrentRequest()
+        {
+            _model.CurrentRequest = null;
+        }
     }
 }
