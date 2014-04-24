@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using TaxiOnline.Logic.Models;
 using TaxiOnline.Toolkit.Collections.Helpers;
+using TaxiOnline.Android.Helpers;
 
 namespace TaxiOnline.Android.Adapters
 {
@@ -26,6 +27,7 @@ namespace TaxiOnline.Android.Adapters
             _model = model;
             _model.PedestriansChanged += Model_PedestriansChanged;
             _model.PedestriansCollectionChanged += Model_PedestriansCollectionChanged;
+            _model.PedestrianRequestsCollectionChanged += Model_PedestrianRequestsCollectionChanged;
             UpdatePedestrians();
         }
 
@@ -80,6 +82,19 @@ namespace TaxiOnline.Android.Adapters
         private void Model_PedestriansCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             _context.RunOnUiThread(() => ObservableCollectionHelper.ApplyChanges(e, _items));
+        }
+
+        private void Model_PedestrianRequestsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            _context.RunOnUiThread(() =>
+            {
+                if (e.NewItems != null)
+                    foreach (PedestrianRequestModel request in e.NewItems.OfType<PedestrianRequestModel>().ToArray())
+                    {
+                        _model.SelectedPedestrianRequest = request;
+                        UIHelper.GoActivity(_context, typeof(PedestrianRequestModel));
+                    }
+            });
         }
     }
 }

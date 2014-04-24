@@ -21,6 +21,11 @@ namespace TaxiOnline.Android.Activities
         private DriverProfileModel _model;
         private readonly ProgressDialogDecorator _loadProgressDialogDecorator;
 
+        public DriverProfileModel Model
+        {
+            get { return _model; }
+        }
+
         public DriverProfileActivity()
         {
             _loadProgressDialogDecorator = new ProgressDialogDecorator(this, Resources.GetString(Resource.String.LoadTitle), Resources.GetString(Resource.String.LoadDataMessage));

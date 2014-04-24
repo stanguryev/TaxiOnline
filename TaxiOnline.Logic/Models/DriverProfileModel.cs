@@ -17,6 +17,7 @@ namespace TaxiOnline.Logic.Models
         private readonly SimpleCollectionLoadDecorator<DriverProfileResponseModel> _currentResponses;
         private readonly SimpleCollectionLoadDecorator<PedestrianRequestModel> _pedestrianRequests;
         private readonly SimpleCollectionLoadDecorator<PedestrianModel> _pedestrians;
+        private PedestrianRequestModel _selectedPedestrianRequest;
         private string _personName;
         private string _carColor;
         private string _carBrand;
@@ -35,6 +36,17 @@ namespace TaxiOnline.Logic.Models
         public IEnumerable<PedestrianModel> Pedestrians
         {
             get { return _pedestrians.Items; }
+        }
+
+        public IEnumerable<PedestrianRequestModel> PedestrianRequests
+        {
+            get { return _pedestrianRequests.Items; }
+        }
+
+        public PedestrianRequestModel SelectedPedestrianRequest
+        {
+            get { return _selectedPedestrianRequest; }
+            set { _selectedPedestrianRequest = value; }
         }
 
         public string PersonName
