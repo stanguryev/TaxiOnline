@@ -65,7 +65,11 @@ namespace TaxiOnline.Logic.Models
 
         public event EventHandler CurrentProfileChanged;
 
-        public event ActionResultEventHandler EnumrateCitiesFailed;
+        public event ActionResultEventHandler EnumrateCitiesFailed
+        {
+            add { _cities.RequestFailed += value; }
+            remove { _cities.RequestFailed -= value; }
+        }
 
         internal Func<ActionResult<IEnumerable<Logic.CityLogic>>> EnumerateCitiesDelegate;
 
@@ -82,7 +86,7 @@ namespace TaxiOnline.Logic.Models
 
         public void NotifyEnumrateCitiesFailed(ActionResult errorResult)
         {
-            OnEnumrateCitiesFailed(errorResult);
+            //OnEnumrateCitiesFailed(errorResult);
         }
 
         private ActionResult<IEnumerable<CityModel>> EnumerateCities()
@@ -104,11 +108,11 @@ namespace TaxiOnline.Logic.Models
                 handler(this, EventArgs.Empty);
         }
 
-        protected virtual void OnEnumrateCitiesFailed(ActionResult errorResult)
-        {
-            ActionResultEventHandler handler = EnumrateCitiesFailed;
-            if (handler != null)
-                handler(this, new ActionResultEventArgs(errorResult));
-        }
+        //protected virtual void OnEnumrateCitiesFailed(ActionResult errorResult)
+        //{
+        //    ActionResultEventHandler handler = EnumrateCitiesFailed;
+        //    if (handler != null)
+        //        handler(this, new ActionResultEventArgs(errorResult));
+        //}
     }
 }

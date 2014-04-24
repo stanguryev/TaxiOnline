@@ -10,8 +10,8 @@ namespace TaxiOnline.Logic.Models
     public class MapModel
     {
         private readonly IMapService _mapService;
-        private MapPoint _currentCenter;
-        private double _currentZoom;
+        private MapPoint _currentCenter = new MapPoint(59.95, 30.3);
+        private double _currentZoom = 11;
 
         public IMapService MapService
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -88,6 +89,12 @@ namespace TaxiOnline.ClientServicesAdapter.Data.Service
                 errorInfo = ActionResult.GetErrorResult(timeoutException);
                 return true;
             }
+            WebException webException = exception as WebException;
+            if (webException != null)
+            {
+                errorInfo = ActionResult.GetErrorResult(webException);
+                return true;
+            }
             errorInfo = ActionResult.ValidResult;
             return false;
         }
@@ -104,6 +111,12 @@ namespace TaxiOnline.ClientServicesAdapter.Data.Service
             if (timeoutException != null)
             {
                 errorInfo = ActionResult.GetErrorResult(timeoutException);
+                return true;
+            }
+            WebException webException = exception as WebException;
+            if (webException != null)
+            {
+                errorInfo = ActionResult.GetErrorResult(webException);
                 return true;
             }
             errorInfo = ActionResult.ValidResult;

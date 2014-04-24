@@ -61,7 +61,7 @@ namespace TaxiOnline.Android.Adapters
             MapPoint mapCenter = _model.Map.CurrentCenter;
             int x = (int)(width / 2.0 + pixelsScaleX * (personModel.CurrentLocation.Longitude - mapCenter.Longitude));
             int y = (int)(height / 2.0 + pixelsScaleY * (personModel.CurrentLocation.Latitude - mapCenter.Latitude));
-            view.LayoutParameters = new AbsoluteLayout.LayoutParams(view.Width, view.Height, x, y);
+            view.LayoutParameters = new AbsoluteLayout.LayoutParams(/*view.Width, view.Height*/32, 32, x, y);
         }
 
         private void UpdatePersons()

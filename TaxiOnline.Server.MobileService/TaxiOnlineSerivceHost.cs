@@ -17,7 +17,7 @@ namespace TaxiOnline.Server.MobileService
         private const string EndPointPath = "TaxiOnline";
 
         public TaxiOnlineSerivceHost(ITaxiOnlineServer server)
-            : base(new TaxiOnlineService(server), GetEndPointAddresses())
+            : base(new TaxiOnlineService(server), GetEndPointAddresses().First())
         {
             Description.Behaviors.Add(new ServiceMetadataBehavior
             {
@@ -25,6 +25,7 @@ namespace TaxiOnline.Server.MobileService
                 HttpsGetUrl = GetMexUri()
             });
             AddServiceEndpoint(typeof(IMetadataExchange), MetadataExchangeBindings.CreateMexHttpBinding(), "mex");
+            //GetEndPointAddresses().ToList().ForEach(addr => AddServiceEndpoint(typeof(ITaxiOnlineService), new BasicHttpBinding(BasicHttpSecurityMode.None), addr));
             AddServiceEndpoint(typeof(ITaxiOnlineService), new BasicHttpBinding(BasicHttpSecurityMode.None), GetEndPointAddresses().First());
         }
 
@@ -41,3 +42,4 @@ namespace TaxiOnline.Server.MobileService
         }
     }
 }
+;

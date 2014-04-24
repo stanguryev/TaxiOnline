@@ -92,8 +92,10 @@ namespace TaxiOnline.Android.Activities
         public void HookMapService(IAndroidMapService mapService)
         {
             MapView map = new MapView(this, new MapViewSurface(this));//FindViewById<MapView>(Resource.Id.map);
-            RelativeLayout mapLayout = FindViewById<RelativeLayout>(Resource.Id.mapLayout);
+            LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
             map.Map = new OsmSharp.UI.Map.Map();
+            map.Map.AddLayer(new OsmSharp.UI.Map.Layers.LayerTile(@"http://otile1.mqcdn.com/tiles/1.0.0/osm/{0}/{1}/{2}.png"));
+            map.Map.AddLayer(new OsmSharp.UI.Map.Layers.LayerTile(@"http://tiles.openseamap.org/seamark/{0}/{1}/{2}.png"));
             map.MapCenter = new OsmSharp.Math.Geo.GeoCoordinate(_cityModel.InitialCenter.Latitude, _cityModel.InitialCenter.Longitude);
             map.MapZoom = (float)_cityModel.InitialZoom;
             map.MapTilt = 0;
