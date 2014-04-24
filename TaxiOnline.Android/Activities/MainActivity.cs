@@ -54,7 +54,9 @@ namespace TaxiOnline.Android.Activities
             {
                 _connectionProgressDialogDecorator.Show();
                 _model.BeginLoadCities();
-            };
+            };            
+            ImageButton settingsButton = FindViewById<ImageButton>(Resource.Id.settingsButton);
+            settingsButton.Click += (sender, e) => UIHelper.GoResultActivity(this, typeof(SettingsActivity), 1);
             return base.OnCreateOptionsMenu(menu);
         }
 

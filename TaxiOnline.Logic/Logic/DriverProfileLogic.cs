@@ -78,7 +78,7 @@ namespace TaxiOnline.Logic.Logic
             _model.RemovePendingResponse(response.Model);
         }
 
-        private ActionResult<DriverProfileResponseLogic> InitResponse(Guid requestId)
+        public ActionResult<DriverProfileResponseLogic> InitResponse(Guid requestId)
         {
             PedestrianRequestLogic responseTarget = _pedestrianRequests.Items.FirstOrDefault(p => p.Model.RequestId == requestId);
             if (responseTarget != null)
@@ -161,7 +161,7 @@ namespace TaxiOnline.Logic.Logic
                 PaymentAmount = requestSLO.PaymentAmount,
                 Currency = requestSLO.Currency,
                 IsCancelled = requestSLO.IsCanceled,
-            }, _adaptersExtender, requestAuthor);
+            }, _adaptersExtender, requestAuthor, this);
         }
 
         private ActionResult<IEnumerable<DriverProfileResponseLogic>> RetriveDriverResponses()

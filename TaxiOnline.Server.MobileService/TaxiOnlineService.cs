@@ -28,32 +28,6 @@ namespace TaxiOnline.Server.MobileService
             return _server.EnumerateCities(userCultureName).Select(city => ConvertHelper.CreateCityDataContract(city)).ToArray();
         }
 
-        //public IEnumerable<PersonDataContract> EnumerateAllPersons(Guid cityId)
-        //{
-        //    return _server.Pedestrians.Select(p => ConvertHelper.CreatePedestrianDataContract(p)).Union<PersonDataContract>(_server.Drivers.Select(d => ConvertHelper.CreateDriverDataContract(d))).ToArray();
-        //}
-
-        //public PersonDataContract Authenticate(AuthenticationRequestDataContract request)
-        //{
-        //    PedestrianAuthenticationRequestDataContract pedestrianRequest = request as PedestrianAuthenticationRequestDataContract;
-        //    if (pedestrianRequest != null)
-        //    {
-        //        IPedestrianInfo pedestrianInfo = _server.CreatePedestrianInfo();
-        //        ConvertHelper.FillPedestrianAuthenticationRequestInfo(pedestrianInfo, pedestrianRequest);
-        //        _server.ModifyPedestriansCollection(col => col.Add(pedestrianInfo));
-        //        return ConvertHelper.CreatePedestrianDataContract(pedestrianInfo);
-        //    }
-        //    DriverAuthenticationRequestDataContract driverRequest = request as DriverAuthenticationRequestDataContract;
-        //    if (driverRequest != null)
-        //    {
-        //        IDriverInfo driverInfo = _server.CreateDriverInfo();
-        //        ConvertHelper.FillDriverAuthenticationRequestInfo(driverInfo, driverRequest);
-        //        _server.ModifyDriversCollection(col => col.Add(driverInfo));
-        //        return ConvertHelper.CreateDriverDataContract(driverInfo);
-        //    }
-        //    throw new NotImplementedException();
-        //}
-
         public PedestrianDataContract AuthenticateAsPedestrian(PedestrianAuthenticationRequestDataContract request)
         {
             IPedestrianInfo pedestrianInfo = _server.CreatePedestrianInfo();
@@ -85,12 +59,32 @@ namespace TaxiOnline.Server.MobileService
             throw new NotImplementedException();
         }
 
-        public void PushPedestrianRequest(ServiceContract.DataContracts.PedestrianRequestDataContract request)
+        public void PushPedestrianRequest(PedestrianRequestDataContract request)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public void RemovePedestrianRequest(Guid requestId)
         {
             throw new NotImplementedException();
         }
 
         public DriverResponseDataContract ConfirmPedestrianRequest(Guid pedestrianRequestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveDriverResponse(Guid responseId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RejectPedestrianRequest(Guid requestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StopRejectPedestrianRequest(Guid requestId)
         {
             throw new NotImplementedException();
         }

@@ -17,6 +17,13 @@ namespace TaxiOnline.Android.Helpers
     {
         public const string UpperActivityBundleId = "Upper";
 
+        public static Intent GetIntent(Activity sourceActivity, Type targetActivityType)
+        {
+            Intent intent = new Intent(sourceActivity, targetActivityType);
+            intent.PutExtra(UpperActivityBundleId, sourceActivity.Handle.ToInt64());
+            return intent;
+        }
+
         public static void GoActivity(Activity sourceActivity, Type targetActivityType)
         {
             Intent intent = new Intent(sourceActivity, targetActivityType);

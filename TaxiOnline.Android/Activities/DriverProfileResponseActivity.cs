@@ -10,6 +10,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using TaxiOnline.Logic.Models;
+using TaxiOnline.Android.Helpers;
+using TaxiOnline.Toolkit.Events;
 
 namespace TaxiOnline.Android.Activities
 {
@@ -21,7 +23,10 @@ namespace TaxiOnline.Android.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
+            PedestrianPopupDetailsActivity pedestrianPopupDetailsActivity = UIHelper.GetUpperActivity<PedestrianPopupDetailsActivity>(this, bundle);
+            ActionResult<DriverProfileResponseModel> initResult = pedestrianPopupDetailsActivity.Model.InitResponse();
+            if (pedestrianPopupDetailsActivity != null && initResult.IsValid)
+                _model = initResult.Result;
             SetContentView(Resource.Layout.DriverProfileResponseLayout);
             HookModel();
         }
@@ -30,7 +35,22 @@ namespace TaxiOnline.Android.Activities
         {
             if (_model == null)
                 return;
+            _model.ConfirmApplied += Model_ConfirmApplied;
+            _model.RejectApplied+=Model_RejectApplied;
+            Button confirmPedestrianRequestButton = FindViewById<Button>(Resource.Id.confirmPedestrianRequestButton);
+            confirmPedestrianRequestButton.Click += (sender, e) => _model.Confirm();
+            Button rejectPedestrianRequestButton = FindViewById<Button>(Resource.Id.rejectPedestrianRequestButton);
+            rejectPedestrianRequestButton.Click += (sender, e) => _model.Reject();
+        }
 
+        private void Model_ConfirmApplied(object sender, ActionResultEventArgs e)
+        {
+            RunOnUiThread(Finish);
+        }
+
+        private void Model_RejectApplied(object sender, ActionResultEventArgs e)
+        {
+            RunOnUiThread(Finish);
         }
     }
 }

@@ -23,8 +23,10 @@ namespace TaxiOnline.ClientInfrastructure.Services
         IPedestrianRequest CreatePedestrianRequest(Guid pedestrianId, Guid driverId);
         ActionResult PushPedestrianRequest(IPedestrianRequest requestSLO);
         ActionResult RemovePedestrianRequest(Guid requestId);
-        ActionResult<IDriverResponse> ConfirmPedestrianRequest(Guid pedestrianRequestId);
+        ActionResult<IDriverResponse> ConfirmPedestrianRequest(Guid requestId);
+        ActionResult RejectPedestrianRequest(Guid requestId);
         ActionResult RemoveDriverResponse(Guid responseId);
+        ActionResult StopRejectPedestrianRequest(Guid requestId);
         IAuthenticationRequest CreateAuthenticationRequest(ParticipantTypes requestType, string deviceId, Guid cityId);
         ActionResult<IPersonInfo> Authenticate(IAuthenticationRequest request);
     }

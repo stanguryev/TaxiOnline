@@ -14,10 +14,16 @@ using TaxiOnline.Logic.Models;
 
 namespace TaxiOnline.Android.Activities
 {
-    [Activity(Label = "My Activity")]
+    [Activity(Label = "@string/ApplicationName")]
     public class PedestrianPopupDetailsActivity : Activity
     {
         private PedestrianRequestModel _model;
+
+        public PedestrianRequestModel Model
+        {
+            get { return _model; }
+            set { _model = value; }
+        }
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -34,7 +40,8 @@ namespace TaxiOnline.Android.Activities
         {
             if (_model == null)
                 return;
-
+            LinearLayout pedestrianRequestLayout = FindViewById<LinearLayout>(Resource.Id.pedestrianRequestLayout);
+            pedestrianRequestLayout.Click += (sender, e) => UIHelper.GoResultActivity(this, typeof(DriverProfileResponseActivity), 1);
         }
     }
 }

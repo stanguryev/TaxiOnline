@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using TaxiOnline.Logic.Common.Enums;
+using TaxiOnline.Logic.Helpers;
 using TaxiOnline.Toolkit.Events;
 using TaxiOnline.Toolkit.Threading.CollectionsDecorators;
 
@@ -53,9 +54,16 @@ namespace TaxiOnline.Logic.Models
             internal set { _isCancelled = value; }
         }
 
+        internal Func<ActionResult<Logic.DriverProfileResponseLogic>> InitResponseDelegate { get; set; }
+
         internal PedestrianRequestModel(PedestrianModel requestAuthor)
         {
             _requestAuthor = requestAuthor;
+        }
+
+        public ActionResult<DriverProfileResponseModel> InitResponse()
+        {
+            return UpdateHelper.GetModel<DriverProfileResponseModel, Logic.DriverProfileResponseLogic>(InitResponseDelegate, l => l.Model);
         }
     }
 }

@@ -90,19 +90,33 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
 
         public ActionResult RemovePedestrianRequest(Guid requestId)
         {
-            throw new NotImplementedException();
+            ITaxiOnlineService channel = _proxy.Channel;
+            return _proxy.RunRequestSafe(() => channel.RemovePedestrianRequest(requestId), channel);
         }
 
-        public ActionResult<IDriverResponse> ConfirmPedestrianRequest(Guid pedestrianRequestId)
+        public ActionResult<IDriverResponse> ConfirmPedestrianRequest(Guid requestId)
         {
             ITaxiOnlineService channel = _proxy.Channel;
-            ActionResult<DriverResponseDataContract> confirmResult = _proxy.RunRequestSafe(() => channel.ConfirmPedestrianRequest(pedestrianRequestId), channel);
+            ActionResult<DriverResponseDataContract> confirmResult = _proxy.RunRequestSafe(() => channel.ConfirmPedestrianRequest(requestId), channel);
             return confirmResult.IsValid ? ActionResult<IDriverResponse>.GetValidResult(new DriverResponseSLO(confirmResult.Result)) : ActionResult<IDriverResponse>.GetErrorResult(confirmResult);
         }
 
         public ActionResult RemoveDriverResponse(Guid responseId)
         {
-            throw new NotImplementedException();
+            ITaxiOnlineService channel = _proxy.Channel;
+            return _proxy.RunRequestSafe(() => channel.RemoveDriverResponse(responseId), channel);
+        }
+
+        public ActionResult RejectPedestrianRequest(Guid requestId)
+        {
+            ITaxiOnlineService channel = _proxy.Channel;
+            return _proxy.RunRequestSafe(() => channel.RejectPedestrianRequest(requestId), channel);
+        }
+
+        public ActionResult StopRejectPedestrianRequest(Guid requestId)
+        {
+            ITaxiOnlineService channel = _proxy.Channel;
+            return _proxy.RunRequestSafe(() => channel.StopRejectPedestrianRequest(requestId), channel);
         }
 
         public ActionResult<IPersonInfo> Authenticate(IAuthenticationRequest request)

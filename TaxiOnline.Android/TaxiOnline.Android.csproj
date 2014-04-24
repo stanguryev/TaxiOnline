@@ -63,14 +63,17 @@
     <Compile Include="Activities\AuthenticationActivity.cs" />
     <Compile Include="Activities\DriverProfileActivity.cs" />
     <Compile Include="Activities\DriverProfileResponseActivity.cs" />
+    <Compile Include="Activities\DriverResponsesActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\PedestrianPopupDetailsActivity.cs" />
     <Compile Include="Activities\PedestrianProfileActivity.cs" />
     <Compile Include="Activities\PedestrianProfileRequestActivity.cs" />
     <Compile Include="Activities\RegistrationActivity.cs" />
+    <Compile Include="Activities\SettingsActivity.cs" />
     <Compile Include="Adapters\CitiesAdapter.cs" />
     <Compile Include="Adapters\CitySuggestionsFilter.cs" />
     <Compile Include="Adapters\DriverProfileAdapter.cs" />
+    <Compile Include="Adapters\DriverResponsesAdapter.cs" />
     <Compile Include="Adapters\PedestrianProfileAdapter.cs" />
     <Compile Include="Adapters\PersonsAdapter.cs" />
     <Compile Include="Common\AndroidAdaptersExtender.cs" />
@@ -134,6 +137,12 @@
     <AndroidResource Include="Resources\Layout\PedestrianPopupDetailsLayout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\DriverResponseLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\DriverResponsesLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\MainLayout.axml" />
@@ -150,6 +159,7 @@
     <AndroidResource Include="Resources\Drawable\SearchIcon.png" />
     <AndroidResource Include="Resources\Drawable\DriverIcon.png" />
     <AndroidResource Include="Resources\Drawable\RefreshIcon.png" />
+    <AndroidResource Include="Resources\Drawable\SettingsIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TaxiOnline.ClientAdapters.Android\TaxiOnline.ClientAdapters.Android.csproj">

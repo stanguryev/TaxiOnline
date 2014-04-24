@@ -33,5 +33,17 @@ namespace TaxiOnline.ServiceContract
 
         [OperationContract]
         DriverResponseDataContract ConfirmPedestrianRequest(Guid pedestrianRequestId);
+
+        [OperationContract]
+        void RemovePedestrianRequest(Guid requestId);
+
+        [OperationContract]
+        void RemoveDriverResponse(Guid responseId);
+
+        [OperationContract]
+        void RejectPedestrianRequest(Guid requestId);
+
+        [OperationContract]
+        void StopRejectPedestrianRequest(Guid requestId);
     }
 }
