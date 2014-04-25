@@ -16,13 +16,13 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Map
 
         protected override void SetMapCenter(ClientInfrastructure.Data.MapPoint value)
         {
-            if (_mapView != null && _context != null)
+            if (_mapView != null)
                 _mapView.MapCenter = new OsmSharp.Math.Geo.GeoCoordinate(value.Latitude, value.Longitude);
         }
 
         protected override void SetMapZoom(double value)
         {
-            if (_mapView != null && _context != null)
+            if (_mapView != null)
                 _mapView.MapZoom = (float)value;
         }
 
@@ -30,6 +30,7 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Map
         {
             _context = context;
             _mapView = new MapView(context, new MapViewSurface(context));
+            _mapView.Map = _map;
             SetMapCenter(_mapCenter);
             SetMapZoom(_mapZoom);
             _mapView.MapTilt = 0;

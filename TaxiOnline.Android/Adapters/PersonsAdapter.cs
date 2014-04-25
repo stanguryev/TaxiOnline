@@ -62,7 +62,7 @@ namespace TaxiOnline.Android.Adapters
             //int x = (int)(width / 2.0 + pixelsScaleX * (personModel.CurrentLocation.Longitude - mapCenter.Longitude));
             //int y = (int)(height / 2.0 + pixelsScaleY * (personModel.CurrentLocation.Latitude - mapCenter.Latitude));
             int x = upperView.Width / 2 - _model.Map.MapService.Map.LongitudeOffsetToPixels(mapCenter.Longitude, personModel.CurrentLocation.Longitude, mapCenter.Latitude);
-            int y = upperView.Height / 2 - _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, personModel.CurrentLocation.Latitude, mapCenter.Longitude);
+            int y = upperView.Height / 2 + _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, personModel.CurrentLocation.Latitude, mapCenter.Longitude);
             view.LayoutParameters = new AbsoluteLayout.LayoutParams(/*view.Width, view.Height*/32, 32, x, y);
         }
 

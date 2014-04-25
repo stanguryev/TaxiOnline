@@ -32,7 +32,7 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Hardware
                 string providerName = locationManager.GetBestProvider(new Criteria(), true);
                 Location location = string.IsNullOrWhiteSpace(providerName) ? null : locationManager.GetLastKnownLocation(providerName);
                 if (location == null)
-                    ActionResult<MapPoint>.GetErrorResult(new NotSupportedException());
+                    return ActionResult<MapPoint>.GetErrorResult(new NotSupportedException());
                 using (location)
                     return ActionResult<MapPoint>.GetValidResult(new MapPoint(location.Latitude, location.Longitude));
             }

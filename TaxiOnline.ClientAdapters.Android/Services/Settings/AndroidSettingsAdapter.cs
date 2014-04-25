@@ -33,7 +33,7 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Settings
 
         public override void LoadSettings()
         {
-            _settingsObject.ServerEndpointAddress = _preferences.GetString(ServerEndPointName, "http://127.0.0.1/TaxiOnline");
+            _settingsObject.ServerEndpointAddress = _preferences.GetString(ServerEndPointName, "http://10.188.112.31/TaxiOnline");
         }
 
         public override void SaveSettings()
