@@ -13,6 +13,7 @@ using TaxiOnline.Logic.Models;
 using TaxiOnline.Android.Helpers;
 using TaxiOnline.Android.Views;
 using TaxiOnline.Android.Adapters;
+using TaxiOnline.ClientInfrastructure.Android.Services;
 
 namespace TaxiOnline.Android.Activities
 {
@@ -49,6 +50,8 @@ namespace TaxiOnline.Android.Activities
         {
             if (_model == null)
                 return;
+            LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
+            ((IAndroidMapService)_model.Map.MapService).VisualizeMap(this, mapLayout);
             CanvasView pedestrianProfileView = FindViewById<CanvasView>(Resource.Id.pedestrianProfileView);
             pedestrianProfileView.Adapter = new PedestrianProfileAdapter(this, _model);
         }

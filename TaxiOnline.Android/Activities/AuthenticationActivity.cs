@@ -84,24 +84,26 @@ namespace TaxiOnline.Android.Activities
             _interactionModel.CurrentProfileChanged += InteractionModel_CurrentProfileChanged;
             Button registerButton = FindViewById<Button>(Resource.Id.registerButton);
             registerButton.Click += (sender, e) => UIHelper.GoResultActivity(this, typeof(RegistrationActivity), (int)Dialogs.Registration);
-            HookMapService((IAndroidMapService)_cityModel.Map.MapService);
+            //HookMapService((IAndroidMapService)_cityModel.Map.MapService);
+            LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
+            ((IAndroidMapService)_cityModel.Map.MapService).VisualizeMap(this, mapLayout);
             CanvasView personsView = FindViewById<CanvasView>(Resource.Id.personsView);
             personsView.Adapter = new PersonsAdapter(this, _cityModel);
         }
 
-        public void HookMapService(IAndroidMapService mapService)
-        {
-            MapView map = new MapView(this, new MapViewSurface(this));//FindViewById<MapView>(Resource.Id.map);
-            LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
-            map.Map = new OsmSharp.UI.Map.Map();
-            map.Map.AddLayer(new OsmSharp.UI.Map.Layers.LayerTile(@"http://otile1.mqcdn.com/tiles/1.0.0/osm/{0}/{1}/{2}.png"));
-            map.Map.AddLayer(new OsmSharp.UI.Map.Layers.LayerTile(@"http://tiles.openseamap.org/seamark/{0}/{1}/{2}.png"));
-            map.MapCenter = new OsmSharp.Math.Geo.GeoCoordinate(_cityModel.InitialCenter.Latitude, _cityModel.InitialCenter.Longitude);
-            map.MapZoom = (float)_cityModel.InitialZoom;
-            map.MapTilt = 0;
-            map.MapAllowTilt = false;
-            mapLayout.AddView(map);
-        }
+        //public void HookMapService(IAndroidMapService mapService)
+        //{
+        //    MapView map = new MapView(this, new MapViewSurface(this));//FindViewById<MapView>(Resource.Id.map);
+        //    LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
+        //    map.Map = new OsmSharp.UI.Map.Map();
+        //    map.Map.AddLayer(new OsmSharp.UI.Map.Layers.LayerTile(@"http://otile1.mqcdn.com/tiles/1.0.0/osm/{0}/{1}/{2}.png"));
+        //    map.Map.AddLayer(new OsmSharp.UI.Map.Layers.LayerTile(@"http://tiles.openseamap.org/seamark/{0}/{1}/{2}.png"));
+        //    map.MapCenter = new OsmSharp.Math.Geo.GeoCoordinate(_cityModel.InitialCenter.Latitude, _cityModel.InitialCenter.Longitude);
+        //    map.MapZoom = (float)_cityModel.InitialZoom;
+        //    map.MapTilt = 0;
+        //    map.MapAllowTilt = false;
+        //    mapLayout.AddView(map);
+        //}
 
         private void ActivateProfile()
         {

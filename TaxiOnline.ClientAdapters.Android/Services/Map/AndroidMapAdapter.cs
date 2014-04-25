@@ -16,6 +16,19 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Map
 {
     public class AndroidMapAdapter : MapAdapter, IAndroidMapService
     {
-        
+        public AndroidMapAdapter()
+        {
+
+        }
+
+        protected override MapWrapperBase CreateMapWrapper()
+        {
+            return new AndroidMapWrapper();
+        }
+
+        public void VisualizeMap(Context context, ViewGroup viewGroup)
+        {
+            ((AndroidMapWrapper)_map).VisualizeMap(context, viewGroup);
+        }
     }
 }

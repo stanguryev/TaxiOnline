@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TaxiOnline.ClientInfrastructure.Data;
 
 namespace TaxiOnline.Logic.Models
 {
@@ -9,6 +10,7 @@ namespace TaxiOnline.Logic.Models
     {
         private MapModel _map;
         private Guid _personId;
+        private MapPoint _currentLocation;
         private string _skypeNumber;
         private string _phoneNumber;
 
@@ -34,6 +36,17 @@ namespace TaxiOnline.Logic.Models
         {
             get { return _map; }
             internal set { _map = value; }
+        }
+
+        public MapPoint CurrentLocation
+        {
+            get { return _currentLocation; }
+            internal set { _currentLocation = value; }
+        }
+
+        public ProfileModel()
+        {
+
         }
     }
 }

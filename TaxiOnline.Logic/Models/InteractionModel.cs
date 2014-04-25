@@ -13,6 +13,7 @@ namespace TaxiOnline.Logic.Models
 {
     public class InteractionModel
     {
+        private readonly SettingsModel _settings;
         private ProfileModel _currentProfile;
         private readonly Logic.InteractionLogic _logic;
         private readonly SimpleCollectionLoadDecorator<CityModel> _cities;
@@ -36,6 +37,11 @@ namespace TaxiOnline.Logic.Models
         {
             get { return _cities.Items; }
         }
+
+        public SettingsModel Settings
+        {
+            get { return _settings; }
+        } 
 
         public MapModel Map
         {
@@ -76,7 +82,10 @@ namespace TaxiOnline.Logic.Models
         public InteractionModel(AdaptersExtender adaptersExtender)
         {
             _logic = new Logic.InteractionLogic(this, adaptersExtender);
+            _settings = _logic.Settings.Model;
             _cities = new SimpleCollectionLoadDecorator<CityModel>(EnumerateCities);
+            _map = _logic.Map.Model;
+            _settings = _logic.Settings.Model;
         }
 
         public void BeginLoadCities()

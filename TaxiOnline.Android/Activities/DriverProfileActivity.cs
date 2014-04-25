@@ -12,6 +12,9 @@ using Android.Widget;
 using TaxiOnline.Logic.Models;
 using TaxiOnline.Android.Helpers;
 using TaxiOnline.Android.Decorators;
+using TaxiOnline.Android.Views;
+using TaxiOnline.Android.Adapters;
+using TaxiOnline.ClientInfrastructure.Android.Services;
 
 namespace TaxiOnline.Android.Activities
 {
@@ -54,6 +57,10 @@ namespace TaxiOnline.Android.Activities
             };
             _loadProgressDialogDecorator.Show();
             _model.BeginLoad();
+            LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
+            ((IAndroidMapService)_model.Map.MapService).VisualizeMap(this, mapLayout);       
+            CanvasView driverProfileView = FindViewById<CanvasView>(Resource.Id.driverProfileView);
+            driverProfileView.Adapter = new DriverProfileAdapter(this, _model);
         }
     }
 }

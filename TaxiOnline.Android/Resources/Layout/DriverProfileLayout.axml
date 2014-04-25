@@ -4,4 +4,8 @@
     android:layout_height="fill_parent">
     <Include
         layout="@layout/maplayout" />
+    <TaxiOnline.Android.Views.CanvasView
+        android:id="@+id/driverProfileView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 </FrameLayout>

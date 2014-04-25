@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="ApplicationName">TaxiOnline</string>
+  <string name="ServerAddress">Server address</string>
+  <string name="Apply">Apply</string>
+  <string name="Cancel">Cancel</string>
+  <string name="Restart">Restart</string>
   <string name="ConnectingToServerTitle">Connecting</string>
   <string name="ConnectingToServerMessage">Connecting to the server...</string>
   <string name="ConnectToServerFailed">Failed tp connect to the server</string>
@@ -8,6 +12,7 @@
   <string name="NoCityFound">The city name doesn\'t match any of available one</string>
   <string name="FailedToLoadPersons">Pedestrians and drivers information load has failed</string>
   <string name="NoParticipationRole">The participation role isn\'t specified. Please choose driver or pedestrian</string>
+  <string name="Registration">Registration</string>
   <string name="Cancel">Cancel</string>
   <string name="Register">Register</string>
   <string name="Pedestrian">pedestrian</string>

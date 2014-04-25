@@ -19,16 +19,10 @@ namespace TaxiOnline.Android.Common
     {
         private const string ServerEndPointName = "ServerEndPoint";
 
-        public AndroidAdaptersExtender()
-            : base(new AndroidServicesFactory())
+        public AndroidAdaptersExtender(ISharedPreferences preferences)
+            : base(new AndroidServicesFactory(preferences))
         {
 
-        }
-
-        public void ApplySettings(ISharedPreferences preferences)
-        {
-            string serverEndpointAddress = preferences.GetString(ServerEndPointName, "http://10.188.112.31/TaxiOnline");
-            ServicesFactory.ConfigureDataService(serverEndpointAddress);
         }
     }
 }

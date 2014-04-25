@@ -21,7 +21,7 @@ namespace TaxiOnline.Logic.Logic
     {
         private readonly InteractionModel _model;
         private readonly MapLogic _map;
-
+        private readonly SettingsLogic _settings;
         private readonly AdaptersExtender _adaptersExtender;
         private readonly UpdatableCollectionLoadDecorator<CityLogic, ICityInfo> _cities;
         private ProfileLogic _currentProfile;
@@ -36,6 +36,11 @@ namespace TaxiOnline.Logic.Logic
             }
         }
 
+        public SettingsLogic Settings
+        {
+            get { return _settings; }
+        } 
+
         public MapLogic Map
         {
             get { return _map; }
@@ -45,8 +50,10 @@ namespace TaxiOnline.Logic.Logic
         {
             _model = model;
             _adaptersExtender = adaptersExtender;
+            _model.CurrentCityChanged += Model_CurrentCityChanged;
             model.EnumerateCitiesDelegate = EnumerateCities;
             _map = new MapLogic(new MapModel(_adaptersExtender.ServicesFactory.GetCurrentMapService()), _adaptersExtender, this);
+            _settings = new SettingsLogic(new SettingsModel(_adaptersExtender.ServicesFactory.GetCurrentSettingsService()), _adaptersExtender, this);
             _cities = new UpdatableCollectionLoadDecorator<CityLogic, ICityInfo>(RetriveCities, CompareCityInfo, c => true, CreateCityLogic);
             _cities.RequestFailed += Cities_RequestFailed;
         }
@@ -84,6 +91,13 @@ namespace TaxiOnline.Logic.Logic
         private void Cities_RequestFailed(object sender, ActionResultEventArgs e)
         {
             _model.NotifyEnumrateCitiesFailed(e.Result);
+        }
+
+        private void Model_CurrentCityChanged(object sender, EventArgs e)
+        {
+            CityModel currentCity = _model.CurrentCity;
+            if (currentCity != null)
+                currentCity.SetMapInitials();
         }
     }
 }

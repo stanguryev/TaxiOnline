@@ -54,13 +54,15 @@ namespace TaxiOnline.Android.Adapters
 
         private void HookModelToView(View view, PersonModel personModel, ViewGroup upperView)
         {
-            int width = upperView.Width;
-            int height = upperView.Height;
-            double pixelsScaleX = 0.35 * Math.Pow(2.0, _model.Map.CurrentZoom);
-            double pixelsScaleY = 0.71 * Math.Pow(2.0, _model.Map.CurrentZoom);
-            MapPoint mapCenter = _model.Map.CurrentCenter;
-            int x = (int)(width / 2.0 + pixelsScaleX * (personModel.CurrentLocation.Longitude - mapCenter.Longitude));
-            int y = (int)(height / 2.0 + pixelsScaleY * (personModel.CurrentLocation.Latitude - mapCenter.Latitude));
+            //int width = upperView.Width;
+            //int height = upperView.Height;
+            //double pixelsScaleX = 0.35 * Math.Pow(2.0, _model.Map.CurrentZoom);
+            //double pixelsScaleY = 0.71 * Math.Pow(2.0, _model.Map.CurrentZoom);
+            MapPoint mapCenter = _model.Map.MapService.Map.MapCenter;
+            //int x = (int)(width / 2.0 + pixelsScaleX * (personModel.CurrentLocation.Longitude - mapCenter.Longitude));
+            //int y = (int)(height / 2.0 + pixelsScaleY * (personModel.CurrentLocation.Latitude - mapCenter.Latitude));
+            int x = upperView.Width / 2 - _model.Map.MapService.Map.LongitudeOffsetToPixels(mapCenter.Longitude, personModel.CurrentLocation.Longitude, mapCenter.Latitude);
+            int y = upperView.Height / 2 - _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, personModel.CurrentLocation.Latitude, mapCenter.Longitude);
             view.LayoutParameters = new AbsoluteLayout.LayoutParams(/*view.Width, view.Height*/32, 32, x, y);
         }
 

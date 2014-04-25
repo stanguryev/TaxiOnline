@@ -14,6 +14,7 @@ using TaxiOnline.Toolkit.Collections.Helpers;
 using TaxiOnline.Toolkit.Events;
 using TaxiOnline.Android.Helpers;
 using TaxiOnline.Android.Activities;
+using TaxiOnline.ClientInfrastructure.Data;
 
 namespace TaxiOnline.Android.Adapters
 {
@@ -58,13 +59,20 @@ namespace TaxiOnline.Android.Adapters
             return view;
         }
 
-        private void HookCurrentModelToView(View view, ViewGroup parent)
+        private void HookCurrentModelToView(View view, ViewGroup upperView)
         {
-            //throw new NotImplementedException();
+            MapPoint mapCenter = _model.Map.MapService.Map.MapCenter;
+            int x = upperView.Width / 2 - _model.Map.MapService.Map.LongitudeOffsetToPixels(mapCenter.Longitude, _model.CurrentLocation.Longitude, mapCenter.Latitude);
+            int y = upperView.Height / 2 - _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, _model.CurrentLocation.Latitude, mapCenter.Longitude);
+            view.LayoutParameters = new AbsoluteLayout.LayoutParams(32, 32, x, y);
         }
 
-        private void HookModelToView(View view, DriverModel driverModel, ViewGroup parent)
+        private void HookModelToView(View view, DriverModel driverModel, ViewGroup upperView)
         {
+            MapPoint mapCenter = _model.Map.MapService.Map.MapCenter;
+            int x = upperView.Width / 2 - _model.Map.MapService.Map.LongitudeOffsetToPixels(mapCenter.Longitude, driverModel.CurrentLocation.Longitude, mapCenter.Latitude);
+            int y = upperView.Height / 2 - _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, driverModel.CurrentLocation.Latitude, mapCenter.Longitude);
+            view.LayoutParameters = new AbsoluteLayout.LayoutParams(32, 32, x, y);
             ImageView driverIconImageView = view.FindViewById<ImageView>(Resource.Id.driverIconImageView);
             driverIconImageView.Hover += (sender, e) =>
             {

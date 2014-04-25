@@ -30,9 +30,9 @@ namespace TaxiOnline.Android.Activities
 
         public MainActivity()
         {
-            AndroidAdaptersExtender extender = new AndroidAdaptersExtender();
-            extender.ApplySettings(PreferenceManager.GetDefaultSharedPreferences(Application.Context));
+            AndroidAdaptersExtender extender = new AndroidAdaptersExtender(PreferenceManager.GetDefaultSharedPreferences(Application.Context));
             _model = new InteractionModel(extender);
+            _model.Settings.LoadSettings();
         }
 
         protected override void OnCreate(Bundle bundle)

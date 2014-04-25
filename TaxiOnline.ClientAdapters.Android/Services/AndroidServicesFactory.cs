@@ -12,11 +12,22 @@ using Android.Widget;
 using TaxiOnline.ClientServicesAdapter;
 using TaxiOnline.ClientInfrastructure.Services;
 using TaxiOnline.ClientAdapters.Android.Services.Hardware;
+using TaxiOnline.ClientInfrastructure.Android.Services;
+using TaxiOnline.ClientAdapters.Android.Services.Settings;
 
 namespace TaxiOnline.ClientAdapters.Android.Services
 {
     public class AndroidServicesFactory : ServicesFactoryBase
     {
+        private readonly Lazy<IAndroidSettingsService> _settingsService;
+        private readonly Lazy<IAndroidHardwareService> _hardwareService;
+
+        public AndroidServicesFactory(ISharedPreferences preferences)
+        {
+            _settingsService = new Lazy<IAndroidSettingsService>(() => new AndroidSettingsAdapter(preferences), true);
+            _hardwareService = new Lazy<IAndroidHardwareService>(() => new AndroidHardwareAdapter(), true);
+        }
+
         public override IMapService GetCurrentMapService()
         {
             return null;
@@ -24,7 +35,12 @@ namespace TaxiOnline.ClientAdapters.Android.Services
 
         public override IHardwareService GetCurrentHardwareService()
         {
-            return new AndroidHardwareAdapter();
+            return _hardwareService.Value;
+        }
+
+        public override ISettingsService GetCurrentSettingsService()
+        {
+            return _settingsService.Value;
         }
     }
 }

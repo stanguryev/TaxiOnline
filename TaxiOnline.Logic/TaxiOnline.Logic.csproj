@@ -69,6 +69,7 @@
     <Compile Include="Logic\PedestrianRequestLogic.cs" />
     <Compile Include="Logic\PersonLogic.cs" />
     <Compile Include="Logic\ProfileLogic.cs" />
+    <Compile Include="Logic\SettingsLogic.cs" />
     <Compile Include="Models\AuthenticationRequestModel.cs" />
     <Compile Include="Models\CityModel.cs" />
     <Compile Include="Models\DriverAuthenticationRequestModel.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Models\PedestrianRequestModel.cs" />
     <Compile Include="Models\PersonModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

@@ -23,6 +23,12 @@ namespace TaxiOnline.Logic.Logic
             _profileModel = model;
             _adaptersExtender = adaptersExtender;
             _city = city;
+            UpdateCurrentLocation();
+        }
+
+        private void UpdateCurrentLocation()
+        {
+            _profileModel.CurrentLocation = _adaptersExtender.ServicesFactory.GetCurrentHardwareService().GetCurrentLocation();
         }
     }
 }

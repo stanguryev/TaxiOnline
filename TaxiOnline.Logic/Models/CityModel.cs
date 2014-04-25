@@ -85,6 +85,12 @@ namespace TaxiOnline.Logic.Models
             _persons = new SimpleCollectionLoadDecorator<PersonModel>(EnumeratePersons);
         }
 
+        public void SetMapInitials()
+        {
+            _map.CurrentCenter = _initialCenter;
+            _map.CurrentZoom = _initialZoom;
+        }
+
         public AuthenticationRequestModel CreateAuthenticationRequest(ParticipantTypes requestType)
         {
             switch (requestType)

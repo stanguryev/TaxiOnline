@@ -57,9 +57,12 @@
     <Compile Include="ServicesEntities\DataService\IPedestrianInfo.cs" />
     <Compile Include="ServicesEntities\DataService\IPedestrianRequest.cs" />
     <Compile Include="ServicesEntities\DataService\IPersonInfo.cs" />
+    <Compile Include="ServicesEntities\Map\IMap.cs" />
+    <Compile Include="ServicesEntities\Settings\ISettings.cs" />
     <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\IHardwareService.cs" />
     <Compile Include="Services\IMapService.cs" />
+    <Compile Include="Services\ISettingsService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
