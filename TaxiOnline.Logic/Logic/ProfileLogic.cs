@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.Logic.Common;
 using TaxiOnline.Logic.Models;
+using TaxiOnline.Toolkit.Events;
 
 namespace TaxiOnline.Logic.Logic
 {
@@ -16,7 +18,7 @@ namespace TaxiOnline.Logic.Logic
         public ProfileModel ProfileModel
         {
             get { return _profileModel; }
-        } 
+        }
 
         public ProfileLogic(ProfileModel model, AdaptersExtender adaptersExtender, CityLogic city)
         {
@@ -28,7 +30,9 @@ namespace TaxiOnline.Logic.Logic
 
         private void UpdateCurrentLocation()
         {
-            _profileModel.CurrentLocation = _adaptersExtender.ServicesFactory.GetCurrentHardwareService().GetCurrentLocation();
+            ActionResult<MapPoint> locationResult = _adaptersExtender.ServicesFactory.GetCurrentHardwareService().GetCurrentLocation();
+            if (locationResult.IsValid)
+                _profileModel.CurrentLocation = locationResult.Result;
         }
     }
 }

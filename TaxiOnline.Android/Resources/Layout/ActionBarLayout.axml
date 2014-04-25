@@ -7,17 +7,24 @@
     <ImageButton
         android:id="@+id/settingsButton"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:width="40sp"
+        android:height="40sp"
         android:background="@drawable/SettingsIcon" />
     <ImageButton
         android:id="@+id/refreshCitiesButton"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:width="40sp"
+        android:height="40sp"
         android:background="@drawable/RefreshIcon" />
     <ImageView
         android:id="@+id/connectionStateImageView"
         android:width="20sp"
         android:height="20sp"
+        android:layout_gravity="left"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent" />
 </LinearLayout>

@@ -16,6 +16,7 @@ using TaxiOnline.ClientInfrastructure.Android.Services;
 using TaxiOnline.Android.Views;
 using TaxiOnline.Android.Adapters;
 using TaxiOnline.Android.Decorators;
+using TaxiOnline.ClientInfrastructure.Exceptions;
 
 namespace TaxiOnline.Android.Activities
 {
@@ -52,7 +53,7 @@ namespace TaxiOnline.Android.Activities
         {
             get { return _activePedestrianProfileModel; }
         }
-        
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -147,7 +148,20 @@ namespace TaxiOnline.Android.Activities
             RunOnUiThread(() =>
             {
                 _authorizationProgressDialogDecorator.Hide();
-                using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resources.GetString(Resource.String.AuthenticationFailed), ToastLength.Short))
+                string message = Resources.GetString(Resource.String.AuthenticationFailed);
+                HardwareServiceException hardwareServiceException = e.Result.FailException as HardwareServiceException;
+                if (hardwareServiceException != null)
+                {
+                    switch (hardwareServiceException.ErrorType)
+                    {
+                        case TaxiOnline.ClientInfrastructure.Exceptions.Enums.HardwareServiceErrors.NoLocationService:
+                            message = Resources.GetString(Resource.String.NoLocationServiceAvailable);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                using (Toast errorToast = Toast.MakeText(Application.BaseContext, message, ToastLength.Short))
                     errorToast.Show();
             });
         }

@@ -44,7 +44,9 @@
   <ItemGroup>
     <Compile Include="Data\MapPoint.cs" />
     <Compile Include="Data\ParticipantTypes.cs" />
+    <Compile Include="Exceptions\Enums\HardwareServiceErrors.cs" />
     <Compile Include="Exceptions\Enums\RemoteProxyErrors.cs" />
+    <Compile Include="Exceptions\HardwareServiceException.cs" />
     <Compile Include="Exceptions\RemoteProxyException.cs" />
     <Compile Include="Factories\IServicesFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

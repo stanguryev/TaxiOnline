@@ -10,7 +10,7 @@ namespace TaxiOnline.ClientInfrastructure.Services
     public interface IHardwareService
     {
         string GetDeviceId();
-        MapPoint GetCurrentLocation();
+        ActionResult<MapPoint> GetCurrentLocation();
         ActionResult PhoneCall(string number);
     }
 }

@@ -314,14 +314,14 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f040018
 			public const int AuthorizingTitle = 2130968600;
 			
-			// aapt resource value: 0x7f04001e
-			public const int CallToDriver = 2130968606;
+			// aapt resource value: 0x7f040020
+			public const int CallToDriver = 2130968608;
 			
 			// aapt resource value: 0x7f040005
 			public const int Cancel = 2130968581;
 			
-			// aapt resource value: 0x7f040021
-			public const int CancelMessageToDriver = 2130968609;
+			// aapt resource value: 0x7f040023
+			public const int CancelMessageToDriver = 2130968611;
 			
 			// aapt resource value: 0x7f040016
 			public const int CarBrand = 2130968598;
@@ -335,8 +335,8 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f04000a
 			public const int ChooseCityToolTip = 2130968586;
 			
-			// aapt resource value: 0x7f040023
-			public const int ConfirmPedestrianRequest = 2130968611;
+			// aapt resource value: 0x7f040025
+			public const int ConfirmPedestrianRequest = 2130968613;
 			
 			// aapt resource value: 0x7f040009
 			public const int ConnectToServerFailed = 2130968585;
@@ -350,11 +350,14 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f040011
 			public const int Driver = 2130968593;
 			
-			// aapt resource value: 0x7f04001d
-			public const int FailedToEnumratePedestrians = 2130968605;
+			// aapt resource value: 0x7f04001e
+			public const int FailedToEnumrateDrivers = 2130968606;
 			
-			// aapt resource value: 0x7f040022
-			public const int FailedToInitRequest = 2130968610;
+			// aapt resource value: 0x7f04001f
+			public const int FailedToEnumratePedestrians = 2130968607;
+			
+			// aapt resource value: 0x7f040024
+			public const int FailedToInitRequest = 2130968612;
 			
 			// aapt resource value: 0x7f04000c
 			public const int FailedToLoadPersons = 2130968588;
@@ -362,14 +365,17 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f040000
 			public const int Hello = 2130968576;
 			
-			// aapt resource value: 0x7f04001c
-			public const int LoadDataMessage = 2130968604;
+			// aapt resource value: 0x7f04001d
+			public const int LoadDataMessage = 2130968605;
 			
-			// aapt resource value: 0x7f04001b
-			public const int LoadTitle = 2130968603;
+			// aapt resource value: 0x7f04001c
+			public const int LoadTitle = 2130968604;
 			
 			// aapt resource value: 0x7f04000b
 			public const int NoCityFound = 2130968587;
+			
+			// aapt resource value: 0x7f04001b
+			public const int NoLocationServiceAvailable = 2130968603;
 			
 			// aapt resource value: 0x7f04000d
 			public const int NoParticipationRole = 2130968589;
@@ -380,8 +386,8 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f040014
 			public const int PersonName = 2130968596;
 			
-			// aapt resource value: 0x7f04001f
-			public const int PhoneCallError = 2130968607;
+			// aapt resource value: 0x7f040021
+			public const int PhoneCallError = 2130968609;
 			
 			// aapt resource value: 0x7f040013
 			public const int PhoneNumber = 2130968595;
@@ -392,14 +398,14 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f04000e
 			public const int Registration = 2130968590;
 			
-			// aapt resource value: 0x7f040024
-			public const int RejectPedestrianRequest = 2130968612;
+			// aapt resource value: 0x7f040026
+			public const int RejectPedestrianRequest = 2130968614;
 			
 			// aapt resource value: 0x7f040006
 			public const int Restart = 2130968582;
 			
-			// aapt resource value: 0x7f040020
-			public const int SendMessageToDriver = 2130968608;
+			// aapt resource value: 0x7f040022
+			public const int SendMessageToDriver = 2130968610;
 			
 			// aapt resource value: 0x7f040003
 			public const int ServerAddress = 2130968579;

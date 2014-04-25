@@ -65,6 +65,10 @@ namespace TaxiOnline.Logic.Models
 
         public event EventHandler PendingRequestChanged;
 
+        public event EventHandler LoadCompleted;
+
+        public event EventHandler CheckCurrentRequestFailed;
+
         public event EventHandler DriversChanged
         {
             add { _drivers.ItemsChanged += value; }
@@ -77,9 +81,17 @@ namespace TaxiOnline.Logic.Models
             remove { _drivers.ItemsCollectionChanged -= value; }
         }
 
+        public event ActionResultEventHandler EnumrateDriversFailed
+        {
+            add { _drivers.RequestFailed += value; }
+            remove { _drivers.RequestFailed -= value; }
+        }
+
         public event EventHandler SelectedDriverChanged;
 
         internal Func<DriverModel, Logic.PedestrianProfileRequestLogic> InitRequestDelegate { get; set; }
+
+        internal Func<ActionResult<Logic.PedestrianProfileRequestLogic>> CheckCurrentRequest { get; set; }
 
         internal Func<ActionResult<IEnumerable<Logic.DriverLogic>>> EnumerateDriversDelegate { get; set; }
 
@@ -88,6 +100,23 @@ namespace TaxiOnline.Logic.Models
         internal PedestrianProfileModel()
         {
             _drivers = new SimpleCollectionLoadDecorator<DriverModel>(EnumerateDrivers);
+        }
+
+        public void BeginLoad()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                _drivers.FillItemsList();
+                ActionResult<PedestrianProfileRequestModel> currentRequestResult = UpdateHelper.GetModel(CheckCurrentRequest, l => l.Model);
+                if (currentRequestResult.IsValid)
+                    CurrentRequest = currentRequestResult.Result;
+                else
+                {
+                    OnCheckCurrentRequestFailed();
+                    return;
+                }
+                OnLoadCompleted();
+            });
         }
 
         public ActionResult<PedestrianProfileRequestModel> InitRequest(DriverModel driver)
@@ -138,6 +167,20 @@ namespace TaxiOnline.Logic.Models
         protected virtual void OnSelectedDriverChanged()
         {
             EventHandler handler = SelectedDriverChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnLoadCompleted()
+        {
+            EventHandler handler = LoadCompleted;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnCheckCurrentRequestFailed()
+        {
+            EventHandler handler = CheckCurrentRequestFailed;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }

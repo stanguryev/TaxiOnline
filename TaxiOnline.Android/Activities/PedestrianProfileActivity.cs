@@ -14,6 +14,7 @@ using TaxiOnline.Android.Helpers;
 using TaxiOnline.Android.Views;
 using TaxiOnline.Android.Adapters;
 using TaxiOnline.ClientInfrastructure.Android.Services;
+using TaxiOnline.Android.Decorators;
 
 namespace TaxiOnline.Android.Activities
 {
@@ -23,6 +24,7 @@ namespace TaxiOnline.Android.Activities
         private PedestrianProfileModel _model;
         private PedestrianProfileRequestModel _currentRequest;
         private NotificationManager _notificationManager;
+        private ProgressDialogDecorator _loadProgressDialogDecorator;
 
         public PedestrianProfileModel Model
         {
@@ -37,6 +39,7 @@ namespace TaxiOnline.Android.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            _loadProgressDialogDecorator = new ProgressDialogDecorator(this, Resources.GetString(Resource.String.LoadTitle), Resources.GetString(Resource.String.LoadDataMessage));
             AuthenticationActivity authenticationActivity = UIHelper.GetUpperActivity<AuthenticationActivity>(this, bundle);
             if (authenticationActivity != null)
                 _model = authenticationActivity.ActivePedestrianProfileModel;
@@ -50,6 +53,21 @@ namespace TaxiOnline.Android.Activities
         {
             if (_model == null)
                 return;
+            _model.LoadCompleted += (sender, e) => _loadProgressDialogDecorator.Hide();
+            _model.EnumrateDriversFailed += (sender, e) =>
+            {
+                using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resources.GetString(Resource.String.FailedToEnumrateDrivers), ToastLength.Short))
+                    errorToast.Show();
+                _loadProgressDialogDecorator.Hide();
+            };
+            //_model.CheckCurrentRequestFailed += (sender, e) =>
+            //{
+            //    using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resources.GetString(Resource.String.FailedToCheckCurrentRequest), ToastLength.Short))
+            //        errorToast.Show();
+            //    _loadProgressDialogDecorator.Hide();
+            //};
+            _loadProgressDialogDecorator.Show();
+            _model.BeginLoad();
             LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
             ((IAndroidMapService)_model.Map.MapService).VisualizeMap(this, mapLayout);
             CanvasView pedestrianProfileView = FindViewById<CanvasView>(Resource.Id.pedestrianProfileView);
@@ -74,10 +92,7 @@ namespace TaxiOnline.Android.Activities
                     UnhookCurrentRequest();
                 _currentRequest = _model.CurrentRequest;
                 if (_currentRequest != null)
-                {
                     HookCurrentRequest();
-
-                }
             });
         }
 

@@ -26,8 +26,10 @@
   <string name="AuthorizingTitle">Authorizing</string>
   <string name="AuthorizingMessage">Authorization is running...</string>
   <string name="AuthenticationFailed">Failed to authenticate</string>
+  <string name="NoLocationServiceAvailable">Cannot authenticate: failed to find location service on your device</string>
   <string name="LoadTitle">Loading</string>
   <string name="LoadDataMessage">Loading the data...</string>
+  <string name="FailedToEnumrateDrivers">Failed to load drivers location data</string>
   <string name="FailedToEnumratePedestrians">Failed to load pedestrians location data</string>
   <string name="CallToDriver">Call to the driver</string>
   <string name="PhoneCallError">Call failed</string>

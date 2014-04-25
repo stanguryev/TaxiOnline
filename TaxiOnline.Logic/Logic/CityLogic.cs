@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TaxiOnline.ClientInfrastructure.Data;
+using TaxiOnline.ClientInfrastructure.Exceptions;
+using TaxiOnline.ClientInfrastructure.Exceptions.Enums;
 using TaxiOnline.ClientInfrastructure.ServicesEntities.DataService;
 using TaxiOnline.Logic.Common;
 using TaxiOnline.Logic.Models;
@@ -32,22 +35,25 @@ namespace TaxiOnline.Logic.Logic
             model.EnumeratePersonsDelegate = EnumeratePersons;
         }
 
-        private ActionResult<IEnumerable<PersonLogic>> EnumeratePersons()
-        {
-            if (_persons.Items == null)
-                _persons.FillItemsList();
-            return ActionResult<IEnumerable<PersonLogic>>.GetValidResult(_persons.Items);
-        }
-
         public ActionResult<ProfileLogic> Authenticate(AuthenticationRequestModel requestModel)
         {
             requestModel.DeviceId = _adaptersExtender.ServicesFactory.GetCurrentHardwareService().GetDeviceId();
-            requestModel.CurrentLocation = _adaptersExtender.ServicesFactory.GetCurrentHardwareService().GetCurrentLocation();
+            ActionResult<MapPoint> locationResult = _adaptersExtender.ServicesFactory.GetCurrentHardwareService().GetCurrentLocation();
+            if (!locationResult.IsValid)
+                return ActionResult<ProfileLogic>.GetErrorResult(new HardwareServiceException(HardwareServiceErrors.NoLocationService));
+            requestModel.CurrentLocation = locationResult.Result;
             AuthenticationRequestLogic authenticationRequestLogic = AuthenticationRequestLogic.Create(requestModel, _adaptersExtender, this);
             ActionResult<ProfileLogic> result = authenticationRequestLogic.Authenticate();
             if (result.IsValid)
                 _interaction.CurrentProfile = result.Result;
             return result;
+        }
+
+        private ActionResult<IEnumerable<PersonLogic>> EnumeratePersons()
+        {
+            if (_persons.Items == null)
+                _persons.FillItemsList();
+            return ActionResult<IEnumerable<PersonLogic>>.GetValidResult(_persons.Items);
         }
 
         private ActionResult<IEnumerable<PersonLogic>> RetriveAllPersons()

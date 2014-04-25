@@ -13,7 +13,7 @@ namespace TaxiOnline.ClientServicesAdapter.Hardware
     {
         public abstract string GetDeviceId();
 
-        public abstract MapPoint GetCurrentLocation();
+        public abstract ActionResult<MapPoint> GetCurrentLocation();
 
         public abstract ActionResult PhoneCall(string number);
     }

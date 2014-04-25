@@ -27,7 +27,7 @@ namespace TaxiOnline.Logic.Logic
         public CityLogic City
         {
             get { return _city; }
-        } 
+        }
 
         public PedestrianProfileLogic(PedestrianProfileModel model, AdaptersExtender adaptersExtender, CityLogic city)
             : base(model, adaptersExtender, city)
@@ -79,7 +79,7 @@ namespace TaxiOnline.Logic.Logic
         {
             if (_drivers.Items == null)
                 _drivers.FillItemsList();
-            return ActionResult<IEnumerable<DriverLogic>>.GetValidResult(_drivers.Items);
+            return _drivers.Items == null ? ActionResult<IEnumerable<DriverLogic>>.GetErrorResult(new Exception()) : ActionResult<IEnumerable<DriverLogic>>.GetValidResult(_drivers.Items);
         }
 
         private ActionResult<IEnumerable<DriverLogic>> RetriveDrivers()

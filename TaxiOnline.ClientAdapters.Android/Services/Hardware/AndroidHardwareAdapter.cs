@@ -25,11 +25,17 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Hardware
             return null;
         }
 
-        public override MapPoint GetCurrentLocation()
+        public override ActionResult<MapPoint> GetCurrentLocation()
         {
             using (LocationManager locationManager = (LocationManager)Application.Context.GetSystemService(Application.LocationService))
-            using (Location location = locationManager.GetLastKnownLocation(LocationManager.GpsProvider))
-                return location == null ? new MapPoint() : new MapPoint(location.Latitude, location.Longitude);
+            {
+                string providerName = locationManager.GetBestProvider(new Criteria(), true);
+                Location location = string.IsNullOrWhiteSpace(providerName) ? null : locationManager.GetLastKnownLocation(providerName);
+                if (location == null)
+                    ActionResult<MapPoint>.GetErrorResult(new NotSupportedException());
+                using (location)
+                    return ActionResult<MapPoint>.GetValidResult(new MapPoint(location.Latitude, location.Longitude));
+            }
         }
 
         public override ActionResult PhoneCall(string number)
