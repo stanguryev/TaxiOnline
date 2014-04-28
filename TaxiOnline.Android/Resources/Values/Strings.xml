@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="ApplicationName">TaxiOnline</string>
+  <string name="ApplicationDescription"></string>
+  <string name="ConfirmShareApplication">Share this application?</string>
   <string name="ServerAddress">Server address</string>
   <string name="Apply">Apply</string>
   <string name="Cancel">Cancel</string>

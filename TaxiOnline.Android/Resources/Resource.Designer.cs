@@ -47,26 +47,51 @@ namespace TaxiOnline.Android
 			}
 		}
 		
+		public partial class Color
+		{
+			
+			// aapt resource value: 0x7f050000
+			public const int OverlayButtonColor = 2131034112;
+			
+			static Color()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Color()
+			{
+			}
+		}
+		
 		public partial class Drawable
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int DriverIcon = 2130837504;
+			public const int ConnectingIcon = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int Icon = 2130837505;
+			public const int DriverIcon = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int PedestrianIcon = 2130837506;
+			public const int Icon = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int RefreshIcon = 2130837507;
+			public const int OfflineIcon = 2130837507;
 			
 			// aapt resource value: 0x7f020004
-			public const int SearchIcon = 2130837508;
+			public const int OnlineIcon = 2130837508;
 			
 			// aapt resource value: 0x7f020005
-			public const int SettingsIcon = 2130837509;
+			public const int PedestrianIcon = 2130837509;
+			
+			// aapt resource value: 0x7f020006
+			public const int RefreshIcon = 2130837510;
+			
+			// aapt resource value: 0x7f020007
+			public const int SearchIcon = 2130837511;
+			
+			// aapt resource value: 0x7f020008
+			public const int SettingsIcon = 2130837512;
 			
 			static Drawable()
 			{
@@ -81,134 +106,137 @@ namespace TaxiOnline.Android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f050028
-			public const int applySettingsButton = 2131034152;
+			// aapt resource value: 0x7f070029
+			public const int applySettingsButton = 2131165225;
 			
-			// aapt resource value: 0x7f050018
-			public const int callToDriverButton = 2131034136;
+			// aapt resource value: 0x7f070019
+			public const int callToDriverButton = 2131165209;
 			
-			// aapt resource value: 0x7f05001a
-			public const int cancelMessageToDriverButton = 2131034138;
+			// aapt resource value: 0x7f07001b
+			public const int cancelMessageToDriverButton = 2131165211;
 			
-			// aapt resource value: 0x7f050026
-			public const int cancelRegistrationButton = 2131034150;
+			// aapt resource value: 0x7f070027
+			public const int cancelRegistrationButton = 2131165223;
 			
-			// aapt resource value: 0x7f05002a
-			public const int cancelSettingsButton = 2131034154;
+			// aapt resource value: 0x7f07002b
+			public const int cancelSettingsButton = 2131165227;
 			
-			// aapt resource value: 0x7f050021
-			public const int carBrandEditText = 2131034145;
+			// aapt resource value: 0x7f070022
+			public const int carBrandEditText = 2131165218;
 			
-			// aapt resource value: 0x7f050020
-			public const int carColorEditText = 2131034144;
+			// aapt resource value: 0x7f070021
+			public const int carColorEditText = 2131165217;
 			
-			// aapt resource value: 0x7f050022
-			public const int carNumberEditText = 2131034146;
+			// aapt resource value: 0x7f070023
+			public const int carNumberEditText = 2131165219;
 			
-			// aapt resource value: 0x7f050013
-			public const int chooseCityButton = 2131034131;
+			// aapt resource value: 0x7f070013
+			public const int chooseCityButton = 2131165203;
 			
-			// aapt resource value: 0x7f050005
-			public const int cityNameTextView = 2131034117;
+			// aapt resource value: 0x7f070005
+			public const int cityNameTextView = 2131165189;
 			
-			// aapt resource value: 0x7f050012
-			public const int cityTextView = 2131034130;
+			// aapt resource value: 0x7f070012
+			public const int cityTextView = 2131165202;
 			
-			// aapt resource value: 0x7f05000f
-			public const int confirmPedestrianRequestButton = 2131034127;
+			// aapt resource value: 0x7f07000f
+			public const int confirmPedestrianRequestButton = 2131165199;
 			
-			// aapt resource value: 0x7f050025
-			public const int confirmRegistrationButton = 2131034149;
+			// aapt resource value: 0x7f070026
+			public const int confirmRegistrationButton = 2131165222;
 			
-			// aapt resource value: 0x7f050002
-			public const int connectionStateImageView = 2131034114;
+			// aapt resource value: 0x7f070002
+			public const int connectionStateImageSwitcher = 2131165186;
 			
-			// aapt resource value: 0x7f050006
-			public const int driverIconImageView = 2131034118;
+			// aapt resource value: 0x7f070006
+			public const int driverIconImageView = 2131165190;
 			
-			// aapt resource value: 0x7f050024
-			public const int driverPhoneNumberEditText = 2131034148;
+			// aapt resource value: 0x7f070025
+			public const int driverPhoneNumberEditText = 2131165221;
 			
-			// aapt resource value: 0x7f050009
-			public const int driverPopupCarBrandTextView = 2131034121;
+			// aapt resource value: 0x7f070009
+			public const int driverPopupCarBrandTextView = 2131165193;
 			
-			// aapt resource value: 0x7f050008
-			public const int driverPopupCarColorTextView = 2131034120;
+			// aapt resource value: 0x7f070008
+			public const int driverPopupCarColorTextView = 2131165192;
 			
-			// aapt resource value: 0x7f05000a
-			public const int driverPopupCarNumberTextView = 2131034122;
+			// aapt resource value: 0x7f07000a
+			public const int driverPopupCarNumberTextView = 2131165194;
 			
-			// aapt resource value: 0x7f050007
-			public const int driverPopupPersonNameTextView = 2131034119;
+			// aapt resource value: 0x7f070007
+			public const int driverPopupPersonNameTextView = 2131165191;
 			
-			// aapt resource value: 0x7f05000b
-			public const int driverPopupPhoneNumberTextView = 2131034123;
+			// aapt resource value: 0x7f07000b
+			public const int driverPopupPhoneNumberTextView = 2131165195;
 			
-			// aapt resource value: 0x7f05000c
-			public const int driverPopupSkypeNumberTextView = 2131034124;
+			// aapt resource value: 0x7f07000c
+			public const int driverPopupSkypeNumberTextView = 2131165196;
 			
-			// aapt resource value: 0x7f05000e
-			public const int driverProfileView = 2131034126;
+			// aapt resource value: 0x7f07000e
+			public const int driverProfileView = 2131165198;
 			
-			// aapt resource value: 0x7f05001c
-			public const int driverRadioButton = 2131034140;
+			// aapt resource value: 0x7f07001d
+			public const int driverRadioButton = 2131165213;
 			
-			// aapt resource value: 0x7f050011
-			public const int driverResponsesListView = 2131034129;
+			// aapt resource value: 0x7f070011
+			public const int driverResponsesListView = 2131165201;
 			
-			// aapt resource value: 0x7f050023
-			public const int driverSkypeNumberEditText = 2131034147;
+			// aapt resource value: 0x7f070024
+			public const int driverSkypeNumberEditText = 2131165220;
 			
-			// aapt resource value: 0x7f050014
-			public const int mapLayout = 2131034132;
+			// aapt resource value: 0x7f070015
+			public const int mapLayout = 2131165205;
 			
-			// aapt resource value: 0x7f05001e
-			public const int pedestrianPhoneNumberEditText = 2131034142;
+			// aapt resource value: 0x7f07001f
+			public const int pedestrianPhoneNumberEditText = 2131165215;
 			
-			// aapt resource value: 0x7f050017
-			public const int pedestrianProfileView = 2131034135;
+			// aapt resource value: 0x7f070018
+			public const int pedestrianProfileView = 2131165208;
 			
-			// aapt resource value: 0x7f05001b
-			public const int pedestrianRadioButton = 2131034139;
+			// aapt resource value: 0x7f07001c
+			public const int pedestrianRadioButton = 2131165212;
 			
-			// aapt resource value: 0x7f050015
-			public const int pedestrianRequestLayout = 2131034133;
+			// aapt resource value: 0x7f070016
+			public const int pedestrianRequestLayout = 2131165206;
 			
-			// aapt resource value: 0x7f050016
-			public const int pedestrianRequestTextView = 2131034134;
+			// aapt resource value: 0x7f070017
+			public const int pedestrianRequestTextView = 2131165207;
 			
-			// aapt resource value: 0x7f05001d
-			public const int pedestrianSkypeNumberEditText = 2131034141;
+			// aapt resource value: 0x7f07001e
+			public const int pedestrianSkypeNumberEditText = 2131165214;
 			
-			// aapt resource value: 0x7f05001f
-			public const int personNameEditText = 2131034143;
+			// aapt resource value: 0x7f070020
+			public const int personNameEditText = 2131165216;
 			
-			// aapt resource value: 0x7f050003
-			public const int personsView = 2131034115;
+			// aapt resource value: 0x7f070003
+			public const int personsView = 2131165187;
 			
-			// aapt resource value: 0x7f05000d
-			public const int quickCallToDriverButton = 2131034125;
+			// aapt resource value: 0x7f07000d
+			public const int quickCallToDriverButton = 2131165197;
 			
-			// aapt resource value: 0x7f050001
-			public const int refreshCitiesButton = 2131034113;
+			// aapt resource value: 0x7f070001
+			public const int refreshCitiesButton = 2131165185;
 			
-			// aapt resource value: 0x7f050004
-			public const int registerButton = 2131034116;
+			// aapt resource value: 0x7f070004
+			public const int registerButton = 2131165188;
 			
-			// aapt resource value: 0x7f050010
-			public const int rejectPedestrianRequestButton = 2131034128;
+			// aapt resource value: 0x7f070010
+			public const int rejectPedestrianRequestButton = 2131165200;
 			
-			// aapt resource value: 0x7f050029
-			public const int restartApplicationForSettingsButton = 2131034153;
+			// aapt resource value: 0x7f07002a
+			public const int restartApplicationForSettingsButton = 2131165226;
 			
-			// aapt resource value: 0x7f050019
-			public const int sendMessageToDriverButton = 2131034137;
+			// aapt resource value: 0x7f07001a
+			public const int sendMessageToDriverButton = 2131165210;
 			
-			// aapt resource value: 0x7f050027
-			public const int serverAddressEditText = 2131034151;
+			// aapt resource value: 0x7f070028
+			public const int serverAddressEditText = 2131165224;
 			
-			// aapt resource value: 0x7f050000
-			public const int settingsButton = 2131034112;
+			// aapt resource value: 0x7f070000
+			public const int settingsButton = 2131165184;
+			
+			// aapt resource value: 0x7f070014
+			public const int vkShareButton = 2131165204;
 			
 			static Id()
 			{
@@ -299,119 +327,125 @@ namespace TaxiOnline.Android
 		public partial class String
 		{
 			
+			// aapt resource value: 0x7f040003
+			public const int ApplicationDescription = 2130968579;
+			
 			// aapt resource value: 0x7f040001
 			public const int ApplicationName = 2130968577;
 			
-			// aapt resource value: 0x7f040004
-			public const int Apply = 2130968580;
+			// aapt resource value: 0x7f040006
+			public const int Apply = 2130968582;
+			
+			// aapt resource value: 0x7f04001c
+			public const int AuthenticationFailed = 2130968604;
+			
+			// aapt resource value: 0x7f04001b
+			public const int AuthorizingMessage = 2130968603;
 			
 			// aapt resource value: 0x7f04001a
-			public const int AuthenticationFailed = 2130968602;
+			public const int AuthorizingTitle = 2130968602;
 			
-			// aapt resource value: 0x7f040019
-			public const int AuthorizingMessage = 2130968601;
-			
-			// aapt resource value: 0x7f040018
-			public const int AuthorizingTitle = 2130968600;
-			
-			// aapt resource value: 0x7f040020
-			public const int CallToDriver = 2130968608;
-			
-			// aapt resource value: 0x7f040005
-			public const int Cancel = 2130968581;
-			
-			// aapt resource value: 0x7f040023
-			public const int CancelMessageToDriver = 2130968611;
-			
-			// aapt resource value: 0x7f040016
-			public const int CarBrand = 2130968598;
-			
-			// aapt resource value: 0x7f040015
-			public const int CarColor = 2130968597;
-			
-			// aapt resource value: 0x7f040017
-			public const int CarNumber = 2130968599;
-			
-			// aapt resource value: 0x7f04000a
-			public const int ChooseCityToolTip = 2130968586;
-			
-			// aapt resource value: 0x7f040025
-			public const int ConfirmPedestrianRequest = 2130968613;
-			
-			// aapt resource value: 0x7f040009
-			public const int ConnectToServerFailed = 2130968585;
-			
-			// aapt resource value: 0x7f040008
-			public const int ConnectingToServerMessage = 2130968584;
+			// aapt resource value: 0x7f040022
+			public const int CallToDriver = 2130968610;
 			
 			// aapt resource value: 0x7f040007
-			public const int ConnectingToServerTitle = 2130968583;
+			public const int Cancel = 2130968583;
 			
-			// aapt resource value: 0x7f040011
-			public const int Driver = 2130968593;
+			// aapt resource value: 0x7f040025
+			public const int CancelMessageToDriver = 2130968613;
 			
-			// aapt resource value: 0x7f04001e
-			public const int FailedToEnumrateDrivers = 2130968606;
+			// aapt resource value: 0x7f040018
+			public const int CarBrand = 2130968600;
 			
-			// aapt resource value: 0x7f04001f
-			public const int FailedToEnumratePedestrians = 2130968607;
+			// aapt resource value: 0x7f040017
+			public const int CarColor = 2130968599;
 			
-			// aapt resource value: 0x7f040024
-			public const int FailedToInitRequest = 2130968612;
+			// aapt resource value: 0x7f040019
+			public const int CarNumber = 2130968601;
 			
 			// aapt resource value: 0x7f04000c
-			public const int FailedToLoadPersons = 2130968588;
+			public const int ChooseCityToolTip = 2130968588;
+			
+			// aapt resource value: 0x7f040027
+			public const int ConfirmPedestrianRequest = 2130968615;
+			
+			// aapt resource value: 0x7f040004
+			public const int ConfirmShareApplication = 2130968580;
+			
+			// aapt resource value: 0x7f04000b
+			public const int ConnectToServerFailed = 2130968587;
+			
+			// aapt resource value: 0x7f04000a
+			public const int ConnectingToServerMessage = 2130968586;
+			
+			// aapt resource value: 0x7f040009
+			public const int ConnectingToServerTitle = 2130968585;
+			
+			// aapt resource value: 0x7f040013
+			public const int Driver = 2130968595;
+			
+			// aapt resource value: 0x7f040020
+			public const int FailedToEnumrateDrivers = 2130968608;
+			
+			// aapt resource value: 0x7f040021
+			public const int FailedToEnumratePedestrians = 2130968609;
+			
+			// aapt resource value: 0x7f040026
+			public const int FailedToInitRequest = 2130968614;
+			
+			// aapt resource value: 0x7f04000e
+			public const int FailedToLoadPersons = 2130968590;
 			
 			// aapt resource value: 0x7f040000
 			public const int Hello = 2130968576;
 			
-			// aapt resource value: 0x7f04001d
-			public const int LoadDataMessage = 2130968605;
+			// aapt resource value: 0x7f04001f
+			public const int LoadDataMessage = 2130968607;
 			
-			// aapt resource value: 0x7f04001c
-			public const int LoadTitle = 2130968604;
-			
-			// aapt resource value: 0x7f04000b
-			public const int NoCityFound = 2130968587;
-			
-			// aapt resource value: 0x7f04001b
-			public const int NoLocationServiceAvailable = 2130968603;
+			// aapt resource value: 0x7f04001e
+			public const int LoadTitle = 2130968606;
 			
 			// aapt resource value: 0x7f04000d
-			public const int NoParticipationRole = 2130968589;
+			public const int NoCityFound = 2130968589;
 			
-			// aapt resource value: 0x7f040010
-			public const int Pedestrian = 2130968592;
-			
-			// aapt resource value: 0x7f040014
-			public const int PersonName = 2130968596;
-			
-			// aapt resource value: 0x7f040021
-			public const int PhoneCallError = 2130968609;
-			
-			// aapt resource value: 0x7f040013
-			public const int PhoneNumber = 2130968595;
+			// aapt resource value: 0x7f04001d
+			public const int NoLocationServiceAvailable = 2130968605;
 			
 			// aapt resource value: 0x7f04000f
-			public const int Register = 2130968591;
-			
-			// aapt resource value: 0x7f04000e
-			public const int Registration = 2130968590;
-			
-			// aapt resource value: 0x7f040026
-			public const int RejectPedestrianRequest = 2130968614;
-			
-			// aapt resource value: 0x7f040006
-			public const int Restart = 2130968582;
-			
-			// aapt resource value: 0x7f040022
-			public const int SendMessageToDriver = 2130968610;
-			
-			// aapt resource value: 0x7f040003
-			public const int ServerAddress = 2130968579;
+			public const int NoParticipationRole = 2130968591;
 			
 			// aapt resource value: 0x7f040012
-			public const int SkypeNumber = 2130968594;
+			public const int Pedestrian = 2130968594;
+			
+			// aapt resource value: 0x7f040016
+			public const int PersonName = 2130968598;
+			
+			// aapt resource value: 0x7f040023
+			public const int PhoneCallError = 2130968611;
+			
+			// aapt resource value: 0x7f040015
+			public const int PhoneNumber = 2130968597;
+			
+			// aapt resource value: 0x7f040011
+			public const int Register = 2130968593;
+			
+			// aapt resource value: 0x7f040010
+			public const int Registration = 2130968592;
+			
+			// aapt resource value: 0x7f040028
+			public const int RejectPedestrianRequest = 2130968616;
+			
+			// aapt resource value: 0x7f040008
+			public const int Restart = 2130968584;
+			
+			// aapt resource value: 0x7f040024
+			public const int SendMessageToDriver = 2130968612;
+			
+			// aapt resource value: 0x7f040005
+			public const int ServerAddress = 2130968581;
+			
+			// aapt resource value: 0x7f040014
+			public const int SkypeNumber = 2130968596;
 			
 			// aapt resource value: 0x7f040002
 			public const int library_name = 2130968578;
@@ -422,6 +456,25 @@ namespace TaxiOnline.Android
 			}
 			
 			private String()
+			{
+			}
+		}
+		
+		public partial class Style
+		{
+			
+			// aapt resource value: 0x7f060000
+			public const int OverlayButton = 2131099648;
+			
+			// aapt resource value: 0x7f060001
+			public const int OverlayImageButton = 2131099649;
+			
+			static Style()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Style()
 			{
 			}
 		}

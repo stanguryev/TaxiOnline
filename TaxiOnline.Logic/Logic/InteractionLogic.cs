@@ -54,8 +54,10 @@ namespace TaxiOnline.Logic.Logic
             model.EnumerateCitiesDelegate = EnumerateCities;
             _map = new MapLogic(new MapModel(_adaptersExtender.ServicesFactory.GetCurrentMapService()), _adaptersExtender, this);
             _settings = new SettingsLogic(new SettingsModel(_adaptersExtender.ServicesFactory.GetCurrentSettingsService()), _adaptersExtender, this);
+            _adaptersExtender.ServicesFactory.GetCurrentDataService().ConnectionStateChanged += InteractionLogic_ConnectionStateChanged;
             _cities = new UpdatableCollectionLoadDecorator<CityLogic, ICityInfo>(RetriveCities, CompareCityInfo, c => true, CreateCityLogic);
             _cities.RequestFailed += Cities_RequestFailed;
+            UpdateConnectionStateInfo();
         }
 
         private ActionResult<IEnumerable<CityLogic>> EnumerateCities()
@@ -86,6 +88,16 @@ namespace TaxiOnline.Logic.Logic
                 InitialCenter = new ClientInfrastructure.Data.MapPoint(citySLO.InitialLatitude, citySLO.InitialLongitude),
                 InitialZoom = citySLO.InitialZoom
             }, _adaptersExtender, this);
+        }
+
+        private void UpdateConnectionStateInfo()
+        {
+            _model.ConnectionState = _adaptersExtender.ServicesFactory.GetCurrentDataService().ConnectionState;
+        }
+
+        private void InteractionLogic_ConnectionStateChanged(object sender, EventArgs e)
+        {
+            UpdateConnectionStateInfo();
         }
 
         private void Cities_RequestFailed(object sender, ActionResultEventArgs e)

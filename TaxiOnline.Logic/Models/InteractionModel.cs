@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
+using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.Logic.Common;
+using TaxiOnline.Logic.Common.Enums;
 using TaxiOnline.Logic.Helpers;
 using TaxiOnline.Toolkit.Events;
 using TaxiOnline.Toolkit.Threading.CollectionsDecorators;
@@ -19,6 +21,20 @@ namespace TaxiOnline.Logic.Models
         private readonly SimpleCollectionLoadDecorator<CityModel> _cities;
         private readonly MapModel _map;
         private CityModel _currentCity;
+        private ConnectionState _connectionState;
+
+        public ConnectionState ConnectionState
+        {
+            get { return _connectionState; }
+            internal set
+            {
+                if (_connectionState != value)
+                {
+                    _connectionState = value;
+                    OnConnectionStateChanged();
+                }
+            }
+        }
 
         public CityModel CurrentCity
         {
@@ -41,7 +57,7 @@ namespace TaxiOnline.Logic.Models
         public SettingsModel Settings
         {
             get { return _settings; }
-        } 
+        }
 
         public MapModel Map
         {
@@ -60,6 +76,8 @@ namespace TaxiOnline.Logic.Models
                 }
             }
         }
+
+        public event EventHandler ConnectionStateChanged;
 
         public event EventHandler CurrentCityChanged;
 
@@ -101,6 +119,13 @@ namespace TaxiOnline.Logic.Models
         private ActionResult<IEnumerable<CityModel>> EnumerateCities()
         {
             return UpdateHelper.EnumerateModels(EnumerateCitiesDelegate, l => l.Model);
+        }
+
+        protected virtual void OnConnectionStateChanged()
+        {
+            EventHandler handler = ConnectionStateChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
         }
 
         protected virtual void OnCurrentCityChanged()

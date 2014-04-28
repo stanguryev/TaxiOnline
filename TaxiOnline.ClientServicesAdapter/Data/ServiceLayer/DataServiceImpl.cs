@@ -17,8 +17,19 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
 {
     public class DataServiceImpl : IDataService
     {
-        private ServiceProxy _proxy;
+        private readonly ServiceProxy _proxy;
         private CallbackManager _callbackManager = new CallbackManager();
+
+        public ConnectionState ConnectionState
+        {
+            get { return _proxy.ConnectionState; }
+        }
+
+        public event EventHandler ConnectionStateChanged
+        {
+            add { _proxy.ConnectionStateChanged += value; }
+            remove { _proxy.ConnectionStateChanged -= value; }
+        }
 
         public event EventHandler<ValueEventArgs<IPedestrianInfo>> PedestrianInfoChanged
         {
@@ -37,6 +48,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
         public DataServiceImpl(string serverEndpointAddress)
         {
             _proxy = new ServiceProxy(serverEndpointAddress);
+
         }
 
         public ActionResult<IEnumerable<ICityInfo>> EnumerateCities(string userCultureName)

@@ -18,6 +18,16 @@
             android:id="@+id/chooseCityButton"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:src="@drawable/SearchIcon" />
+            android:src="@drawable/SearchIcon"
+            style="@style/OverlayImageButton" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/vkShareButton"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent" />
     </LinearLayout>
 </LinearLayout>

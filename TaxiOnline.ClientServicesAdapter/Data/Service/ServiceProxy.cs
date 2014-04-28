@@ -5,6 +5,7 @@ using System.Net;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.ClientInfrastructure.Exceptions;
 using TaxiOnline.ClientInfrastructure.Exceptions.Enums;
 using TaxiOnline.ServiceContract;
@@ -21,11 +22,19 @@ namespace TaxiOnline.ClientServicesAdapter.Data.Service
         //private readonly InstanceContext _callbackInstance;
         private readonly CallbackWrapper _callbackWrapper;
         private readonly string _serverEndpointAddress;
+        private ConnectionState _connectionState;
+
+        public ConnectionState ConnectionState
+        {
+            get { return _connectionState; }
+        }
 
         public CallbackWrapper CallbackWrapper
         {
             get { return _callbackWrapper; }
         }
+
+        public event EventHandler ConnectionStateChanged;
 
         public ServiceProxy(string serverEndpointAddress)
             : base()
@@ -157,12 +166,20 @@ namespace TaxiOnline.ClientServicesAdapter.Data.Service
 
         protected override void HookChannel(ITaxiOnlineService channel)
         {
-
+            ((IClientChannel)channel).Opened += ClientChannel_Opened;
+            ((IClientChannel)channel).Closed += ClientChannel_Closed;
+            ((IClientChannel)channel).Faulted += ClientChannel_Faulted;
+            ((IClientChannel)channel).Opening += ClientChannel_Opening;
+            ((IClientChannel)channel).Closing += ClientChannel_Closing;
         }
 
         protected override void UnhookChannel(ITaxiOnlineService channel)
         {
-
+            ((IClientChannel)channel).Opened -= ClientChannel_Opened;
+            ((IClientChannel)channel).Closed -= ClientChannel_Closed;
+            ((IClientChannel)channel).Faulted -= ClientChannel_Faulted;
+            ((IClientChannel)channel).Opening -= ClientChannel_Opening;
+            ((IClientChannel)channel).Closing -= ClientChannel_Closing;
         }
 
         protected override void DisposeCore()
@@ -204,6 +221,43 @@ namespace TaxiOnline.ClientServicesAdapter.Data.Service
                 UnhookChannel(channel);
                 ((IClientChannel)channel).Abort();
             }
+        }
+
+        protected virtual void OnConnectionStateChanged()
+        {
+            EventHandler handler = ConnectionStateChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
+        private void ClientChannel_Opened(object sender, EventArgs e)
+        {
+            _connectionState = ConnectionState.Online;
+            OnConnectionStateChanged();
+        }
+
+        private void ClientChannel_Closed(object sender, EventArgs e)
+        {
+            _connectionState = ConnectionState.Offline;
+            OnConnectionStateChanged();
+        }
+
+        private void ClientChannel_Faulted(object sender, EventArgs e)
+        {            
+            _connectionState = ConnectionState.Offline;
+            OnConnectionStateChanged();
+        }
+
+        private void ClientChannel_Opening(object sender, EventArgs e)
+        {            
+            _connectionState = ConnectionState.Connecting;
+            OnConnectionStateChanged();
+        }
+
+        private void ClientChannel_Closing(object sender, EventArgs e)
+        {            
+            _connectionState = ConnectionState.Offline;
+            OnConnectionStateChanged();
         }
     }
 }

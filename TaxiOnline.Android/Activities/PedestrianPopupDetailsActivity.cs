@@ -14,7 +14,7 @@ using TaxiOnline.Logic.Models;
 
 namespace TaxiOnline.Android.Activities
 {
-    [Activity(Label = "@string/ApplicationName")]
+    [Activity(Label = "@string/ApplicationName", NoHistory = true, FinishOnTaskLaunch = true)]
     public class PedestrianPopupDetailsActivity : Activity
     {
         private PedestrianRequestModel _model;

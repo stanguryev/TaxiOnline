@@ -14,6 +14,7 @@ using TaxiOnline.Android.Helpers;
 using System.Collections.Generic;
 using Android.Preferences;
 using TaxiOnline.Android.Decorators;
+using TaxiOnline.ClientInfrastructure.Data;
 
 namespace TaxiOnline.Android.Activities
 {
@@ -54,9 +55,20 @@ namespace TaxiOnline.Android.Activities
             {
                 _connectionProgressDialogDecorator.Show();
                 _model.BeginLoadCities();
-            };            
-            ImageButton settingsButton = FindViewById<ImageButton>(Resource.Id.settingsButton);
+            };
+            ImageButton settingsButton = ActionBar.CustomView.FindViewById<ImageButton>(Resource.Id.settingsButton);
             settingsButton.Click += (sender, e) => UIHelper.GoResultActivity(this, typeof(SettingsActivity), 1);
+            ImageSwitcher connectionStateImageSwitcher = ActionBar.CustomView.FindViewById<ImageSwitcher>(Resource.Id.connectionStateImageSwitcher);
+            SetConnectionState(connectionStateImageSwitcher, _model.ConnectionState);
+            _model.ConnectionStateChanged += (sender, e) => RunOnUiThread(() => SetConnectionState(connectionStateImageSwitcher, _model.ConnectionState));
+            ImageButton vkShareButton = ActionBar.CustomView.FindViewById<ImageButton>(Resource.Id.vkShareButton);
+            vkShareButton.Enabled = CanShareApplication("com.vkontakte.android");
+            vkShareButton.SetImageDrawable(PackageManager.GetApplicationLogo("com.vkontakte.android"));
+            vkShareButton.Click += (sender, e) => ShareApplication("com.vkontakte.android");
+            //"com.facebook.katana"
+            //"com.twitter.android"
+            //"com.instagram.android"
+            //"com.pinterest"
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -95,6 +107,60 @@ namespace TaxiOnline.Android.Activities
             AutoCompleteTextView cityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.cityTextView);
             if (cityTextView.Adapter != null)
                 cityTextView.Adapter.Dispose();
+        }
+
+        private bool CanShareApplication(string packageName)
+        {
+            try
+            {
+                return PackageManager.GetPackageInfo(packageName, global::Android.Content.PM.PackageInfoFlags.MetaData) != null;
+            }
+            catch (global::Android.Content.PM.PackageManager.NameNotFoundException)
+            {
+                return false;
+            }
+        }
+
+        private bool ShareApplication(string packageName)
+        {
+            using (AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this))
+            {
+                bool isCanceled = false;
+                dialogBuilder.SetMessage(Resource.String.ConfirmShareApplication);
+                dialogBuilder.SetNegativeButton(Resource.String.Cancel, (sender, e) => isCanceled = true);
+                using (AlertDialog dialog = dialogBuilder.Create())
+                    dialog.Show();
+                if (isCanceled)
+                    return false;
+            }
+            Intent socialNeworkIntent = PackageManager.GetLaunchIntentForPackage(packageName);
+            if (socialNeworkIntent == null)
+                return false;
+            Intent shareIntent = new Intent();
+            shareIntent.SetAction(Intent.ActionSend);
+            shareIntent.SetPackage(packageName);
+            shareIntent.PutExtra(Intent.ExtraTitle, Resources.GetString(Resource.String.ApplicationName));
+            shareIntent.PutExtra(Intent.ExtraText, Resources.GetString(Resource.String.ApplicationDescription));
+            StartActivity(shareIntent);
+            return true;
+        }
+
+        private void SetConnectionState(ImageSwitcher connectionStateImageSwitcher, ConnectionState connectionState)
+        {
+            switch (connectionState)
+            {
+                case ConnectionState.Offline:
+                    connectionStateImageSwitcher.SetImageResource(Resource.Drawable.OfflineIcon);
+                    break;
+                case ConnectionState.Connecting:
+                    connectionStateImageSwitcher.SetImageResource(Resource.Drawable.ConnectingIcon);
+                    break;
+                case ConnectionState.Online:
+                    connectionStateImageSwitcher.SetImageResource(Resource.Drawable.OnlineIcon);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void Model_EnumrateCitiesFailed(object sender, Toolkit.Events.ActionResultEventArgs e)

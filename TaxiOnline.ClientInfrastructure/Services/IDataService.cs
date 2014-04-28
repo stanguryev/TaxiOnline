@@ -11,6 +11,8 @@ namespace TaxiOnline.ClientInfrastructure.Services
 {
     public interface IDataService
     {
+        ConnectionState ConnectionState { get; }
+        event EventHandler ConnectionStateChanged;
         event EventHandler<ValueEventArgs<IPedestrianInfo>> PedestrianInfoChanged;
         event EventHandler<ValueEventArgs<IPedestrianRequest>> PedestrianRequestChanged;
         event EventHandler<ValueEventArgs<IDriverResponse>> DriverResponseChanged;

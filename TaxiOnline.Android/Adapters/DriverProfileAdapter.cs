@@ -12,6 +12,7 @@ using Android.Widget;
 using TaxiOnline.Logic.Models;
 using TaxiOnline.Toolkit.Collections.Helpers;
 using TaxiOnline.Android.Helpers;
+using TaxiOnline.Android.Activities;
 
 namespace TaxiOnline.Android.Adapters
 {
@@ -57,14 +58,14 @@ namespace TaxiOnline.Android.Adapters
             return view;
         }
 
-        private void HookCurrentModelToView(View view, ViewGroup parent)
+        private void HookCurrentModelToView(View view, ViewGroup upperView)
         {
-            //throw new NotImplementedException();
+            view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map, _model.CurrentLocation);
         }
 
-        private void HookModelToView(View view, PedestrianModel pedestrianModel, ViewGroup parent)
+        private void HookModelToView(View view, PedestrianModel pedestrianModel, ViewGroup upperView)
         {
-            //throw new NotImplementedException();
+            view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map, pedestrianModel.CurrentLocation);
         }
 
         private void UpdatePedestrians()
@@ -92,7 +93,7 @@ namespace TaxiOnline.Android.Adapters
                     foreach (PedestrianRequestModel request in e.NewItems.OfType<PedestrianRequestModel>().ToArray())
                     {
                         _model.SelectedPedestrianRequest = request;
-                        UIHelper.GoActivity(_context, typeof(PedestrianRequestModel));
+                        UIHelper.GoActivity(_context, typeof(PedestrianPopupDetailsActivity));
                     }
             });
         }

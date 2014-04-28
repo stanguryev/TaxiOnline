@@ -164,6 +164,11 @@
     <AndroidResource Include="Resources\Drawable\DriverIcon.png" />
     <AndroidResource Include="Resources\Drawable\RefreshIcon.png" />
     <AndroidResource Include="Resources\Drawable\SettingsIcon.png" />
+    <AndroidResource Include="Resources\Drawable\ConnectingIcon.png" />
+    <AndroidResource Include="Resources\Drawable\OfflineIcon.png" />
+    <AndroidResource Include="Resources\Drawable\OnlineIcon.png" />
+    <AndroidResource Include="Resources\Values\Styles.xml" />
+    <AndroidResource Include="Resources\Values\Colors.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TaxiOnline.ClientAdapters.Android\TaxiOnline.ClientAdapters.Android.csproj">
