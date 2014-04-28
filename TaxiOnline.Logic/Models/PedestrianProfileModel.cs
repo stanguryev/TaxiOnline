@@ -97,7 +97,8 @@ namespace TaxiOnline.Logic.Models
 
         internal Func<DriverModel, ActionResult> CallToDriverDelegate { get; set; }
 
-        internal PedestrianProfileModel()
+        internal PedestrianProfileModel(MapModel map)
+            : base(map)
         {
             _drivers = new SimpleCollectionLoadDecorator<DriverModel>(EnumerateDrivers);
         }
@@ -106,7 +107,7 @@ namespace TaxiOnline.Logic.Models
         {
             Task.Factory.StartNew(() =>
             {
-                _drivers.FillItemsList();
+                _drivers.FillItemsList();//to complete
                 ActionResult<PedestrianProfileRequestModel> currentRequestResult = UpdateHelper.GetModel(CheckCurrentRequest, l => l.Model);
                 if (currentRequestResult.IsValid)
                     CurrentRequest = currentRequestResult.Result;

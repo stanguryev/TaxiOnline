@@ -50,10 +50,11 @@ namespace TaxiOnline.Logic.Logic
         {
             _model = model;
             _adaptersExtender = adaptersExtender;
-            _model.CurrentCityChanged += Model_CurrentCityChanged;
+            model.CurrentCityChanged += Model_CurrentCityChanged;
             model.EnumerateCitiesDelegate = EnumerateCities;
             _map = new MapLogic(new MapModel(_adaptersExtender.ServicesFactory.GetCurrentMapService()), _adaptersExtender, this);
             _settings = new SettingsLogic(new SettingsModel(_adaptersExtender.ServicesFactory.GetCurrentSettingsService()), _adaptersExtender, this);
+            _settings.Model.LoadSettings();
             _adaptersExtender.ServicesFactory.GetCurrentDataService().ConnectionStateChanged += InteractionLogic_ConnectionStateChanged;
             _cities = new UpdatableCollectionLoadDecorator<CityLogic, ICityInfo>(RetriveCities, CompareCityInfo, c => true, CreateCityLogic);
             _cities.RequestFailed += Cities_RequestFailed;

@@ -48,7 +48,6 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
         public DataServiceImpl(string serverEndpointAddress)
         {
             _proxy = new ServiceProxy(serverEndpointAddress);
-
         }
 
         public ActionResult<IEnumerable<ICityInfo>> EnumerateCities(string userCultureName)

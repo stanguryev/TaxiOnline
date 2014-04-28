@@ -33,7 +33,6 @@ namespace TaxiOnline.Android.Activities
         {
             AndroidAdaptersExtender extender = new AndroidAdaptersExtender(PreferenceManager.GetDefaultSharedPreferences(Application.Context));
             _model = new InteractionModel(extender);
-            _model.Settings.LoadSettings();
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -58,13 +57,17 @@ namespace TaxiOnline.Android.Activities
             };
             ImageButton settingsButton = ActionBar.CustomView.FindViewById<ImageButton>(Resource.Id.settingsButton);
             settingsButton.Click += (sender, e) => UIHelper.GoResultActivity(this, typeof(SettingsActivity), 1);
-            ImageSwitcher connectionStateImageSwitcher = ActionBar.CustomView.FindViewById<ImageSwitcher>(Resource.Id.connectionStateImageSwitcher);
-            SetConnectionState(connectionStateImageSwitcher, _model.ConnectionState);
-            _model.ConnectionStateChanged += (sender, e) => RunOnUiThread(() => SetConnectionState(connectionStateImageSwitcher, _model.ConnectionState));
+            //ImageSwitcher connectionStateImageSwitcher = ActionBar.CustomView.FindViewById<ImageSwitcher>(Resource.Id.connectionStateImageSwitcher);
+            //SetConnectionState(connectionStateImageSwitcher, _model.ConnectionState);
+            //_model.ConnectionStateChanged += (sender, e) => RunOnUiThread(() => SetConnectionState(connectionStateImageSwitcher, _model.ConnectionState));
             ImageButton vkShareButton = ActionBar.CustomView.FindViewById<ImageButton>(Resource.Id.vkShareButton);
-            vkShareButton.Enabled = CanShareApplication("com.vkontakte.android");
-            vkShareButton.SetImageDrawable(PackageManager.GetApplicationLogo("com.vkontakte.android"));
-            vkShareButton.Click += (sender, e) => ShareApplication("com.vkontakte.android");
+            //if (CanShareApplication("com.vkontakte.android"))
+            //{
+            //    vkShareButton.SetImageDrawable(PackageManager.GetApplicationLogo("com.vkontakte.android"));
+            //    vkShareButton.Click += (sender, e) => ShareApplication("com.vkontakte.android");
+            //}
+            //else
+            //    vkShareButton.Visibility = ViewStates.Gone;
             //"com.facebook.katana"
             //"com.twitter.android"
             //"com.instagram.android"

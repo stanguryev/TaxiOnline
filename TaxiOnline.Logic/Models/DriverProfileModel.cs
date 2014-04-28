@@ -111,7 +111,8 @@ namespace TaxiOnline.Logic.Models
 
         internal Func<ActionResult<IEnumerable<Logic.DriverProfileResponseLogic>>> EnumerateCurrentResponsesDelegate { get; set; }
 
-        public DriverProfileModel()
+        public DriverProfileModel(MapModel map)
+            : base(map)
         {
             _pedestrians = new SimpleCollectionLoadDecorator<PedestrianModel>(EnumeratePedestrians);
             _pedestrianRequests = new SimpleCollectionLoadDecorator<PedestrianRequestModel>(EnumeratePedestrianRequests);

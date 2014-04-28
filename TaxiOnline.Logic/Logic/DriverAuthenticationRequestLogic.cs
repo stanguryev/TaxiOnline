@@ -27,7 +27,7 @@ namespace TaxiOnline.Logic.Logic
         protected override ProfileLogic CreateProfileLogic(IPersonInfo personInfo)
         {
             IDriverInfo driverInfo = (IDriverInfo)personInfo;
-            return new DriverProfileLogic(new DriverProfileModel
+            return new DriverProfileLogic(new DriverProfileModel(_city.Model.Map)
             {
                 SkypeNumber = personInfo.SkypeNumber,
                 PhoneNumber = personInfo.PhoneNumber,

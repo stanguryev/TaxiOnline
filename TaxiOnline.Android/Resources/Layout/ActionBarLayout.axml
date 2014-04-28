@@ -16,22 +16,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:background="@drawable/RefreshIcon" />
-    <ImageSwitcher
+    <!--ImageSwitcher
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:id="@+id/connectionStateImageSwitcher">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/OfflineIcon" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ConnectingIcon" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/OnlineIcon" />
-    </ImageSwitcher>
+        android:id="@+id/connectionStateImageSwitcher"-->
 </LinearLayout>

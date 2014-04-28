@@ -44,9 +44,9 @@ namespace TaxiOnline.Logic.Models
             internal set { _currentLocation = value; }
         }
 
-        public ProfileModel()
+        public ProfileModel(MapModel map)
         {
-
+            _map = map;
         }
     }
 }
