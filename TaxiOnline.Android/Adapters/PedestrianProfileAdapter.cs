@@ -30,6 +30,8 @@ namespace TaxiOnline.Android.Adapters
             _model = model;
             _model.DriversChanged += Model_DriversChanged;
             _model.DriversCollectionChanged += Model_DriversCollectionChanged;
+            model.Map.MapService.Map.MapCenterChanged += Map_MapCenterChanged;
+            model.Map.MapService.Map.MapZoomChanged += Map_MapZoomChanged;
             UpdateDrivers();
         }
 
@@ -135,6 +137,16 @@ namespace TaxiOnline.Android.Adapters
         private void Model_DriversCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             _context.RunOnUiThread(() => ObservableCollectionHelper.ApplyChanges(e, _items));
+        }
+
+        private void Map_MapCenterChanged(object sender, EventArgs e)
+        {
+            NotifyDataSetChanged();
+        }
+
+        private void Map_MapZoomChanged(object sender, EventArgs e)
+        {
+            NotifyDataSetChanged();
         }
     }
 }

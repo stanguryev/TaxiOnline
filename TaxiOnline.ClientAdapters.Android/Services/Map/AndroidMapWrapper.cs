@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.ClientServicesAdapter.Map;
 
 namespace TaxiOnline.ClientAdapters.Android.Services.Map
@@ -13,18 +14,6 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Map
     {
         private MapView _mapView;
         private Context _context;
-
-        protected override void SetMapCenter(ClientInfrastructure.Data.MapPoint value)
-        {
-            if (_mapView != null)
-                _mapView.MapCenter = new OsmSharp.Math.Geo.GeoCoordinate(value.Latitude, value.Longitude);
-        }
-
-        protected override void SetMapZoom(double value)
-        {
-            if (_mapView != null)
-                _mapView.MapZoom = (float)value;
-        }
 
         public void VisualizeMap(Context context, ViewGroup viewGroup)
         {
@@ -36,6 +25,28 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Map
             _mapView.MapTilt = 0;
             _mapView.MapAllowTilt = false;
             viewGroup.AddView(_mapView);
+        }
+
+        protected override void SetMapCenter(MapPoint value)
+        {
+            if (_mapView != null)
+                _mapView.MapCenter = new OsmSharp.Math.Geo.GeoCoordinate(value.Latitude, value.Longitude);
+        }
+
+        protected override void SetMapZoom(double value)
+        {
+            if (_mapView != null)
+                _mapView.MapZoom = (float)value;
+        }
+
+        protected override ClientInfrastructure.Data.MapPoint GetMapCenter()
+        {
+            return _mapView == null ? new MapPoint() : new MapPoint(_mapView.MapCenter.Latitude, _mapView.MapCenter.Longitude);
+        }
+
+        protected override double GetMapZoom()
+        {
+            return _mapView == null ? 1.0 : _mapView.MapZoom;
         }
     }
 }

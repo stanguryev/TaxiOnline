@@ -9,6 +9,8 @@ namespace TaxiOnline.ClientServicesAdapter.Map
 {
     public abstract class MapWrapperBase : IMap
     {
+        private const double Epsilon = 1e-5;
+
         protected readonly OsmSharp.UI.Map.Map _map;
         protected MapPoint _mapCenter;
         protected double _mapZoom;
@@ -33,11 +35,18 @@ namespace TaxiOnline.ClientServicesAdapter.Map
             }
         }
 
+        public event EventHandler MapChanged;
+
+        public event EventHandler MapCenterChanged;
+
+        public event EventHandler MapZoomChanged;
+
         public MapWrapperBase()
         {
             _map = new OsmSharp.UI.Map.Map();
             _map.AddLayer(new OsmSharp.UI.Map.Layers.LayerTile(@"http://otile1.mqcdn.com/tiles/1.0.0/osm/{0}/{1}/{2}.png"));
             _map.AddLayer(new OsmSharp.UI.Map.Layers.LayerTile(@"http://tiles.openseamap.org/seamark/{0}/{1}/{2}.png"));
+            _map.MapChanged += Map_MapChanged;
         }
 
         public int LatitudeOffsetToPixels(double from, double to, double longitude)
@@ -55,5 +64,47 @@ namespace TaxiOnline.ClientServicesAdapter.Map
         protected abstract void SetMapCenter(MapPoint value);
 
         protected abstract void SetMapZoom(double value);
+
+        protected abstract MapPoint GetMapCenter();
+
+        protected abstract double GetMapZoom();
+
+        private void Map_MapChanged()
+        {
+            MapPoint mapCenter = GetMapCenter();
+            double mapZoom = GetMapZoom();
+            if (Math.Abs(_mapCenter.Latitude - mapCenter.Latitude) + Math.Abs(_mapCenter.Longitude - mapCenter.Longitude) > Epsilon)
+            {
+                _mapCenter = mapCenter;
+                OnMapCenterChanged();
+            }
+            if (Math.Abs(_mapZoom - mapZoom)>Epsilon)
+            {
+                _mapZoom = mapZoom;
+                OnMapZoomChanged();
+            }
+            OnMapChanged();
+        }
+
+        protected virtual void OnMapChanged()
+        {
+            EventHandler handler = MapChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnMapCenterChanged()
+        {
+            EventHandler handler = MapCenterChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnMapZoomChanged()
+        {
+            EventHandler handler = MapZoomChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
     }
 }
