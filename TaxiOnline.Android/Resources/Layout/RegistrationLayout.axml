@@ -4,96 +4,107 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="top|center_horizontal">
-    <RadioGroup
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <RadioButton
-            android:id="@+id/pedestrianRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="@string/Pedestrian" />
-        <RadioButton
-            android:id="@+id/driverRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="@string/Driver" />
-    </RadioGroup>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+    <ScrollView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1">
-            <EditText
-                android:id="@+id/pedestrianSkypeNumberEditText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/SkypeNumber" />
-            <EditText
-                android:id="@+id/pedestrianPhoneNumberEditText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/PhoneNumber" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1">
-            <EditText
-                android:id="@+id/personNameEditText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/PersonName" />
-            <EditText
-                android:id="@+id/carColorEditText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/CarColor" />
-            <EditText
-                android:id="@+id/carBrandEditText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/CarBrand" />
-            <EditText
-                android:id="@+id/carNumberEditText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/CarNumber" />
-            <EditText
-                android:id="@+id/driverSkypeNumberEditText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/SkypeNumber" />
-            <EditText
-                android:id="@+id/driverPhoneNumberEditText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/PhoneNumber" />
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/confirmRegistrationButton"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/Register" />
-        <Button
-            android:id="@+id/cancelRegistrationButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/Cancel" />
-    </LinearLayout>
+            android:layout_height="fill_parent">
+            <RadioGroup
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/pedestrianRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:text="@string/Pedestrian" />
+                <RadioButton
+                    android:id="@+id/driverRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:text="@string/Driver" />
+            </RadioGroup>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1">
+                    <EditText
+                        android:id="@+id/pedestrianSkypeNumberEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/SkypeNumber" />
+                    <EditText
+                        android:id="@+id/pedestrianPhoneNumberEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/PhoneNumber" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1">
+                    <EditText
+                        android:id="@+id/personNameEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/PersonName" />
+                    <EditText
+                        android:id="@+id/carColorEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/CarColor" />
+                    <EditText
+                        android:id="@+id/carBrandEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/CarBrand" />
+                    <EditText
+                        android:id="@+id/carNumberEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/CarNumber" />
+                    <EditText
+                        android:id="@+id/driverSkypeNumberEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/SkypeNumber" />
+                    <EditText
+                        android:id="@+id/driverPhoneNumberEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/PhoneNumber" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/confirmRegistrationButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/Register" />
+                <Button
+                    android:id="@+id/cancelRegistrationButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/Cancel" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

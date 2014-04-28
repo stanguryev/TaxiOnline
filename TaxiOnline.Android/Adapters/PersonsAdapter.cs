@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using TaxiOnline.Logic.Models;
 using TaxiOnline.ClientInfrastructure.Data;
+using TaxiOnline.Android.Helpers;
 
 namespace TaxiOnline.Android.Adapters
 {
@@ -25,6 +26,8 @@ namespace TaxiOnline.Android.Adapters
             _context = context;
             _model = model;
             _model.PersonsChanged += Model_PersonsChanged;
+            model.Map.MapService.Map.MapCenterChanged += Map_MapCenterChanged;
+            model.Map.MapService.Map.MapZoomChanged += Map_MapZoomChanged;
             UpdatePersons();
             model.BeginLoadPersons();
         }
@@ -54,17 +57,12 @@ namespace TaxiOnline.Android.Adapters
 
         private void HookModelToView(View view, PersonModel personModel, ViewGroup upperView)
         {
-            //int width = upperView.Width;
-            //int height = upperView.Height;
-            //double pixelsScaleX = 0.35 * Math.Pow(2.0, _model.Map.CurrentZoom);
-            //double pixelsScaleY = 0.71 * Math.Pow(2.0, _model.Map.CurrentZoom);
-            MapPoint mapCenter = _model.Map.MapService.Map.MapCenter;
-            int iconSize = 32;
-            //int x = (int)(width / 2.0 + pixelsScaleX * (personModel.CurrentLocation.Longitude - mapCenter.Longitude));
-            //int y = (int)(height / 2.0 + pixelsScaleY * (personModel.CurrentLocation.Latitude - mapCenter.Latitude));
-            int x = upperView.Width / 2 - iconSize / 2 + _model.Map.MapService.Map.LongitudeOffsetToPixels(mapCenter.Longitude, personModel.CurrentLocation.Longitude, mapCenter.Latitude);
-            int y = upperView.Height / 2 - iconSize / 2 - _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, personModel.CurrentLocation.Latitude, mapCenter.Longitude);
-            view.LayoutParameters = new AbsoluteLayout.LayoutParams(/*view.Width, view.Height*/iconSize, iconSize, x, y);
+            view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map,personModel.CurrentLocation);
+            //MapPoint mapCenter = _model.Map.MapService.Map.MapCenter;
+            //int iconSize = 32;
+            //int x = upperView.Width / 2 - iconSize / 2 + _model.Map.MapService.Map.LongitudeOffsetToPixels(mapCenter.Longitude, personModel.CurrentLocation.Longitude, mapCenter.Latitude);
+            //int y = upperView.Height / 2 - iconSize / 2 - _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, personModel.CurrentLocation.Latitude, mapCenter.Longitude);
+            //view.LayoutParameters = new AbsoluteLayout.LayoutParams(/*view.Width, view.Height*/iconSize, iconSize, x, y);
         }
 
         private void UpdatePersons()
@@ -77,6 +75,16 @@ namespace TaxiOnline.Android.Adapters
         private void Model_PersonsChanged(object sender, EventArgs e)
         {
             _context.RunOnUiThread(UpdatePersons);
+        }
+
+        private void Map_MapZoomChanged(object sender, EventArgs e)
+        {
+            NotifyDataSetChanged();
+        }
+
+        private void Map_MapCenterChanged(object sender, EventArgs e)
+        {
+            NotifyDataSetChanged();
         }
     }
 }

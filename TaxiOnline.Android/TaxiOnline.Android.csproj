@@ -78,6 +78,7 @@
     <Compile Include="Adapters\PersonsAdapter.cs" />
     <Compile Include="Common\AndroidAdaptersExtender.cs" />
     <Compile Include="Decorators\ProgressDialogDecorator.cs" />
+    <Compile Include="Helpers\MapHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

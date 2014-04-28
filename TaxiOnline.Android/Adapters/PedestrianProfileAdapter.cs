@@ -63,18 +63,20 @@ namespace TaxiOnline.Android.Adapters
 
         private void HookCurrentModelToView(View view, ViewGroup upperView)
         {
-            MapPoint mapCenter = _model.Map.MapService.Map.MapCenter;
-            int x = upperView.Width / 2 - _model.Map.MapService.Map.LongitudeOffsetToPixels(mapCenter.Longitude, _model.CurrentLocation.Longitude, mapCenter.Latitude);
-            int y = upperView.Height / 2 - _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, _model.CurrentLocation.Latitude, mapCenter.Longitude);
-            view.LayoutParameters = new AbsoluteLayout.LayoutParams(32, 32, x, y);
+            //MapPoint mapCenter = _model.Map.MapService.Map.MapCenter;
+            //int x = upperView.Width / 2 - _model.Map.MapService.Map.LongitudeOffsetToPixels(mapCenter.Longitude, _model.CurrentLocation.Longitude, mapCenter.Latitude);
+            //int y = upperView.Height / 2 - _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, _model.CurrentLocation.Latitude, mapCenter.Longitude);
+            //view.LayoutParameters = new AbsoluteLayout.LayoutParams(32, 32, x, y);
+            view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map, _model.CurrentLocation);
         }
 
         private void HookModelToView(View view, DriverModel driverModel, ViewGroup upperView)
         {
-            MapPoint mapCenter = _model.Map.MapService.Map.MapCenter;
-            int x = upperView.Width / 2 - _model.Map.MapService.Map.LongitudeOffsetToPixels(mapCenter.Longitude, driverModel.CurrentLocation.Longitude, mapCenter.Latitude);
-            int y = upperView.Height / 2 - _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, driverModel.CurrentLocation.Latitude, mapCenter.Longitude);
-            view.LayoutParameters = new AbsoluteLayout.LayoutParams(32, 32, x, y);
+            //MapPoint mapCenter = _model.Map.MapService.Map.MapCenter;
+            //int x = upperView.Width / 2 - _model.Map.MapService.Map.LongitudeOffsetToPixels(mapCenter.Longitude, driverModel.CurrentLocation.Longitude, mapCenter.Latitude);
+            //int y = upperView.Height / 2 - _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, driverModel.CurrentLocation.Latitude, mapCenter.Longitude);
+            //view.LayoutParameters = new AbsoluteLayout.LayoutParams(32, 32, x, y);
+            view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map, driverModel.CurrentLocation);
             ImageView driverIconImageView = view.FindViewById<ImageView>(Resource.Id.driverIconImageView);
             driverIconImageView.Hover += (sender, e) =>
             {
