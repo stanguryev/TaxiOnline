@@ -35,6 +35,11 @@ namespace TaxiOnline.ClientServicesAdapter.Map
             }
         }
 
+        internal OsmSharp.UI.Map.Map Map
+        {
+            get { return _map; }
+        }
+
         public event EventHandler MapChanged;
 
         public event EventHandler MapCenterChanged;
@@ -78,7 +83,7 @@ namespace TaxiOnline.ClientServicesAdapter.Map
                 _mapCenter = mapCenter;
                 OnMapCenterChanged();
             }
-            if (Math.Abs(_mapZoom - mapZoom)>Epsilon)
+            if (Math.Abs(_mapZoom - mapZoom) > Epsilon)
             {
                 _mapZoom = mapZoom;
                 OnMapZoomChanged();

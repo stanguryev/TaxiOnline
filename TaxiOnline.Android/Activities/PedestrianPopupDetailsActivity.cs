@@ -22,7 +22,6 @@ namespace TaxiOnline.Android.Activities
         public PedestrianRequestModel Model
         {
             get { return _model; }
-            set { _model = value; }
         }
 
         protected override void OnCreate(Bundle bundle)

@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\ConnectionState.cs" />
+    <Compile Include="Data\MapMode.cs" />
     <Compile Include="Data\MapPoint.cs" />
     <Compile Include="Data\ParticipantTypes.cs" />
     <Compile Include="Exceptions\Enums\HardwareServiceErrors.cs" />

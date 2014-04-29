@@ -64,8 +64,11 @@
     <Compile Include="Data\Service\CallbackWrapper.cs" />
     <Compile Include="Data\Service\ServiceProxy.cs" />
     <Compile Include="Hardware\HardwareAdapter.cs" />
+    <Compile Include="Map\CacheMapSourceManager.cs" />
     <Compile Include="Map\MapAdapter.cs" />
+    <Compile Include="Map\MapSourceManagerBase.cs" />
     <Compile Include="Map\MapWrapperBase.cs" />
+    <Compile Include="Map\OnlineMapSourceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicesFactoryBase.cs" />
     <Compile Include="Settings\SettingsAdapter.cs" />
@@ -74,6 +77,9 @@
   <ItemGroup>
     <Reference Include="OsmSharp">
       <HintPath>..\Libs\OsmSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="OsmSharp.Osm">
+      <HintPath>..\Libs\OsmSharp.Osm.dll</HintPath>
     </Reference>
     <Reference Include="OsmSharp.UI">
       <HintPath>..\Libs\OsmSharp.UI.dll</HintPath>

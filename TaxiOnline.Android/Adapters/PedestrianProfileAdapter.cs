@@ -15,6 +15,7 @@ using TaxiOnline.Toolkit.Events;
 using TaxiOnline.Android.Helpers;
 using TaxiOnline.Android.Activities;
 using TaxiOnline.ClientInfrastructure.Data;
+using TaxiOnline.Android.Decorators;
 
 namespace TaxiOnline.Android.Adapters
 {
@@ -23,11 +24,15 @@ namespace TaxiOnline.Android.Adapters
         private readonly Activity _context;
         private readonly PedestrianProfileModel _model;
         private List<DriverModel> _items;
+        private ViewsCacheDecorator<DriverModel> _viewCache;
+        private Lazy<View> _selfItemView;
 
         public PedestrianProfileAdapter(Activity context, PedestrianProfileModel model)
         {
             _context = context;
             _model = model;
+            _viewCache = new ViewsCacheDecorator<DriverModel>(() => _context.LayoutInflater.Inflate(Resource.Layout.DriverInfoLayout, null, false));
+            _selfItemView = new Lazy<View>(() => _context.LayoutInflater.Inflate(Resource.Layout.PedestrianSelfInfoLayout, null, false));
             _model.DriversChanged += Model_DriversChanged;
             _model.DriversCollectionChanged += Model_DriversCollectionChanged;
             model.Map.MapService.Map.MapCenterChanged += Map_MapCenterChanged;
@@ -52,8 +57,9 @@ namespace TaxiOnline.Android.Adapters
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            int layoutId = position == 0 ? Resource.Layout.PedestrianSelfInfoLayout : Resource.Layout.DriverInfoLayout;
-            View view = _context.LayoutInflater.Inflate(layoutId, parent, false);
+            //int layoutId = position == 0 ? Resource.Layout.PedestrianSelfInfoLayout : Resource.Layout.DriverInfoLayout;
+            //View view = _context.LayoutInflater.Inflate(layoutId, parent, false);
+            View view = position == 0 ? _selfItemView.Value : _viewCache.GetView(_items[position - 1]);
             if (position == 0)
                 HookCurrentModelToView(view, parent);
             else
@@ -63,33 +69,26 @@ namespace TaxiOnline.Android.Adapters
 
         private void HookCurrentModelToView(View view, ViewGroup upperView)
         {
-            //MapPoint mapCenter = _model.Map.MapService.Map.MapCenter;
-            //int x = upperView.Width / 2 - _model.Map.MapService.Map.LongitudeOffsetToPixels(mapCenter.Longitude, _model.CurrentLocation.Longitude, mapCenter.Latitude);
-            //int y = upperView.Height / 2 - _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, _model.CurrentLocation.Latitude, mapCenter.Longitude);
-            //view.LayoutParameters = new AbsoluteLayout.LayoutParams(32, 32, x, y);
             view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map, _model.CurrentLocation);
         }
 
         private void HookModelToView(View view, DriverModel driverModel, ViewGroup upperView)
         {
-            //MapPoint mapCenter = _model.Map.MapService.Map.MapCenter;
-            //int x = upperView.Width / 2 - _model.Map.MapService.Map.LongitudeOffsetToPixels(mapCenter.Longitude, driverModel.CurrentLocation.Longitude, mapCenter.Latitude);
-            //int y = upperView.Height / 2 - _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, driverModel.CurrentLocation.Latitude, mapCenter.Longitude);
-            //view.LayoutParameters = new AbsoluteLayout.LayoutParams(32, 32, x, y);
             view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map, driverModel.CurrentLocation);
             ImageView driverIconImageView = view.FindViewById<ImageView>(Resource.Id.driverIconImageView);
             driverIconImageView.Hover += (sender, e) =>
             {
                 ShowDriverInfoToast(driverModel, driverIconImageView);
             };
-            //throw new NotImplementedException();
         }
 
         private void UpdateDrivers()
         {
             IEnumerable<DriverModel> modelCollection = _model.Drivers;
             _items = modelCollection == null ? new List<DriverModel>() : modelCollection.ToList();
+            _viewCache.NotifyFillStarted();
             NotifyDataSetChanged();
+            _viewCache.NotifyFillFinished();
         }
 
         private void ShowDriverInfoToast(DriverModel driverModel, View briefView)
@@ -143,12 +142,16 @@ namespace TaxiOnline.Android.Adapters
 
         private void Map_MapCenterChanged(object sender, EventArgs e)
         {
+            _viewCache.NotifyFillStarted();
             NotifyDataSetChanged();
+            _viewCache.NotifyFillFinished();
         }
 
         private void Map_MapZoomChanged(object sender, EventArgs e)
         {
+            _viewCache.NotifyFillStarted();
             NotifyDataSetChanged();
+            _viewCache.NotifyFillFinished();
         }
     }
 }

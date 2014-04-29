@@ -107,7 +107,11 @@ namespace TaxiOnline.Logic.Models
         {
             Task.Factory.StartNew(() =>
             {
-                _drivers.FillItemsList();//to complete
+                _drivers.FillItemsList();
+
+                OnLoadCompleted();
+                return;
+
                 ActionResult<PedestrianProfileRequestModel> currentRequestResult = UpdateHelper.GetModel(CheckCurrentRequest, l => l.Model);
                 if (currentRequestResult.IsValid)
                     CurrentRequest = currentRequestResult.Result;
