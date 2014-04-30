@@ -12,12 +12,14 @@ using Android.Widget;
 using TaxiOnline.ClientServicesAdapter.Settings;
 using TaxiOnline.ClientInfrastructure.Android.Services;
 using TaxiOnline.ClientInfrastructure.ServicesEntities.Settings;
+using TaxiOnline.ClientInfrastructure.Data;
 
 namespace TaxiOnline.ClientAdapters.Android.Services.Settings
 {
     public class AndroidSettingsAdapter : SettingsAdapter, IAndroidSettingsService
     {
         private const string ServerEndPointName = "ServerEndPoint";
+        private const string MapModeName = "MapMode";
 
         private readonly ISharedPreferences _preferences;
 
@@ -34,11 +36,13 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Settings
         public override void LoadSettings()
         {
             _settingsObject.ServerEndpointAddress = _preferences.GetString(ServerEndPointName, "http://10.188.112.31/TaxiOnline");
+            _settingsObject.MapMode = (MapMode)_preferences.GetInt(MapModeName, 0);
         }
 
         public override void SaveSettings()
         {
             _preferences.Edit().PutString(ServerEndPointName, _settingsObject.ServerEndpointAddress);
+            _preferences.Edit().PutInt(MapModeName, (int)_settingsObject.MapMode);
             _preferences.Edit().Commit();
         }
     }

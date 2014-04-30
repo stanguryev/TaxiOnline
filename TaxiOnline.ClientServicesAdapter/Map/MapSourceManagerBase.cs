@@ -12,7 +12,7 @@ namespace TaxiOnline.ClientServicesAdapter.Map
         public MapSourceManagerBase(MapWrapperBase mapWrapper)
         {
             _mapWrapper = mapWrapper;
-            // ApplyToMapWrapper(mapWrapper);
+            ApplyToMapWrapper(mapWrapper);
         }
 
         protected abstract void ApplyToMapWrapper(MapWrapperBase mapWrapper);

@@ -11,12 +11,14 @@ using Android.Views;
 using Android.Widget;
 using TaxiOnline.ClientInfrastructure.Android.Services;
 using TaxiOnline.ClientServicesAdapter.Map;
+using TaxiOnline.ClientInfrastructure.Data;
 
 namespace TaxiOnline.ClientAdapters.Android.Services.Map
 {
     public class AndroidMapAdapter : MapAdapter, IAndroidMapService
     {
-        public AndroidMapAdapter()
+        public AndroidMapAdapter(IAndroidSettingsService settings)
+            : base(settings.CurrentSettings.MapMode)
         {
 
         }

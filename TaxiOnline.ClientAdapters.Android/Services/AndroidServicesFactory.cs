@@ -26,8 +26,8 @@ namespace TaxiOnline.ClientAdapters.Android.Services
 
         public AndroidServicesFactory(ISharedPreferences preferences)
         {
-            _mapService = new Lazy<IMapService>(() => new AndroidMapAdapter(), true);
             _settingsService = new Lazy<IAndroidSettingsService>(() => new AndroidSettingsAdapter(preferences), true);
+            _mapService = new Lazy<IMapService>(() => new AndroidMapAdapter(_settingsService.Value), true);
             _hardwareService = new Lazy<IAndroidHardwareService>(() => new AndroidHardwareAdapter(), true);
         }
 

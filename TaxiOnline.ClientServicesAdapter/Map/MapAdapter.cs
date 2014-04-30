@@ -11,16 +11,17 @@ namespace TaxiOnline.ClientServicesAdapter.Map
     public abstract class MapAdapter : IMapService
     {
         protected readonly MapWrapperBase _map;
-        protected MapSourceManagerBase _mapSourceManagerBase;
+        protected MapSourceManagerBase _mapSourceManager;
 
         public IMap Map
         {
             get { return _map; }
         }
 
-        public MapAdapter()
+        public MapAdapter(MapMode mode)
         {
             _map = CreateMapWrapper();
+            _mapSourceManager = CreateMapSourceManager(mode, _map);
         }
 
         protected abstract MapWrapperBase CreateMapWrapper();
