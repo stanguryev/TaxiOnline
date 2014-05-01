@@ -22,7 +22,7 @@ namespace TaxiOnline.Android.Activities
     public class DriverProfileActivity : Activity
     {
         private DriverProfileModel _model;
-        private readonly ProgressDialogDecorator _loadProgressDialogDecorator;
+        private ProgressDialogDecorator _loadProgressDialogDecorator;
 
         public DriverProfileModel Model
         {
@@ -31,12 +31,13 @@ namespace TaxiOnline.Android.Activities
 
         public DriverProfileActivity()
         {
-            _loadProgressDialogDecorator = new ProgressDialogDecorator(this, Resources.GetString(Resource.String.LoadTitle), Resources.GetString(Resource.String.LoadDataMessage));
+            
         }
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            _loadProgressDialogDecorator = new ProgressDialogDecorator(this, Resources.GetString(Resource.String.LoadTitle), Resources.GetString(Resource.String.LoadDataMessage));
             AuthenticationActivity authenticationActivity = UIHelper.GetUpperActivity<AuthenticationActivity>(this, bundle);
             if (authenticationActivity != null)
                 _model = authenticationActivity.ActiveDriverProfileModel;

@@ -3,18 +3,23 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:gravity="left"
     android:layout_gravity="left">
     <ImageButton
         android:id="@+id/settingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:gravity="left"
+        android:minWidth="30sp"
+        android:minHeight="30sp"
         android:background="@drawable/SettingsIcon" />
     <ImageButton
         android:id="@+id/refreshCitiesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:gravity="left"
+        android:minWidth="30sp"
+        android:minHeight="30sp"
         android:background="@drawable/RefreshIcon" />
     <!--ImageSwitcher
         android:layout_width="wrap_content"

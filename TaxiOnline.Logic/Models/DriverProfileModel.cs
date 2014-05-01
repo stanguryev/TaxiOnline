@@ -123,6 +123,10 @@ namespace TaxiOnline.Logic.Models
             Task.Factory.StartNew(() =>
             {
                 _pedestrians.FillItemsList();
+
+                OnLoadCompleted();
+                return;
+
                 _pedestrianRequests.FillItemsList();
                 OnLoadCompleted();
             });

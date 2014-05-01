@@ -47,6 +47,10 @@ namespace TaxiOnline.Android.Activities
                 SetResult(Result.Canceled);
                 Finish();
             };
+            RadioButton pedestrianRadioButton = FindViewById<RadioButton>(Resource.Id.pedestrianRadioButton);
+            RadioButton driverRadioButton = FindViewById<RadioButton>(Resource.Id.driverRadioButton);
+            pedestrianRadioButton.CheckedChange += (sender, e) => confirmRegistrationButton.Enabled = true;
+            driverRadioButton.CheckedChange += (sender, e) => confirmRegistrationButton.Enabled = true;
         }
 
         private void RunAuthentication()
