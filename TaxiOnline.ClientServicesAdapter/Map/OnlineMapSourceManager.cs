@@ -16,7 +16,7 @@ namespace TaxiOnline.ClientServicesAdapter.Map
         protected override void ApplyToMapWrapper(MapWrapperBase mapWrapper)
         {
             mapWrapper.Map.AddLayer(new OsmSharp.UI.Map.Layers.LayerTile(@"http://otile1.mqcdn.com/tiles/1.0.0/osm/{0}/{1}/{2}.png"));
-            mapWrapper.Map.AddLayer(new OsmSharp.UI.Map.Layers.LayerTile(@"http://tiles.openseamap.org/seamark/{0}/{1}/{2}.png"));
+            //mapWrapper.Map.AddLayer(new OsmSharp.UI.Map.Layers.LayerTile(@"http://tiles.openseamap.org/seamark/{0}/{1}/{2}.png"));
         }
     }
 }

@@ -60,18 +60,6 @@ namespace TaxiOnline.Android.Activities
             //ImageSwitcher connectionStateImageSwitcher = ActionBar.CustomView.FindViewById<ImageSwitcher>(Resource.Id.connectionStateImageSwitcher);
             //SetConnectionState(connectionStateImageSwitcher, _model.ConnectionState);
             //_model.ConnectionStateChanged += (sender, e) => RunOnUiThread(() => SetConnectionState(connectionStateImageSwitcher, _model.ConnectionState));
-            ImageButton vkShareButton = ActionBar.CustomView.FindViewById<ImageButton>(Resource.Id.vkShareButton);
-            //if (CanShareApplication("com.vkontakte.android"))
-            //{
-            //    vkShareButton.SetImageDrawable(PackageManager.GetApplicationLogo("com.vkontakte.android"));
-            //    vkShareButton.Click += (sender, e) => ShareApplication("com.vkontakte.android");
-            //}
-            //else
-            //    vkShareButton.Visibility = ViewStates.Gone;
-            //"com.facebook.katana"
-            //"com.twitter.android"
-            //"com.instagram.android"
-            //"com.pinterest"
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -103,6 +91,18 @@ namespace TaxiOnline.Android.Activities
                     using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resource.String.NoCityFound, ToastLength.Short))
                         errorToast.Show();
             };
+            ImageButton vkShareButton = FindViewById<ImageButton>(Resource.Id.vkShareButton);
+            if (CanShareApplication("com.vkontakte.android"))
+            {
+                vkShareButton.SetImageDrawable(PackageManager.GetApplicationLogo("com.vkontakte.android"));
+                vkShareButton.Click += (sender, e) => ShareApplication("com.vkontakte.android");
+            }
+            else
+                vkShareButton.Visibility = ViewStates.Gone;
+            //"com.facebook.katana"
+            //"com.twitter.android"
+            //"com.instagram.android"
+            //"com.pinterest"
         }
 
         private void UnhookModel()
