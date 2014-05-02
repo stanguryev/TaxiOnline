@@ -41,9 +41,12 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Settings
 
         public override void SaveSettings()
         {
-            _preferences.Edit().PutString(ServerEndPointName, _settingsObject.ServerEndpointAddress);
-            _preferences.Edit().PutInt(MapModeName, (int)_settingsObject.MapMode);
-            _preferences.Edit().Commit();
+            using (ISharedPreferencesEditor preferencesEditor = _preferences.Edit())
+            {
+                preferencesEditor.PutString(ServerEndPointName, _settingsObject.ServerEndpointAddress);
+                preferencesEditor.PutInt(MapModeName, (int)_settingsObject.MapMode);
+                preferencesEditor.Commit();
+            }
         }
     }
 }

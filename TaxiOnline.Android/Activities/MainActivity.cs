@@ -52,8 +52,8 @@ namespace TaxiOnline.Android.Activities
             ImageButton refreshCitiesButton = ActionBar.CustomView.FindViewById<ImageButton>(Resource.Id.refreshCitiesButton);
             refreshCitiesButton.Click += (sender, e) =>
             {
-                _connectionProgressDialogDecorator.Show();
-                _model.BeginLoadCities();
+                System.Threading.CancellationToken cancelLoad = _connectionProgressDialogDecorator.ShowWithCancel();
+                _model.BeginLoadCities(cancelLoad);
             };
             ImageButton settingsButton = ActionBar.CustomView.FindViewById<ImageButton>(Resource.Id.settingsButton);
             settingsButton.Click += (sender, e) => UIHelper.GoResultActivity(this, typeof(SettingsActivity), 1);
@@ -73,8 +73,8 @@ namespace TaxiOnline.Android.Activities
         {
             _model.CitiesChanged += Model_CitiesChanged;
             _model.EnumrateCitiesFailed += Model_EnumrateCitiesFailed;
-            _connectionProgressDialogDecorator.Show();
-            _model.BeginLoadCities();
+            System.Threading.CancellationToken cancelLoad = _connectionProgressDialogDecorator.ShowWithCancel();
+            _model.BeginLoadCities(cancelLoad);
             AutoCompleteTextView cityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.cityTextView);
             cityTextView.Adapter = new CitiesAdapter(this, _model);
             ImageButton chooseCityButton = FindViewById<ImageButton>(Resource.Id.chooseCityButton);

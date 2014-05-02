@@ -55,13 +55,13 @@ namespace TaxiOnline.ClientServicesAdapter.Map
         public int LatitudeOffsetToPixels(double from, double to, double longitude)
         {
             OsmSharp.Units.Distance.Meter distance = new OsmSharp.Math.Geo.GeoCoordinate(from, longitude).DistanceEstimate(new OsmSharp.Math.Geo.GeoCoordinate(to, longitude));
-            return (int)(distance.Value / 39800000.0 * 256.0 * Math.Pow(2.0, _mapZoom - 1));
+            return (int)(distance.Value / 3980000.0 * 256.0 * Math.Pow(2.0, _mapZoom - 2));
         }
 
         public int LongitudeOffsetToPixels(double from, double to, double latitude)
         {
             OsmSharp.Units.Distance.Meter distance = new OsmSharp.Math.Geo.GeoCoordinate(latitude, from).DistanceEstimate(new OsmSharp.Math.Geo.GeoCoordinate(latitude, to));
-            return (int)(distance.Value / 39800000.0 * 256.0 * Math.Pow(2.0, _mapZoom - 1));
+            return (int)(distance.Value / 3980000.0 * 256.0 * Math.Pow(2.0, _mapZoom - 2));
         }
 
         protected abstract void SetMapCenter(MapPoint value);

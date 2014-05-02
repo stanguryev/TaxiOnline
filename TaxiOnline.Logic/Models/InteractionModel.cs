@@ -106,9 +106,9 @@ namespace TaxiOnline.Logic.Models
             _settings = _logic.Settings.Model;
         }
 
-        public void BeginLoadCities()
+        public void BeginLoadCities(System.Threading.CancellationToken cancelLoad)
         {
-            System.Threading.Tasks.Task.Factory.StartNew(() => _cities.FillItemsList());
+            System.Threading.Tasks.Task.Factory.StartNew(() => _cities.FillItemsList(), cancelLoad);
         }
 
         public void NotifyEnumrateCitiesFailed(ActionResult errorResult)

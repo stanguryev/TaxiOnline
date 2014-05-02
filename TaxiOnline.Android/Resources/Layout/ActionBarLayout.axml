@@ -10,16 +10,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="left"
-        android:minWidth="30sp"
-        android:minHeight="30sp"
+        android:minWidth="40sp"
+        android:minHeight="40sp"
         android:background="@drawable/SettingsIcon" />
     <ImageButton
         android:id="@+id/refreshCitiesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="left"
-        android:minWidth="30sp"
-        android:minHeight="30sp"
+        android:minWidth="40sp"
+        android:minHeight="40sp"
         android:background="@drawable/RefreshIcon" />
     <!--ImageSwitcher
         android:layout_width="wrap_content"
