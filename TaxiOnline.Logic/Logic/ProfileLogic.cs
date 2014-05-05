@@ -26,6 +26,7 @@ namespace TaxiOnline.Logic.Logic
             _adaptersExtender = adaptersExtender;
             _city = city;
             UpdateCurrentLocation();
+            adaptersExtender.ServicesFactory.GetCurrentHardwareService().LocationChanged += ProfileLogic_LocationChanged;
         }
 
         private void UpdateCurrentLocation()
@@ -33,6 +34,11 @@ namespace TaxiOnline.Logic.Logic
             ActionResult<MapPoint> locationResult = _adaptersExtender.ServicesFactory.GetCurrentHardwareService().GetCurrentLocation();
             if (locationResult.IsValid)
                 _profileModel.CurrentLocation = locationResult.Result;
+        }
+
+        private void ProfileLogic_LocationChanged(object sender, ValueEventArgs<MapPoint> e)
+        {
+            _profileModel.CurrentLocation = e.Value;
         }
     }
 }

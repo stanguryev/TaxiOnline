@@ -12,9 +12,11 @@ namespace TaxiOnline.Logic.Models
 {
     public class PedestrianProfileModel : ProfileModel
     {
-        private PedestrianProfileRequestModel _currentRequest;
-        private PedestrianProfileRequestModel _pendingRequest;
+        //private PedestrianProfileRequestModel _currentRequest;
+        //private PedestrianProfileRequestModel _pendingRequest;
+        private readonly SimpleCollectionLoadDecorator<PedestrianProfileRequestModel> _requests;
         private readonly SimpleCollectionLoadDecorator<DriverModel> _drivers;
+        private PedestrianProfileRequestModel _selectedRequest;
         private DriverModel _selectedDriver;
 
         public DriverModel SelectedDriver
@@ -30,40 +32,58 @@ namespace TaxiOnline.Logic.Models
             }
         }
 
-        public PedestrianProfileRequestModel CurrentRequest
+        public PedestrianProfileRequestModel SelectedRequest
         {
-            get { return _currentRequest; }
-            internal set
+            get { return _selectedRequest; }
+            set
             {
-                if (_currentRequest != value)
+                if (_selectedRequest != value)
                 {
-                    _currentRequest = value;
-                    OnCurrentRequestChanged();
+                    _selectedRequest = value;
+                    OnSelectedRequestChanged();
                 }
             }
         }
 
-        public PedestrianProfileRequestModel PendingRequest
-        {
-            get { return _pendingRequest; }
-            internal set
-            {
-                if (_pendingRequest != value)
-                {
-                    _pendingRequest = value;
-                    OnPendingRequestChanged();
-                }
-            }
-        }
+        //public PedestrianProfileRequestModel CurrentRequest
+        //{
+        //    get { return _currentRequest; }
+        //    internal set
+        //    {
+        //        if (_currentRequest != value)
+        //        {
+        //            _currentRequest = value;
+        //            OnCurrentRequestChanged();
+        //        }
+        //    }
+        //}
+
+        //public PedestrianProfileRequestModel PendingRequest
+        //{
+        //    get { return _pendingRequest; }
+        //    internal set
+        //    {
+        //        if (_pendingRequest != value)
+        //        {
+        //            _pendingRequest = value;
+        //            OnPendingRequestChanged();
+        //        }
+        //    }
+        //}
 
         public IEnumerable<DriverModel> Drivers
         {
             get { return _drivers.Items; }
         }
 
-        public event EventHandler CurrentRequestChanged;
+        public IEnumerable<PedestrianProfileRequestModel> Requests
+        {
+            get { return _requests.Items; }
+        }
 
-        public event EventHandler PendingRequestChanged;
+        //public event EventHandler CurrentRequestChanged;
+
+        //public event EventHandler PendingRequestChanged;
 
         public event EventHandler LoadCompleted;
 
@@ -89,11 +109,33 @@ namespace TaxiOnline.Logic.Models
 
         public event EventHandler SelectedDriverChanged;
 
+        public event EventHandler RequestsChanged
+        {
+            add { _requests.ItemsChanged += value; }
+            remove { _requests.ItemsChanged -= value; }
+        }
+
+        public event NotifyCollectionChangedEventHandler RequestsCollectionChanged
+        {
+            add { _requests.ItemsCollectionChanged += value; }
+            remove { _requests.ItemsCollectionChanged -= value; }
+        }
+
+        public event ActionResultEventHandler EnumrateRequestsFailed
+        {
+            add { _requests.RequestFailed += value; }
+            remove { _requests.RequestFailed -= value; }
+        }
+
+        public event EventHandler SelectedRequestChanged;
+
         internal Func<DriverModel, Logic.PedestrianProfileRequestLogic> InitRequestDelegate { get; set; }
 
         internal Func<ActionResult<Logic.PedestrianProfileRequestLogic>> CheckCurrentRequest { get; set; }
 
         internal Func<ActionResult<IEnumerable<Logic.DriverLogic>>> EnumerateDriversDelegate { get; set; }
+
+        internal Func<ActionResult<IEnumerable<Logic.PedestrianProfileRequestLogic>>> EnumerateRequestsDelegate { get; set; }
 
         internal Func<DriverModel, ActionResult> CallToDriverDelegate { get; set; }
 
@@ -101,6 +143,7 @@ namespace TaxiOnline.Logic.Models
             : base(map)
         {
             _drivers = new SimpleCollectionLoadDecorator<DriverModel>(EnumerateDrivers);
+            _requests = new SimpleCollectionLoadDecorator<PedestrianProfileRequestModel>(EnumerateRequests);
         }
 
         public void BeginLoad()
@@ -108,19 +151,19 @@ namespace TaxiOnline.Logic.Models
             Task.Factory.StartNew(() =>
             {
                 _drivers.FillItemsList();
-
+                _requests.FillItemsList();
                 OnLoadCompleted();
                 return;
 
-                ActionResult<PedestrianProfileRequestModel> currentRequestResult = UpdateHelper.GetModel(CheckCurrentRequest, l => l.Model);
-                if (currentRequestResult.IsValid)
-                    CurrentRequest = currentRequestResult.Result;
-                else
-                {
-                    OnCheckCurrentRequestFailed();
-                    return;
-                }
-                OnLoadCompleted();
+                //ActionResult<PedestrianProfileRequestModel> currentRequestResult = UpdateHelper.GetModel(CheckCurrentRequest, l => l.Model);
+                //if (currentRequestResult.IsValid)
+                //    CurrentRequest = currentRequestResult.Result;
+                //else
+                //{
+                //    OnCheckCurrentRequestFailed();
+                //    return;
+                //}
+                //OnLoadCompleted();
             });
         }
 
@@ -150,28 +193,45 @@ namespace TaxiOnline.Logic.Models
             _drivers.ModifyCollection(modificationDelegate);
         }
 
+        internal void ModifyRequestsCollection(Action<IList<PedestrianProfileRequestModel>> modificationDelegate)
+        {
+            _requests.ModifyCollection(modificationDelegate);
+        }
+
         private ActionResult<IEnumerable<DriverModel>> EnumerateDrivers()
         {
             return UpdateHelper.EnumerateModels(EnumerateDriversDelegate, l => l.Model);
         }
 
-        protected virtual void OnCurrentRequestChanged()
+        private ActionResult<IEnumerable<PedestrianProfileRequestModel>> EnumerateRequests()
         {
-            EventHandler handler = CurrentRequestChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            return UpdateHelper.EnumerateModels(EnumerateRequestsDelegate, l => l.Model);
         }
 
-        protected virtual void OnPendingRequestChanged()
-        {
-            EventHandler handler = PendingRequestChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
+        //protected virtual void OnCurrentRequestChanged()
+        //{
+        //    EventHandler handler = CurrentRequestChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
+
+        //protected virtual void OnPendingRequestChanged()
+        //{
+        //    EventHandler handler = PendingRequestChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
 
         protected virtual void OnSelectedDriverChanged()
         {
             EventHandler handler = SelectedDriverChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnSelectedRequestChanged()
+        {
+            EventHandler handler = SelectedRequestChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }

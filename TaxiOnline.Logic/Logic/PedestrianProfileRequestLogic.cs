@@ -59,8 +59,8 @@ namespace TaxiOnline.Logic.Logic
             {
                 ActionResult confirmResult = _requestDecorator.Confirm();
                 resultCallback(confirmResult);
-                if (confirmResult.IsValid)
-                    _user.SetRequest(this);
+                //if (confirmResult.IsValid)
+                //    _user.SetRequest(this);
             });
         }
 
@@ -83,14 +83,14 @@ namespace TaxiOnline.Logic.Logic
 
         private void CancelPendingCore()
         {
-            _user.ResetPendigRequest(this);
+            _user.Model.ModifyRequestsCollection(col => col.Remove(_model));
         }
 
         private ActionResult CancelConfirmedCore()
         {
             ActionResult cancelResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().RemovePedestrianRequest(_user.Model.PersonId);
             if (cancelResult.IsValid)
-                _user.ResetConfirmedRequest(this);
+                _user.Model.ModifyRequestsCollection(col => col.Remove(_model));
             return cancelResult;
         }
 

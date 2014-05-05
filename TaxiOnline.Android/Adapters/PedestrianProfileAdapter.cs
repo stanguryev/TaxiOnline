@@ -35,6 +35,7 @@ namespace TaxiOnline.Android.Adapters
             _selfItemView = new Lazy<View>(() => _context.LayoutInflater.Inflate(Resource.Layout.PedestrianSelfInfoLayout, null, false));
             _model.DriversChanged += Model_DriversChanged;
             _model.DriversCollectionChanged += Model_DriversCollectionChanged;
+            _model.CurrentLocationChanged += Model_CurrentLocationChanged;
             model.Map.MapService.Map.MapCenterChanged += Map_MapCenterChanged;
             model.Map.MapService.Map.MapZoomChanged += Map_MapZoomChanged;
             UpdateDrivers();
@@ -138,6 +139,16 @@ namespace TaxiOnline.Android.Adapters
         private void Model_DriversCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             _context.RunOnUiThread(() => ObservableCollectionHelper.ApplyChanges(e, _items));
+        }
+
+        private void Model_CurrentLocationChanged(object sender, EventArgs e)
+        {
+            _context.RunOnUiThread(() =>
+            {
+                _viewCache.NotifyFillStarted();
+                NotifyDataSetChanged();
+                _viewCache.NotifyFillFinished();
+            });
         }
 
         private void Map_MapCenterChanged(object sender, EventArgs e)

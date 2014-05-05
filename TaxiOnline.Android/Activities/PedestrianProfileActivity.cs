@@ -22,18 +22,20 @@ namespace TaxiOnline.Android.Activities
     public class PedestrianProfileActivity : Activity
     {
         private PedestrianProfileModel _model;
-        private PedestrianProfileRequestModel _currentRequest;
+        //private PedestrianProfileRequestModel _selectedRequest;
+        private int _notificationsCounter;
         private NotificationManager _notificationManager;
         private ProgressDialogDecorator _loadProgressDialogDecorator;
+        private PedestrianProfileRequestModel[] _activeRequests;
 
         public PedestrianProfileModel Model
         {
             get { return _model; }
         }
 
-        public PedestrianProfileRequestModel CurrentRequest
+        public PedestrianProfileRequestModel[] ActiveRequests
         {
-            get { return _currentRequest; }
+            get { return _activeRequests; }
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -44,7 +46,7 @@ namespace TaxiOnline.Android.Activities
             if (authenticationActivity != null)
                 _model = authenticationActivity.ActivePedestrianProfileModel;
             SetContentView(Resource.Layout.PedestrianProfileLayout);
-            _model.CurrentRequestChanged += Model_CurrentRequestChanged;
+            _model.RequestsCollectionChanged += Model_RequestsCollectionChanged;
             _notificationManager = (NotificationManager)GetSystemService(Application.NotificationService);
             HookModel();
         }
@@ -74,39 +76,39 @@ namespace TaxiOnline.Android.Activities
             pedestrianProfileView.Adapter = new PedestrianProfileAdapter(this, _model);
         }
 
-        private void HookCurrentRequest()
+        private void HookRequest(PedestrianProfileRequestModel request)
         {
-            _currentRequest.AvailableResponsesCollectionChanged += CurrentRequest_AvailableResponsesCollectionChanged;
+            request.AvailableResponsesCollectionChanged += CurrentRequest_AvailableResponsesCollectionChanged;
         }
 
-        private void UnhookCurrentRequest()
+        private void UnhookRequest(PedestrianProfileRequestModel request)
         {
-            _currentRequest.AvailableResponsesCollectionChanged -= CurrentRequest_AvailableResponsesCollectionChanged;
+            request.AvailableResponsesCollectionChanged -= CurrentRequest_AvailableResponsesCollectionChanged;
         }
 
-        private void Model_CurrentRequestChanged(object sender, EventArgs e)
+        private void Model_RequestsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            RunOnUiThread(() =>
-            {
-                if (_currentRequest != null)
-                    UnhookCurrentRequest();
-                _currentRequest = _model.CurrentRequest;
-                if (_currentRequest != null)
-                    HookCurrentRequest();
-            });
+            if (e.NewItems != null)
+                foreach (PedestrianProfileRequestModel request in e.NewItems.OfType<PedestrianProfileRequestModel>().ToArray())
+                    HookRequest(request);
+            if (e.OldItems != null)
+                foreach (PedestrianProfileRequestModel request in e.OldItems.OfType<PedestrianProfileRequestModel>().ToArray())
+                    UnhookRequest(request);
         }
 
         private void CurrentRequest_AvailableResponsesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            RunOnUiThread(() =>
-            {
-                UIHelper.GetIntent(this, typeof(DriverResponsesActivity));
-                PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, null, PendingIntentFlags.UpdateCurrent);
-                Notification.Builder builder = new Notification.Builder(this);
-                builder.SetContentIntent(pendingIntent);
-                //builder.SetContentText();
-                _notificationManager.Notify(1, builder.Notification);
-            });
+            if (e.NewItems != null)
+                RunOnUiThread(() =>
+                {
+                    _activeRequests = e.NewItems.OfType<DriverResponseModel>().Select(r => r.Request).Distinct().ToArray();
+                    UIHelper.GetIntent(this, typeof(DriverResponsesActivity));
+                    PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, null, PendingIntentFlags.UpdateCurrent);
+                    Notification.Builder builder = new Notification.Builder(this);
+                    builder.SetContentIntent(pendingIntent);
+                    //builder.SetContentText();
+                    _notificationManager.Notify(++_notificationsCounter, builder.Notification);
+                });
         }
     }
 }

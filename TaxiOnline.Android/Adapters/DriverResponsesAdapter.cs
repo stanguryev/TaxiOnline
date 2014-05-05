@@ -17,15 +17,15 @@ namespace TaxiOnline.Android.Adapters
     public class DriverResponsesAdapter : BaseAdapter
     {
         private readonly Activity _context;
-        private readonly PedestrianProfileRequestModel _model;
+        private readonly PedestrianProfileModel _model;
         private List<DriverResponseModel> _items;
 
-        public DriverResponsesAdapter(Activity context, PedestrianProfileRequestModel model)
+        public DriverResponsesAdapter(Activity context, PedestrianProfileModel model)
         {
             _context = context;
             _model = model;
-            _model.AvailableResponsesChanged += Model_AvailableResponsesChanged;
-            _model.AvailableResponsesCollectionChanged += Model_AvailableResponsesCollectionChanged;
+            _model.RequestsChanged += Model_RequestsChanged;
+            _model.RequestsCollectionChanged += Model_RequestsCollectionChanged;
             UpdateDriverResponses();
         }
 
@@ -58,19 +58,19 @@ namespace TaxiOnline.Android.Adapters
 
         private void UpdateDriverResponses()
         {
-            IEnumerable<DriverResponseModel> modelCollection = _model.AvailableResponses;
-            _items = modelCollection == null ? new List<DriverResponseModel>() : modelCollection.ToList();
+            IEnumerable<PedestrianProfileRequestModel> modelCollection = _model.Requests;
+            _items = modelCollection == null ? new List<DriverResponseModel>() : modelCollection.Where(col => col.AvailableResponses != null).SelectMany(col => col.AvailableResponses).ToList();
             NotifyDataSetChanged();
         }
 
-        private void Model_AvailableResponsesChanged(object sender, EventArgs e)
+        private void Model_RequestsChanged(object sender, EventArgs e)
         {
             _context.RunOnUiThread(UpdateDriverResponses);
         }
 
-        private void Model_AvailableResponsesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Model_RequestsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            _context.RunOnUiThread(() => ObservableCollectionHelper.ApplyChanges(e, _items));
+            _context.RunOnUiThread(() => ObservableCollectionHelper.ApplyChangesByObjects<PedestrianProfileRequestModel, DriverResponseModel>(e, _items, m => m.AvailableResponses.First(), m => m.AvailableResponses.First()));
         }
     }
 }

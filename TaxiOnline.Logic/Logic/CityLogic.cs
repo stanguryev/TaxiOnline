@@ -25,6 +25,11 @@ namespace TaxiOnline.Logic.Logic
             get { return _model; }
         }
 
+        public IEnumerable<PersonLogic> Persons
+        {
+            get { return _persons.Items; }
+        }
+
         public CityLogic(CityModel model, AdaptersExtender adaptersExtender, InteractionLogic interaction)
         {
             _model = model;

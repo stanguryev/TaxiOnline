@@ -12,7 +12,7 @@ namespace TaxiOnline.Logic.Models
         private Guid _responseId;
         private readonly DriverModel _responseAuthor;
         private readonly PedestrianProfileRequestModel _request;
-
+        
         public Guid ResponseId
         {
             get { return _responseId; }
@@ -22,6 +22,11 @@ namespace TaxiOnline.Logic.Models
         public DriverModel ResponseAuthor
         {
             get { return _responseAuthor; }
+        } 
+
+        public PedestrianProfileRequestModel Request
+        {
+            get { return _request; }
         } 
 
         public DriverResponseModel(PedestrianProfileRequestModel request, DriverModel responseAuthor)

@@ -18,14 +18,14 @@ namespace TaxiOnline.Android.Activities
     [Activity(Label = "@string/ApplicationName")]
     public class DriverResponsesActivity : Activity
     {
-        private PedestrianProfileRequestModel _model;
+        private PedestrianProfileModel _model;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             PedestrianProfileActivity pedestrianProfileActivity = UIHelper.GetUpperActivity<PedestrianProfileActivity>(this, bundle);
             if (pedestrianProfileActivity != null)
-                _model = pedestrianProfileActivity.CurrentRequest;
+                _model = pedestrianProfileActivity.Model;
             SetContentView(Resource.Layout.DriverResponsesLayout);
             HookModel();
         }

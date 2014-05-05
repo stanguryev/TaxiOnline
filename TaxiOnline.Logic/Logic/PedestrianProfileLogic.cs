@@ -18,6 +18,7 @@ namespace TaxiOnline.Logic.Logic
         private readonly AdaptersExtender _adaptersExtender;
         private readonly CityLogic _city;
         private readonly UpdatableCollectionLoadDecorator<DriverLogic, IDriverInfo> _drivers;
+        private readonly UpdatableCollectionLoadDecorator<PedestrianProfileRequestLogic, IPedestrianRequest> _requests;
 
         public PedestrianProfileModel Model
         {
@@ -37,34 +38,36 @@ namespace TaxiOnline.Logic.Logic
             _city = city;
             model.InitRequestDelegate = InitRequest;
             model.EnumerateDriversDelegate = EnumerateDrivers;
+            model.EnumerateRequestsDelegate = EnumerateRequests;
             model.CallToDriverDelegate = CallToDriver;
             _drivers = new UpdatableCollectionLoadDecorator<DriverLogic, IDriverInfo>(RetriveDrivers, CompareDriversInfo, p => p.IsOnline, CreateDriverLogic);
+            _requests = new UpdatableCollectionLoadDecorator<PedestrianProfileRequestLogic, IPedestrianRequest>(RetriveRequests, CompareRequestsInfo, ValidateRequest, CreateRequestLogic);
             _drivers.ItemsCollectionChanged += Drivers_ItemsCollectionChanged;
         }
 
         public PedestrianProfileRequestLogic InitRequest(DriverModel driver)
         {
             PedestrianProfileRequestModel requestModel = new PedestrianProfileRequestModel(_model);
-            _model.PendingRequest = requestModel;
+            _model.ModifyRequestsCollection(col => col.Add(requestModel));
             DriverLogic driverLogic = _drivers.Items.SingleOrDefault(d => d.Model == driver);
             return driverLogic == null ? null : new PedestrianProfileRequestLogic(requestModel, _adaptersExtender, this, driverLogic);
         }
 
-        public void SetRequest(PedestrianProfileRequestLogic request)
-        {
-            _model.CurrentRequest = request.Model;
-            _model.PendingRequest = null;
-        }
+        //public void SetRequest(PedestrianProfileRequestLogic request)
+        //{
+        //    _model.CurrentRequest = request.Model;
+        //    _model.PendingRequest = null;
+        //}
 
-        public void ResetPendigRequest(PedestrianProfileRequestLogic request)
-        {
-            _model.PendingRequest = null;
-        }
+        //public void ResetPendigRequest(PedestrianProfileRequestLogic request)
+        //{
+        //    _model.PendingRequest = null;
+        //}
 
-        public void ResetConfirmedRequest(PedestrianProfileRequestLogic request)
-        {
-            _model.CurrentRequest = null;
-        }
+        //public void ResetConfirmedRequest(PedestrianProfileRequestLogic request)
+        //{
+        //    _model.CurrentRequest = null;
+        //}
 
         private ActionResult CallToDriver(DriverModel driverModel)
         {
@@ -80,6 +83,13 @@ namespace TaxiOnline.Logic.Logic
             if (_drivers.Items == null)
                 _drivers.FillItemsList();
             return _drivers.Items == null ? ActionResult<IEnumerable<DriverLogic>>.GetErrorResult(new Exception()) : ActionResult<IEnumerable<DriverLogic>>.GetValidResult(_drivers.Items);
+        }
+
+        private ActionResult<IEnumerable<PedestrianProfileRequestLogic>> EnumerateRequests()
+        {
+            if (_requests.Items == null)
+                _requests.FillItemsList();
+            return _requests.Items == null ? ActionResult<IEnumerable<PedestrianProfileRequestLogic>>.GetErrorResult(new Exception()) : ActionResult<IEnumerable<PedestrianProfileRequestLogic>>.GetValidResult(_requests.Items);
         }
 
         private ActionResult<IEnumerable<DriverLogic>> RetriveDrivers()
@@ -100,6 +110,29 @@ namespace TaxiOnline.Logic.Logic
             {
                 PersonId = personSLO.PersonId
             }, _adaptersExtender, _city);
+        }
+
+        private ActionResult<IEnumerable<PedestrianProfileRequestLogic>> RetriveRequests()
+        {
+            ActionResult<IEnumerable<IPedestrianRequest>> requestResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().EnumeratePedestrianRequests(_city.Model.Id);
+            return requestResult.IsValid ? ActionResult<IEnumerable<PedestrianProfileRequestLogic>>.GetValidResult(requestResult.Result.Select(r => CreateRequestLogic(r)).Where(r => r != null).ToArray())
+                : ActionResult<IEnumerable<PedestrianProfileRequestLogic>>.GetErrorResult(requestResult);
+        }
+
+        private bool CompareRequestsInfo(PedestrianProfileRequestLogic logic, IPedestrianRequest slo)
+        {
+            return logic.Model.RequestId == slo.Id;
+        }
+
+        private bool ValidateRequest(IPedestrianRequest requestSLO)
+        {
+            return requestSLO.PedestrianId == _model.PersonId && !requestSLO.IsCanceled;
+        }
+
+        private PedestrianProfileRequestLogic CreateRequestLogic(IPedestrianRequest requestSLO)
+        {
+            DriverLogic driver = _city.Persons.OfType<DriverLogic>().SingleOrDefault(d => d.Model.PersonId == requestSLO.DriverId);
+            return driver == null ? null : new PedestrianProfileRequestLogic(new PedestrianProfileRequestModel(_model), _adaptersExtender, this, driver);
         }
 
         private void Drivers_ItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

@@ -41,12 +41,25 @@ namespace TaxiOnline.Logic.Models
         public MapPoint CurrentLocation
         {
             get { return _currentLocation; }
-            internal set { _currentLocation = value; }
+            internal set
+            {
+                _currentLocation = value;
+                OnCurrentLocationChanged();
+            }
         }
+
+        public event EventHandler CurrentLocationChanged;
 
         public ProfileModel(MapModel map)
         {
             _map = map;
+        }
+
+        protected virtual void OnCurrentLocationChanged()
+        {
+            EventHandler handler = CurrentLocationChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
         }
     }
 }
