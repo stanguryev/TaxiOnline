@@ -41,9 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logic\CityLogic.cs" />
+    <Compile Include="Logic\LogicExtender.cs" />
     <Compile Include="Objects\CityInfo.cs" />
     <Compile Include="Objects\DriverInfo.cs" />
     <Compile Include="Objects\PedestrianInfo.cs" />
+    <Compile Include="Objects\PedestrianRequestsInfo.cs" />
     <Compile Include="Objects\PersonInfo.cs" />
     <Compile Include="TaxiOnlineServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TaxiOnline.ClientInfrastructure.Data;
 
 namespace TaxiOnline.ClientInfrastructure.ServicesEntities.DataService
 {
@@ -10,6 +11,6 @@ namespace TaxiOnline.ClientInfrastructure.ServicesEntities.DataService
         Guid Id { get; }
         Guid DriverId { get; }
         Guid RequestId { get; }
-        bool IsCanceled { get; set; }
+        DriverResponseState State { get; set; }
     }
 }

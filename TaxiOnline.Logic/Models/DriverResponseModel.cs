@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.Logic.Common.Enums;
 using TaxiOnline.Toolkit.Events;
 
@@ -12,6 +13,20 @@ namespace TaxiOnline.Logic.Models
         private Guid _responseId;
         private readonly DriverModel _responseAuthor;
         private readonly PedestrianProfileRequestModel _request;
+        private DriverResponseState _state;
+
+        public DriverResponseState State
+        {
+            get { return _state; }
+            internal set
+            {
+                if (_state != value)
+                {
+                    _state = value;
+                    OnStateChanged();
+                }
+            }
+        }
         
         public Guid ResponseId
         {
@@ -27,7 +42,9 @@ namespace TaxiOnline.Logic.Models
         public PedestrianProfileRequestModel Request
         {
             get { return _request; }
-        } 
+        }
+
+        public event EventHandler StateChanged;
 
         public DriverResponseModel(PedestrianProfileRequestModel request, DriverModel responseAuthor)
         {
@@ -35,6 +52,11 @@ namespace TaxiOnline.Logic.Models
             _request = request;
         }
 
-        
+        protected virtual void OnStateChanged()
+        {
+            EventHandler handler = StateChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
     }
 }

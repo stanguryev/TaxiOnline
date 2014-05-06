@@ -14,6 +14,9 @@ namespace TaxiOnline.ServiceContract.DataContracts
         public string DeviceId { get; set; }
 
         [DataMember]
+        public Guid CityId { get; set; }
+
+        [DataMember]
         public double CurrentLocationLatidude { get; set; }
 
         [DataMember]

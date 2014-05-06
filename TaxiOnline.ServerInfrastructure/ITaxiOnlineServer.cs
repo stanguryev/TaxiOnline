@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaxiOnline.ServerInfrastructure.EntitiesInterfaces;
+using TaxiOnline.ServerInfrastructure.LogicInterfaces;
 
 namespace TaxiOnline.ServerInfrastructure
 {
     public interface ITaxiOnlineServer
     {
-        IEnumerable<IPedestrianInfo> Pedestrians { get; }
-        IEnumerable<IDriverInfo> Drivers { get; }
+        IEnumerable<ICityLogic> Cities { get; }
         void LoadPersistentState();
         ICityInfo CreateCityInfo(Guid guid);
         IEnumerable<ICityInfo> EnumerateCities(string userCultureName);
@@ -18,8 +18,9 @@ namespace TaxiOnline.ServerInfrastructure
         IPedestrianInfo CreatePedestrianInfo(Guid id);
         IDriverInfo CreateDriverInfo();
         IDriverInfo CreateDriverInfo(Guid id);
-        void ModifyPedestriansCollection(Action<IList<IPedestrianInfo>> modificationDelegate);
-        void ModifyDriversCollection(Action<IList<IDriverInfo>> modificationDelegate);
-
+        void AuthenticateAsPedestrian(IPedestrianInfo pedestrianInfo, Guid cityId);
+        void AuthenticateAsDriver(IDriverInfo driverInfo, Guid cityId);
+        IPedestrianRequestsInfo CreatePedestrianRequestInfo(IPedestrianInfo pedestrian, IDriverInfo driver);
+        void PushPedestrianRequestInfo(IPedestrianRequestsInfo requestInfo);
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.ClientInfrastructure.ServicesEntities.DataService;
 using TaxiOnline.ServiceContract.DataContracts;
 
@@ -12,7 +13,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
         private Guid _id;
         private Guid _driverId;
         private Guid _requestId;
-        private bool _isCanceled;
+        private DriverResponseState _state;
 
         public Guid Id
         {
@@ -28,11 +29,11 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
         {
             get { return _requestId; }
         }
-        
-        public bool IsCanceled
+
+        public DriverResponseState State
         {
-            get { return _isCanceled; }
-            set { _isCanceled = value; }
+            get { return _state; }
+            set { _state = value; }
         }
 
         public DriverResponseSLO(DriverResponseDataContract dataContract)
@@ -40,7 +41,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
             _id = dataContract.Id;
             _driverId = dataContract.DriverId;
             _requestId = dataContract.RequestId;
-            _isCanceled = dataContract.IsCanceled;
+            _state = dataContract.IsAccepted ? DriverResponseState.Accepted : DriverResponseState.Declined;
         }
     }
 }

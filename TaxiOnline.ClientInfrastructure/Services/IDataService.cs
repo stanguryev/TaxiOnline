@@ -21,7 +21,7 @@ namespace TaxiOnline.ClientInfrastructure.Services
         ActionResult<IEnumerable<IPedestrianInfo>> EnumeratePedestrians(Guid cityId);
         ActionResult<IEnumerable<IDriverInfo>> EnumerateDrivers(Guid cityId);
         ActionResult<IEnumerable<IPedestrianRequest>> EnumeratePedestrianRequests(Guid cityId);
-        ActionResult<IEnumerable<IDriverResponse>> EnumerateDriverResponses(Guid cityId);
+        ActionResult<IEnumerable<IDriverResponse>> EnumerateDriverResponses(Guid driverId);
         IPedestrianRequest CreatePedestrianRequest(Guid pedestrianId, Guid driverId);
         ActionResult PushPedestrianRequest(IPedestrianRequest requestSLO);
         ActionResult RemovePedestrianRequest(Guid requestId);

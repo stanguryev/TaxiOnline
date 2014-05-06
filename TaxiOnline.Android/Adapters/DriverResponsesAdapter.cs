@@ -59,7 +59,7 @@ namespace TaxiOnline.Android.Adapters
         private void UpdateDriverResponses()
         {
             IEnumerable<PedestrianProfileRequestModel> modelCollection = _model.Requests;
-            _items = modelCollection == null ? new List<DriverResponseModel>() : modelCollection.Where(col => col.AvailableResponses != null).SelectMany(col => col.AvailableResponses).ToList();
+            _items = modelCollection == null ? new List<DriverResponseModel>() : modelCollection.Select(col => col.Response).ToList();
             NotifyDataSetChanged();
         }
 
@@ -70,7 +70,7 @@ namespace TaxiOnline.Android.Adapters
 
         private void Model_RequestsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            _context.RunOnUiThread(() => ObservableCollectionHelper.ApplyChangesByObjects<PedestrianProfileRequestModel, DriverResponseModel>(e, _items, m => m.AvailableResponses.First(), m => m.AvailableResponses.First()));
+            _context.RunOnUiThread(() => ObservableCollectionHelper.ApplyChangesByObjects<PedestrianProfileRequestModel, DriverResponseModel>(e, _items, m => m.Response, m => m.Response));
         }
     }
 }

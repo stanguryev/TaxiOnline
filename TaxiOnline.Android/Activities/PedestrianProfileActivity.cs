@@ -26,16 +26,16 @@ namespace TaxiOnline.Android.Activities
         private int _notificationsCounter;
         private NotificationManager _notificationManager;
         private ProgressDialogDecorator _loadProgressDialogDecorator;
-        private PedestrianProfileRequestModel[] _activeRequests;
+        private DriverResponseModel _updatedResponse;
 
         public PedestrianProfileModel Model
         {
             get { return _model; }
         }
 
-        public PedestrianProfileRequestModel[] ActiveRequests
+        public DriverResponseModel UpdatedResponse
         {
-            get { return _activeRequests; }
+            get { return _updatedResponse; }
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -78,12 +78,12 @@ namespace TaxiOnline.Android.Activities
 
         private void HookRequest(PedestrianProfileRequestModel request)
         {
-            request.AvailableResponsesCollectionChanged += CurrentRequest_AvailableResponsesCollectionChanged;
+            request.Response.StateChanged += Response_StateChanged;
         }
 
         private void UnhookRequest(PedestrianProfileRequestModel request)
         {
-            request.AvailableResponsesCollectionChanged -= CurrentRequest_AvailableResponsesCollectionChanged;
+            request.Response.StateChanged -= Response_StateChanged;
         }
 
         private void Model_RequestsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -96,19 +96,32 @@ namespace TaxiOnline.Android.Activities
                     UnhookRequest(request);
         }
 
-        private void CurrentRequest_AvailableResponsesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //private void CurrentRequest_AvailableResponsesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //{
+        //    if (e.NewItems != null)
+        //        RunOnUiThread(() =>
+        //        {
+        //            _activeRequests = e.NewItems.OfType<DriverResponseModel>().Select(r => r.Request).Distinct().ToArray();
+        //            UIHelper.GetIntent(this, typeof(DriverResponsesActivity));
+        //            PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, null, PendingIntentFlags.UpdateCurrent);
+        //            Notification.Builder builder = new Notification.Builder(this);
+        //            builder.SetContentIntent(pendingIntent);
+        //            //builder.SetContentText();
+        //            _notificationManager.Notify(++_notificationsCounter, builder.Notification);
+        //        });
+        //}
+
+        private void Response_StateChanged(object sender, EventArgs e)
         {
-            if (e.NewItems != null)
-                RunOnUiThread(() =>
-                {
-                    _activeRequests = e.NewItems.OfType<DriverResponseModel>().Select(r => r.Request).Distinct().ToArray();
-                    UIHelper.GetIntent(this, typeof(DriverResponsesActivity));
-                    PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, null, PendingIntentFlags.UpdateCurrent);
-                    Notification.Builder builder = new Notification.Builder(this);
-                    builder.SetContentIntent(pendingIntent);
-                    //builder.SetContentText();
-                    _notificationManager.Notify(++_notificationsCounter, builder.Notification);
-                });
+            RunOnUiThread(() =>
+            {
+                UIHelper.GetIntent(this, typeof(DriverResponsesActivity));
+                PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, null, PendingIntentFlags.UpdateCurrent);
+                Notification.Builder builder = new Notification.Builder(this);
+                builder.SetContentIntent(pendingIntent);
+                //builder.SetContentText();
+                _notificationManager.Notify(++_notificationsCounter, builder.Notification);
+            });
         }
     }
 }

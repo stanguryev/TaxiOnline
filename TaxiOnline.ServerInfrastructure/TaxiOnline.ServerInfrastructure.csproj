@@ -44,10 +44,12 @@
     <Compile Include="EntitiesInterfaces\ICityInfo.cs" />
     <Compile Include="EntitiesInterfaces\IDriverInfo.cs" />
     <Compile Include="EntitiesInterfaces\IPedestrianInfo.cs" />
+    <Compile Include="EntitiesInterfaces\IPedestrianRequestsInfo.cs" />
     <Compile Include="EntitiesInterfaces\IPersonInfo.cs" />
     <Compile Include="ITaxiOnlineMobileService.cs" />
     <Compile Include="ITaxiOnlineServer.cs" />
     <Compile Include="ITaxiOnlineStorage.cs" />
+    <Compile Include="LogicInterfaces\ICityLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

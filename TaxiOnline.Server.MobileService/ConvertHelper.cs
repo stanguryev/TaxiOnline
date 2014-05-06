@@ -49,6 +49,16 @@ namespace TaxiOnline.Server.MobileService
             };
         }
 
+        public static PedestrianRequestDataContract CreatePedestrianRequestsDataContract(IPedestrianRequestsInfo request)
+        {
+            return new PedestrianRequestDataContract
+            {
+                Id = request.Id,
+                DriverId = request.DriverId,
+                PedestrianId = request.PedestrianId
+            };
+        }
+
         public static void FillPedestrianAuthenticationRequestInfo(IPedestrianInfo pedestrianInfo, PedestrianAuthenticationRequestDataContract request)
         {
             pedestrianInfo.PhoneNumber = request.PhoneNumber;
@@ -60,6 +70,11 @@ namespace TaxiOnline.Server.MobileService
             driverInfo.PhoneNumber = request.PhoneNumber;
             driverInfo.SkypeNumber = request.SkypeNumber;
             driverInfo.CarColor = request.CarColor;
+        }
+
+        public static void FillPedestrianRequestInfo(IPedestrianRequestsInfo requestInfo, PedestrianRequestDataContract request)
+        {
+            
         }
     }
 }

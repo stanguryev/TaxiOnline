@@ -36,6 +36,11 @@ namespace TaxiOnline.Server.Data
             }
         }
 
+        public IEnumerable<ICityInfo> EnumerateCities()
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<IPedestrianInfo> EnumeratePedestrians(Guid cityId)
         {
             IList<PedestrianAccountDA> accounts = _dataProxy.Session.CreateCriteria<PedestrianAccountDA>().List<PedestrianAccountDA>();

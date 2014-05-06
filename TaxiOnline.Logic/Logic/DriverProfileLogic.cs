@@ -166,7 +166,7 @@ namespace TaxiOnline.Logic.Logic
 
         private ActionResult<IEnumerable<DriverProfileResponseLogic>> RetriveDriverResponses()
         {
-            ActionResult<IEnumerable<IDriverResponse>> requestResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().EnumerateDriverResponses(_city.Model.Id);
+            ActionResult<IEnumerable<IDriverResponse>> requestResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().EnumerateDriverResponses(_model.PersonId);
             return requestResult.IsValid ? ActionResult<IEnumerable<DriverProfileResponseLogic>>.GetValidResult(requestResult.Result.Select(r => CreateDriverResponseLogic(r)).Where(l => l != null).ToArray())
                 : ActionResult<IEnumerable<DriverProfileResponseLogic>>.GetErrorResult(requestResult);
         }
@@ -178,7 +178,7 @@ namespace TaxiOnline.Logic.Logic
 
         private bool ValidateDriverResponse(IDriverResponse response)
         {
-            return !response.IsCanceled && response.DriverId == _model.PersonId;
+            return response.DriverId == _model.PersonId;
         }
 
         private DriverProfileResponseLogic CreateDriverResponseLogic(IDriverResponse responseSLO)

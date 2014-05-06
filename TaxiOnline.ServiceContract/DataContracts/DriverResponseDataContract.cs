@@ -19,6 +19,6 @@ namespace TaxiOnline.ServiceContract.DataContracts
         public Guid RequestId { get; set; }
 
         [DataMember]
-        public bool IsCanceled { get; set; }
+        public bool IsAccepted { get; set; }
     }
 }

@@ -47,10 +47,15 @@ namespace TaxiOnline.Logic.Logic
 
         public PedestrianProfileRequestLogic InitRequest(DriverModel driver)
         {
-            PedestrianProfileRequestModel requestModel = new PedestrianProfileRequestModel(_model);
-            _model.ModifyRequestsCollection(col => col.Add(requestModel));
+
             DriverLogic driverLogic = _drivers.Items.SingleOrDefault(d => d.Model == driver);
-            return driverLogic == null ? null : new PedestrianProfileRequestLogic(requestModel, _adaptersExtender, this, driverLogic);
+            if (driverLogic == null)
+                return null;
+            PedestrianProfileRequestModel requestModel = new PedestrianProfileRequestModel(_model, driverLogic.Model);
+            _model.ModifyRequestsCollection(col => col.Add(requestModel));
+            PedestrianProfileRequestLogic outResult = new PedestrianProfileRequestLogic(requestModel, _adaptersExtender, this);
+            outResult.Response = new DriverResponseLogic(requestModel.Response, _adaptersExtender, outResult, driverLogic);
+            return outResult;
         }
 
         //public void SetRequest(PedestrianProfileRequestLogic request)
@@ -132,7 +137,11 @@ namespace TaxiOnline.Logic.Logic
         private PedestrianProfileRequestLogic CreateRequestLogic(IPedestrianRequest requestSLO)
         {
             DriverLogic driver = _city.Persons.OfType<DriverLogic>().SingleOrDefault(d => d.Model.PersonId == requestSLO.DriverId);
-            return driver == null ? null : new PedestrianProfileRequestLogic(new PedestrianProfileRequestModel(_model), _adaptersExtender, this, driver);
+            if (driver == null)
+                return null;
+            PedestrianProfileRequestLogic outResult = new PedestrianProfileRequestLogic(new PedestrianProfileRequestModel(_model, driver.Model), _adaptersExtender, this);
+            outResult.Response = new DriverResponseLogic(new DriverResponseModel(outResult.Model, driver.Model), _adaptersExtender, outResult, driver);
+            return outResult;
         }
 
         private void Drivers_ItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

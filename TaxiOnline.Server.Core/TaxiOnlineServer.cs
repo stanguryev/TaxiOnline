@@ -4,21 +4,21 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaxiOnline.Server.Core.Logic;
 using TaxiOnline.Server.Core.Objects;
 using TaxiOnline.ServerInfrastructure;
 using TaxiOnline.ServerInfrastructure.EntitiesInterfaces;
+using TaxiOnline.ServerInfrastructure.LogicInterfaces;
 using TaxiOnline.Toolkit.Threading.CollectionsDecorators;
 
 namespace TaxiOnline.Server.Core
 {
     public class TaxiOnlineServer : ITaxiOnlineServer
     {
+        private LogicExtender _extender;
         private readonly Lazy<ITaxiOnlineMobileService> _mobileService;
-        private readonly Lazy<ITaxiOnlineStorage> _storage;
         private Func<ITaxiOnlineServer, ITaxiOnlineMobileService> _mobileServiceInitDelegate;
-        private Func<ITaxiOnlineServer, ITaxiOnlineStorage> _storageInitDelegate;
-        private readonly ReadonlyCollectionDecorator<PedestrianInfo> _pedestrians = new ReadonlyCollectionDecorator<PedestrianInfo>();
-        private readonly ReadonlyCollectionDecorator<IDriverInfo> _drivers = new ReadonlyCollectionDecorator<IDriverInfo>();
+        private readonly ReadonlyCollectionDecorator<CityLogic> _cities = new ReadonlyCollectionDecorator<CityLogic>();
 
         public ITaxiOnlineMobileService MobileService
         {
@@ -27,31 +27,24 @@ namespace TaxiOnline.Server.Core
 
         public ITaxiOnlineStorage Storage
         {
-            get { return _storage.Value; }
+            get { return _extender.Storage; }
         }
 
-        public IEnumerable<IPedestrianInfo> Pedestrians
+        public IEnumerable<ICityLogic> Cities
         {
-            get { return _pedestrians.Items; }
-        }
-
-        public IEnumerable<IDriverInfo> Drivers
-        {
-            get { return _drivers.Items; }
+            get { return _cities.Items; }
         }
 
         public TaxiOnlineServer()
         {
+            _extender = new LogicExtender(this);
             _mobileService = new Lazy<ITaxiOnlineMobileService>(() => _mobileServiceInitDelegate(this), true);
-            _storage = new Lazy<ITaxiOnlineStorage>(() => _storageInitDelegate(this), true);
         }
 
         public void LoadPersistentState()
         {
-            List<IPedestrianInfo> pedestrians = _storage.Value.EnumeratePedestrians(Guid.Empty).ToList();
-            List<IDriverInfo> drivers = _storage.Value.EnumerateDrivers(Guid.Empty).ToList();
-            _pedestrians.ModifyCollection<IPedestrianInfo>(col => pedestrians.ForEach(p => col.Add(p)));
-            _drivers.ModifyCollection<IDriverInfo>(col => drivers.ForEach(d => col.Add(d)));
+            foreach (CityLogic city in _extender.Storage.EnumerateCities().Select(i => new CityLogic((CityInfo)i, this, _extender)).ToArray())
+                _cities.ModifyCollection(col => col.Add(city));
         }
 
         public void InitMobileService(Func<ITaxiOnlineServer, ITaxiOnlineMobileService> mobileServiceInitDelegate)
@@ -61,12 +54,26 @@ namespace TaxiOnline.Server.Core
 
         public void InitStorage(Func<ITaxiOnlineServer, ITaxiOnlineStorage> storageInitDelegate)
         {
-            _storageInitDelegate = storageInitDelegate;
+            _extender.InitStorage(storageInitDelegate);
         }
 
         public IEnumerable<ICityInfo> EnumerateCities(string userCultureName)
         {
-            return _storage.Value.EnumerateCities(userCultureName);
+            return _extender.Storage.EnumerateCities(userCultureName);
+        }
+
+        public void AuthenticateAsPedestrian(IPedestrianInfo pedestrianInfo, Guid cityId)
+        {
+            CityLogic city = _cities.Items.FirstOrDefault(c => c.Info.Id == cityId);
+            if (city != null)
+                city.ModifyPedestriansCollection(col => col.Add(pedestrianInfo));
+        }
+
+        public void AuthenticateAsDriver(IDriverInfo driverInfo, Guid cityId)
+        {
+            CityLogic city = _cities.Items.FirstOrDefault(c => c.Info.Id == cityId);
+            if (city != null)
+                city.ModifyDriversCollection(col => col.Add(driverInfo));
         }
 
         public ICityInfo CreateCityInfo(Guid id)
@@ -100,16 +107,16 @@ namespace TaxiOnline.Server.Core
             return CreateDriverInfo(Guid.NewGuid());
         }
 
-        public void ModifyPedestriansCollection(Action<IList<IPedestrianInfo>> modificationDelegate)
+        public IPedestrianRequestsInfo CreatePedestrianRequestInfo(IPedestrianInfo pedestrian, IDriverInfo driver)
         {
-            _pedestrians.ModifyCollection(modificationDelegate);
+            return new PedestrianRequestsInfo(Guid.NewGuid(), driver.Id, pedestrian.Id);
         }
 
-        public void ModifyDriversCollection(Action<IList<IDriverInfo>> modificationDelegate)
+        public void PushPedestrianRequestInfo(IPedestrianRequestsInfo requestInfo)
         {
-            _drivers.ModifyCollection(modificationDelegate);
+            CityLogic city = _cities.Items.FirstOrDefault(c => c.Pedestrians.Any(p => p.Id == requestInfo.PedestrianId));
+            if (city != null)
+                city.ModifyPedestrianRequestsCollection(col => col.Add(requestInfo));
         }
-
-
     }
 }

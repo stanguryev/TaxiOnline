@@ -18,8 +18,9 @@ namespace TaxiOnline.Logic.Models
         private decimal _paymentAmount;
         private string _currency = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
         private MapLocationModel _target = new MapLocationModel();
-        private readonly SimpleCollectionLoadDecorator<DriverResponseModel> _availableResponses;
-        private DriverResponseModel _selectedResponse;
+        //private readonly SimpleCollectionLoadDecorator<DriverResponseModel> _availableResponses;
+        //private DriverResponseModel _selectedResponse; 
+        private readonly DriverResponseModel _response;
         private RequestState _state;
 
         public Guid RequestId
@@ -51,41 +52,46 @@ namespace TaxiOnline.Logic.Models
             set { _currency = value; }
         }
 
-        public IEnumerable<DriverResponseModel> AvailableResponses
+        public DriverResponseModel Response
         {
-            get { return _availableResponses.Items; }
+            get { return _response; }
         }
 
-        public DriverResponseModel SelectedResponse
-        {
-            get { return _selectedResponse; }
-            set
-            {
-                if (_selectedResponse != value)
-                {
-                    _selectedResponse = value;
-                    OnSelectedResponseChanged();
-                }
-            }
-        }
+        //public IEnumerable<DriverResponseModel> AvailableResponses
+        //{
+        //    get { return _availableResponses.Items; }
+        //}
+
+        //public DriverResponseModel SelectedResponse
+        //{
+        //    get { return _selectedResponse; }
+        //    set
+        //    {
+        //        if (_selectedResponse != value)
+        //        {
+        //            _selectedResponse = value;
+        //            OnSelectedResponseChanged();
+        //        }
+        //    }
+        //}
 
         public event ActionResultEventHandler ConfirmApplied;
 
         public event ActionResultEventHandler CancelApplied;
 
-        public event EventHandler SelectedResponseChanged;
+        //public event EventHandler SelectedResponseChanged;
 
-        public event EventHandler AvailableResponsesChanged
-        {
-            add { _availableResponses.ItemsChanged += value; }
-            remove { _availableResponses.ItemsChanged -= value; }
-        }
+        //public event EventHandler AvailableResponsesChanged
+        //{
+        //    add { _availableResponses.ItemsChanged += value; }
+        //    remove { _availableResponses.ItemsChanged -= value; }
+        //}
 
-        public event NotifyCollectionChangedEventHandler AvailableResponsesCollectionChanged
-        {
-            add { _availableResponses.ItemsCollectionChanged += value; }
-            remove { _availableResponses.ItemsCollectionChanged -= value; }
-        }
+        //public event NotifyCollectionChangedEventHandler AvailableResponsesCollectionChanged
+        //{
+        //    add { _availableResponses.ItemsCollectionChanged += value; }
+        //    remove { _availableResponses.ItemsCollectionChanged -= value; }
+        //}
 
         internal Action<Action<ActionResult>> ConfirmDelegate { get; set; }
 
@@ -93,18 +99,19 @@ namespace TaxiOnline.Logic.Models
 
         internal Func<ActionResult> CallToDriverDelegate { get; set; }
 
-        internal Func<ActionResult<IEnumerable<Logic.DriverResponseLogic>>> EnumerateAvailableResponsesDelegate;
+        //internal Func<ActionResult<IEnumerable<Logic.DriverResponseLogic>>> EnumerateAvailableResponsesDelegate;
 
-        internal PedestrianProfileRequestModel(PedestrianProfileModel user)
+        internal PedestrianProfileRequestModel(PedestrianProfileModel user, DriverModel responseAuthor)
         {
             _user = user;
-            _availableResponses = new SimpleCollectionLoadDecorator<DriverResponseModel>(EnumerateAvailableResponses);
+            _response = new DriverResponseModel(this, responseAuthor);
+            //_availableResponses = new SimpleCollectionLoadDecorator<DriverResponseModel>(EnumerateAvailableResponses);
         }
 
-        private ActionResult<IEnumerable<DriverResponseModel>> EnumerateAvailableResponses()
-        {
-            return UpdateHelper.EnumerateModels(EnumerateAvailableResponsesDelegate, l => l.Model);
-        }
+        //private ActionResult<IEnumerable<DriverResponseModel>> EnumerateAvailableResponses()
+        //{
+        //    return UpdateHelper.EnumerateModels(EnumerateAvailableResponsesDelegate, l => l.Model);
+        //}
 
         public void Confirm()
         {
@@ -128,10 +135,10 @@ namespace TaxiOnline.Logic.Models
             return ActionResult.GetErrorResult(new NotSupportedException());
         }
 
-        internal void ModifyDriverResponsesCollection(Action<IList<DriverResponseModel>> modificationDelegate)
-        {
-            _availableResponses.ModifyCollection(modificationDelegate);
-        }
+        //internal void ModifyDriverResponsesCollection(Action<IList<DriverResponseModel>> modificationDelegate)
+        //{
+        //    _availableResponses.ModifyCollection(modificationDelegate);
+        //}
 
         protected virtual void OnConfirmApplied(ActionResult result)
         {
@@ -147,11 +154,11 @@ namespace TaxiOnline.Logic.Models
                 handler(this, new ActionResultEventArgs(result));
         }
 
-        protected virtual void OnSelectedResponseChanged()
-        {
-            EventHandler handler = SelectedResponseChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
+        //protected virtual void OnSelectedResponseChanged()
+        //{
+        //    EventHandler handler = SelectedResponseChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
     }
 }
