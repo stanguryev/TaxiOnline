@@ -38,7 +38,15 @@ namespace TaxiOnline.Server.Data
 
         public IEnumerable<ICityInfo> EnumerateCities()
         {
-            throw new NotImplementedException();
+            IList<CityDA> cities = _dataProxy.Session.CreateCriteria<CityDA>().List<CityDA>();
+            foreach (CityDA cityData in cities)
+            {
+                ICityInfo city = _server.CreateCityInfo(cityData.Id);
+                city.InitialLatitude = cityData.InitialLatitude;
+                city.InitialLongitude = cityData.InitialLongitude;
+                city.InitialZoom = cityData.InitialZoom;
+                yield return city;
+            }
         }
 
         public IEnumerable<IPedestrianInfo> EnumeratePedestrians(Guid cityId)

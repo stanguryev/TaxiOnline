@@ -14,6 +14,7 @@ namespace TaxiOnline.Server.Host
     {
         private static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) => Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.ExceptionPolicy.HandleException((Exception)e.ExceptionObject, "Log");
             TaxiOnlineServer server = new TaxiOnlineServer();
             server.InitStorage(srv => new TaxiOnlineStorage(srv));
             server.InitMobileService(srv => new TaxiOnlineSerivceHost(srv));

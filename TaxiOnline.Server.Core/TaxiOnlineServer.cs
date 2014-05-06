@@ -44,7 +44,10 @@ namespace TaxiOnline.Server.Core
         public void LoadPersistentState()
         {
             foreach (CityLogic city in _extender.Storage.EnumerateCities().Select(i => new CityLogic((CityInfo)i, this, _extender)).ToArray())
+            {
+                city.LoadPersistentState();
                 _cities.ModifyCollection(col => col.Add(city));
+            }
         }
 
         public void InitMobileService(Func<ITaxiOnlineServer, ITaxiOnlineMobileService> mobileServiceInitDelegate)

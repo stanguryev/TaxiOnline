@@ -46,8 +46,8 @@ namespace TaxiOnline.Server.Core.Logic
 
         public void LoadPersistentState()
         {
-            List<IPedestrianInfo> pedestrians = _extender.Storage.EnumeratePedestrians(Guid.Empty).ToList();
-            List<IDriverInfo> drivers = _extender.Storage.EnumerateDrivers(Guid.Empty).ToList();
+            List<IPedestrianInfo> pedestrians = _extender.Storage.EnumeratePedestrians(_info.Id).ToList();
+            List<IDriverInfo> drivers = _extender.Storage.EnumerateDrivers(_info.Id).ToList();
             _pedestrians.ModifyCollection<IPedestrianInfo>(col => pedestrians.ForEach(p => col.Add(p)));
             _drivers.ModifyCollection<IDriverInfo>(col => drivers.ForEach(d => col.Add(d)));
         }
