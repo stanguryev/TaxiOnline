@@ -49,13 +49,23 @@ namespace TaxiOnline.Server.MobileService
             };
         }
 
-        public static PedestrianRequestDataContract CreatePedestrianRequestsDataContract(IPedestrianRequestsInfo request)
+        public static PedestrianRequestDataContract CreatePedestrianRequestDataContract(IPedestrianRequestsInfo request)
         {
             return new PedestrianRequestDataContract
             {
                 Id = request.Id,
                 DriverId = request.DriverId,
                 PedestrianId = request.PedestrianId
+            };
+        }
+
+        public static DriverResponseDataContract CreateDriverResponseDataContract(IDriverResponseInfo response)
+        {
+            return new DriverResponseDataContract
+            {
+                Id = response.Id,
+                RequestId = response.RequestId,
+                IsAccepted = response.IsAccepted
             };
         }
 

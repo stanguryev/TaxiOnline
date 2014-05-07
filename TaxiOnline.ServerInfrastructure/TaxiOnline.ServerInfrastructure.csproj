@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="EntitiesInterfaces\ICityInfo.cs" />
     <Compile Include="EntitiesInterfaces\IDriverInfo.cs" />
+    <Compile Include="EntitiesInterfaces\IDriverResponseInfo.cs" />
     <Compile Include="EntitiesInterfaces\IPedestrianInfo.cs" />
     <Compile Include="EntitiesInterfaces\IPedestrianRequestsInfo.cs" />
     <Compile Include="EntitiesInterfaces\IPersonInfo.cs" />
@@ -51,6 +52,12 @@
     <Compile Include="ITaxiOnlineStorage.cs" />
     <Compile Include="LogicInterfaces\ICityLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TaxiOnline.Toolkit\TaxiOnline.Toolkit.csproj">
+      <Project>{8247f1d1-76c4-4ed7-a089-eb9c648fd885}</Project>
+      <Name>TaxiOnline.Toolkit</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

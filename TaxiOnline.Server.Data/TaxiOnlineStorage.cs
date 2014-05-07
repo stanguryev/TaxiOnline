@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TaxiOnline.Server.Data.DataAccess;
 using TaxiOnline.ServerInfrastructure;
 using TaxiOnline.ServerInfrastructure.EntitiesInterfaces;
+using TaxiOnline.Toolkit.Events;
 
 namespace TaxiOnline.Server.Data
 {
@@ -83,6 +84,68 @@ namespace TaxiOnline.Server.Data
                 driverInfo.CarNumber = info.AccountInfo.CarNumber;
                 yield return driverInfo;
             }
+        }
+
+        public ActionResult AddDriver(IDriverInfo driverInfo)
+        {
+            PersonAccountDA account = GetPersonAccount(driverInfo);
+            DriverAccountDA driverAccount = new DriverAccountDA
+            {
+                Person = account,
+                PersonName = driverInfo.PersonName,
+                CarBrand = driverInfo.CarBrand,
+                CarColor = driverInfo.CarColor,
+                CarNumber = driverInfo.CarNumber
+            };
+            DriverInfoDA driver = new DriverInfoDA
+            {
+                PersonInfo = new PersonInfoDA
+                {
+                    Latitude = driverInfo.CurrentLocationLatidude,
+                    Longitude = driverInfo.CurrentLocationLongidude,
+                    Person = account
+                }
+            };
+            _dataProxy.Session.Save(driver.PersonInfo);
+            _dataProxy.Session.Save(driverAccount);
+            _dataProxy.Session.Save(driver);
+            return ActionResult.ValidResult;
+        }
+
+        public ActionResult AddPedestrian(IPedestrianInfo pedestrianInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ActionResult RemoveDriver(IDriverInfo driverInfo)
+        {
+            DriverInfoDA data = _dataProxy.Session.CreateCriteria<DriverInfoDA>().List<DriverInfoDA>().FirstOrDefault(p => p.PersonInfo.Person.Id == driverInfo.Id);
+            if (data == null)
+                return ActionResult.GetErrorResult(new KeyNotFoundException());
+            _dataProxy.Session.Delete(data);
+            _dataProxy.Session.Delete(data.PersonInfo);
+            return ActionResult.ValidResult;
+        }
+
+        public ActionResult RemovePedestrian(IPedestrianInfo pedestrianInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        private PersonAccountDA GetPersonAccount(IPersonInfo personInfo)
+        {
+            PersonAccountDA account = _dataProxy.Session.CreateCriteria<PersonAccountDA>().List<PersonAccountDA>().FirstOrDefault(p => p.Id == personInfo.Id);
+            if (account == null)
+            {
+                account = new PersonAccountDA
+                {
+                    Id = personInfo.Id,
+                    PhoneNumber = personInfo.PhoneNumber,
+                    SkypeNumber = personInfo.SkypeNumber
+                };
+                _dataProxy.Session.Save(account);
+            }
+            return account;
         }
     }
 }

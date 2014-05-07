@@ -13,6 +13,7 @@ namespace TaxiOnline.ServerInfrastructure.LogicInterfaces
         IEnumerable<IPedestrianInfo> Pedestrians { get; }
         IEnumerable<IDriverInfo> Drivers { get; }
         IEnumerable<IPedestrianRequestsInfo> PedestrianRequests { get; }
+        IEnumerable<IDriverResponseInfo> DriverResponses { get; }
         void ModifyPedestriansCollection(Action<IList<IPedestrianInfo>> modificationDelegate);
         void ModifyDriversCollection(Action<IList<IDriverInfo>> modificationDelegate);
         void ModifyPedestrianRequestsCollection(Action<IList<IPedestrianRequestsInfo>> modificationDelegate);

@@ -31,10 +31,10 @@ namespace TaxiOnline.Android.Adapters
             _model = model;
             _viewCache = new ViewsCacheDecorator<PedestrianModel>(() => _context.LayoutInflater.Inflate(Resource.Layout.PedestrianInfoLayout, null, false));
             _selfItemView = new Lazy<View>(() => _context.LayoutInflater.Inflate(Resource.Layout.DriverSelfInfoLayout, null, false));
-            _model.PedestriansChanged += Model_PedestriansChanged;
-            _model.PedestriansCollectionChanged += Model_PedestriansCollectionChanged;
-            _model.PedestrianRequestsCollectionChanged += Model_PedestrianRequestsCollectionChanged;
-            _model.CurrentLocationChanged += Model_CurrentLocationChanged;
+            model.PedestriansChanged += Model_PedestriansChanged;
+            model.PedestriansCollectionChanged += Model_PedestriansCollectionChanged;
+            model.PedestrianRequestsCollectionChanged += Model_PedestrianRequestsCollectionChanged;
+            model.CurrentLocationChanged += Model_CurrentLocationChanged;
             model.Map.MapService.Map.MapCenterChanged += Map_MapCenterChanged;
             model.Map.MapService.Map.MapZoomChanged += Map_MapZoomChanged;
             UpdatePedestrians();

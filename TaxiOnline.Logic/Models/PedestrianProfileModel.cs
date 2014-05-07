@@ -16,6 +16,7 @@ namespace TaxiOnline.Logic.Models
         //private PedestrianProfileRequestModel _pendingRequest;
         private readonly SimpleCollectionLoadDecorator<PedestrianProfileRequestModel> _requests;
         private readonly SimpleCollectionLoadDecorator<DriverModel> _drivers;
+        private readonly SimpleCollectionLoadDecorator<DriverResponseModel> _acceptedResponses;
         private PedestrianProfileRequestModel _selectedRequest;
         private DriverModel _selectedDriver;
 
@@ -81,6 +82,11 @@ namespace TaxiOnline.Logic.Models
             get { return _requests.Items; }
         }
 
+        public IEnumerable<DriverResponseModel> AcceptedResponses
+        {
+            get { return _acceptedResponses.Items; }
+        }
+
         //public event EventHandler CurrentRequestChanged;
 
         //public event EventHandler PendingRequestChanged;
@@ -127,6 +133,24 @@ namespace TaxiOnline.Logic.Models
             remove { _requests.RequestFailed -= value; }
         }
 
+        public event EventHandler AcceptedResponsesChanged
+        {
+            add { _acceptedResponses.ItemsChanged += value; }
+            remove { _acceptedResponses.ItemsChanged -= value; }
+        }
+
+        public event NotifyCollectionChangedEventHandler AcceptedResponsesCollectionChanged
+        {
+            add { _acceptedResponses.ItemsCollectionChanged += value; }
+            remove { _acceptedResponses.ItemsCollectionChanged -= value; }
+        }
+
+        public event ActionResultEventHandler EnumrateAcceptedResponsesFailed
+        {
+            add { _acceptedResponses.RequestFailed += value; }
+            remove { _acceptedResponses.RequestFailed -= value; }
+        }
+
         public event EventHandler SelectedRequestChanged;
 
         internal Func<DriverModel, Logic.PedestrianProfileRequestLogic> InitRequestDelegate { get; set; }
@@ -137,6 +161,8 @@ namespace TaxiOnline.Logic.Models
 
         internal Func<ActionResult<IEnumerable<Logic.PedestrianProfileRequestLogic>>> EnumerateRequestsDelegate { get; set; }
 
+        internal Func<ActionResult<IEnumerable<Logic.DriverResponseLogic>>> EnumerateAcceptedResponsesDelegate { get; set; }
+
         internal Func<DriverModel, ActionResult> CallToDriverDelegate { get; set; }
 
         internal PedestrianProfileModel(MapModel map)
@@ -144,6 +170,7 @@ namespace TaxiOnline.Logic.Models
         {
             _drivers = new SimpleCollectionLoadDecorator<DriverModel>(EnumerateDrivers);
             _requests = new SimpleCollectionLoadDecorator<PedestrianProfileRequestModel>(EnumerateRequests);
+            _acceptedResponses = new SimpleCollectionLoadDecorator<DriverResponseModel>(EnumerateAcceptedResponses);
         }
 
         public void BeginLoad()
@@ -152,6 +179,7 @@ namespace TaxiOnline.Logic.Models
             {
                 _drivers.FillItemsList();
                 _requests.FillItemsList();
+                _acceptedResponses.FillItemsList();
                 OnLoadCompleted();
                 return;
 
@@ -206,6 +234,11 @@ namespace TaxiOnline.Logic.Models
         private ActionResult<IEnumerable<PedestrianProfileRequestModel>> EnumerateRequests()
         {
             return UpdateHelper.EnumerateModels(EnumerateRequestsDelegate, l => l.Model);
+        }
+
+        private ActionResult<IEnumerable<DriverResponseModel>> EnumerateAcceptedResponses()
+        {
+            return UpdateHelper.EnumerateModels(EnumerateAcceptedResponsesDelegate, l => l.Model);
         }
 
         //protected virtual void OnCurrentRequestChanged()

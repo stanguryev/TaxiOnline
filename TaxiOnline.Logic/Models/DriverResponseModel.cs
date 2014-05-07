@@ -52,6 +52,11 @@ namespace TaxiOnline.Logic.Models
             _request = request;
         }
 
+        public string GetBriefInfo()
+        {
+            return _responseAuthor.CarBrand;
+        }
+
         protected virtual void OnStateChanged()
         {
             EventHandler handler = StateChanged;

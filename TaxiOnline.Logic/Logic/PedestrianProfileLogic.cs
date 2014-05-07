@@ -15,10 +15,9 @@ namespace TaxiOnline.Logic.Logic
     internal class PedestrianProfileLogic : ProfileLogic
     {
         private readonly PedestrianProfileModel _model;
-        private readonly AdaptersExtender _adaptersExtender;
-        private readonly CityLogic _city;
         private readonly UpdatableCollectionLoadDecorator<DriverLogic, IDriverInfo> _drivers;
         private readonly UpdatableCollectionLoadDecorator<PedestrianProfileRequestLogic, IPedestrianRequest> _requests;
+        private readonly SimpleCollectionLoadDecorator<DriverResponseLogic> _acceptedResponses;
 
         public PedestrianProfileModel Model
         {
@@ -34,14 +33,14 @@ namespace TaxiOnline.Logic.Logic
             : base(model, adaptersExtender, city)
         {
             _model = model;
-            _adaptersExtender = adaptersExtender;
-            _city = city;
             model.InitRequestDelegate = InitRequest;
             model.EnumerateDriversDelegate = EnumerateDrivers;
             model.EnumerateRequestsDelegate = EnumerateRequests;
+            model.EnumerateAcceptedResponsesDelegate = EnumerateAcceptedResponses;
             model.CallToDriverDelegate = CallToDriver;
             _drivers = new UpdatableCollectionLoadDecorator<DriverLogic, IDriverInfo>(RetriveDrivers, CompareDriversInfo, p => p.IsOnline, CreateDriverLogic);
             _requests = new UpdatableCollectionLoadDecorator<PedestrianProfileRequestLogic, IPedestrianRequest>(RetriveRequests, CompareRequestsInfo, ValidateRequest, CreateRequestLogic);
+            _acceptedResponses = new SimpleCollectionLoadDecorator<DriverResponseLogic>(RetriveAcceptedResponse);
             _drivers.ItemsCollectionChanged += Drivers_ItemsCollectionChanged;
         }
 
@@ -97,6 +96,13 @@ namespace TaxiOnline.Logic.Logic
             return _requests.Items == null ? ActionResult<IEnumerable<PedestrianProfileRequestLogic>>.GetErrorResult(new Exception()) : ActionResult<IEnumerable<PedestrianProfileRequestLogic>>.GetValidResult(_requests.Items);
         }
 
+        private ActionResult<IEnumerable<DriverResponseLogic>> EnumerateAcceptedResponses()
+        {
+            if (_acceptedResponses.Items == null)
+                _acceptedResponses.FillItemsList();
+            return _acceptedResponses.Items == null ? ActionResult<IEnumerable<DriverResponseLogic>>.GetErrorResult(new Exception()) : ActionResult<IEnumerable<DriverResponseLogic>>.GetValidResult(_acceptedResponses.Items);
+        }
+
         private ActionResult<IEnumerable<DriverLogic>> RetriveDrivers()
         {
             ActionResult<IEnumerable<IDriverInfo>> requestResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().EnumerateDrivers(_city.Model.Id);
@@ -142,6 +148,24 @@ namespace TaxiOnline.Logic.Logic
             PedestrianProfileRequestLogic outResult = new PedestrianProfileRequestLogic(new PedestrianProfileRequestModel(_model, driver.Model), _adaptersExtender, this);
             outResult.Response = new DriverResponseLogic(new DriverResponseModel(outResult.Model, driver.Model), _adaptersExtender, outResult, driver);
             return outResult;
+        }
+
+        private ActionResult<IEnumerable<DriverResponseLogic>> RetriveAcceptedResponse()
+        {
+            ActionResult<IEnumerable<IDriverResponse>> requestResult = _city.EnumerateDriverResponses();
+            if (!requestResult.IsValid)
+                return ActionResult<IEnumerable<DriverResponseLogic>>.GetErrorResult(requestResult);
+            IEnumerable<PedestrianProfileRequestLogic> requests = _requests.Items;
+            if (requests == null)
+                return ActionResult<IEnumerable<DriverResponseLogic>>.GetErrorResult(new KeyNotFoundException());
+            IDriverResponse[] ownResponses = requestResult.Result.Where(r => requests.Any(req => req.Model.RequestId == r.RequestId)).ToArray();
+            foreach (PedestrianProfileRequestLogic request in requests)
+            {
+                IDriverResponse response = ownResponses.FirstOrDefault(r => r.RequestId == request.Model.RequestId);
+                if (response != null)
+                    request.Response.Model.State = response.State;
+            }
+            return ActionResult<IEnumerable<DriverResponseLogic>>.GetValidResult(requests.Select(r => r.Response).Where(r => r.Model.State == ClientInfrastructure.Data.DriverResponseState.Accepted).ToArray());
         }
 
         private void Drivers_ItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

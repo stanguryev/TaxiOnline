@@ -24,8 +24,8 @@ namespace TaxiOnline.Android.Adapters
         {
             _context = context;
             _model = model;
-            _model.RequestsChanged += Model_RequestsChanged;
-            _model.RequestsCollectionChanged += Model_RequestsCollectionChanged;
+            _model.AcceptedResponsesChanged += Model_AcceptedResponsesChanged;
+            _model.AcceptedResponsesCollectionChanged += Model_AcceptedResponsesCollectionChanged;
             UpdateDriverResponses();
         }
 
@@ -53,24 +53,27 @@ namespace TaxiOnline.Android.Adapters
 
         private void HookModelToView(View view, DriverResponseModel driverResponseModel)
         {
-            throw new NotImplementedException();
+            TextView driverResponseTextView = view.FindViewById<TextView>(Resource.Id.driverResponseTextView);
+            driverResponseTextView.Text = driverResponseModel.GetBriefInfo();
+            Button callToDriverAfterResponseButton = view.FindViewById<Button>(Resource.Id.callToDriverAfterResponseButton);
+            callToDriverAfterResponseButton.Click += (sender, e) => { };
         }
 
         private void UpdateDriverResponses()
         {
-            IEnumerable<PedestrianProfileRequestModel> modelCollection = _model.Requests;
-            _items = modelCollection == null ? new List<DriverResponseModel>() : modelCollection.Select(col => col.Response).ToList();
+            IEnumerable<DriverResponseModel> modelCollection = _model.AcceptedResponses;
+            _items = modelCollection == null ? new List<DriverResponseModel>() : modelCollection.ToList();
             NotifyDataSetChanged();
         }
 
-        private void Model_RequestsChanged(object sender, EventArgs e)
+        private void Model_AcceptedResponsesChanged(object sender, EventArgs e)
         {
             _context.RunOnUiThread(UpdateDriverResponses);
         }
 
-        private void Model_RequestsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Model_AcceptedResponsesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            _context.RunOnUiThread(() => ObservableCollectionHelper.ApplyChangesByObjects<PedestrianProfileRequestModel, DriverResponseModel>(e, _items, m => m.Response, m => m.Response));
+            _context.RunOnUiThread(() => ObservableCollectionHelper.ApplyChanges<DriverResponseModel>(e, _items));
         }
     }
 }

@@ -19,6 +19,8 @@ namespace TaxiOnline.Logic.Logic
         private readonly AdaptersExtender _adaptersExtender;
         private readonly InteractionLogic _interaction;
         private readonly UpdatableCollectionLoadDecorator<PersonLogic, IPersonInfo> _persons;
+        private readonly SimpleCollectionLoadDecorator<IDriverResponse> _driverResponses;
+        private ActionResult _lastDriverResponsesResult = ActionResult.GetErrorResult(new NotSupportedException());
 
         public CityModel Model
         {
@@ -36,6 +38,8 @@ namespace TaxiOnline.Logic.Logic
             _adaptersExtender = adaptersExtender;
             _interaction = interaction;
             _persons = new UpdatableCollectionLoadDecorator<PersonLogic, IPersonInfo>(RetriveAllPersons, ComparePersonsInfo, p => p.IsOnline, CreatePersonsLogic);
+            _driverResponses = new SimpleCollectionLoadDecorator<IDriverResponse>(RetriveDriverResponses);
+            _driverResponses.RequestFailed += DriverResponses_RequestFailed;
             model.AuthenticateDelegate = Authenticate;
             model.EnumeratePersonsDelegate = EnumeratePersons;
         }
@@ -52,6 +56,11 @@ namespace TaxiOnline.Logic.Logic
             if (result.IsValid)
                 _interaction.CurrentProfile = result.Result;
             return result;
+        }
+
+        public ActionResult<IEnumerable<IDriverResponse>> EnumerateDriverResponses()
+        {
+            return _lastDriverResponsesResult.IsValid ? ActionResult<IEnumerable<IDriverResponse>>.GetValidResult(_driverResponses.Items) : ActionResult<IEnumerable<IDriverResponse>>.GetErrorResult(_lastDriverResponsesResult);
         }
 
         private ActionResult<IEnumerable<PersonLogic>> EnumeratePersons()
@@ -87,6 +96,16 @@ namespace TaxiOnline.Logic.Logic
                 }, _adaptersExtender, this);
             else
                 throw new NotImplementedException();
+        }
+
+        private ActionResult<IEnumerable<IDriverResponse>> RetriveDriverResponses()
+        {
+            return _adaptersExtender.ServicesFactory.GetCurrentDataService().EnumerateDriverResponses(_model.Id);
+        }
+
+        private void DriverResponses_RequestFailed(object sender, ActionResultEventArgs e)
+        {
+            _lastDriverResponsesResult = e.Result;
         }
     }
 }

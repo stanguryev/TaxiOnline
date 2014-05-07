@@ -60,7 +60,13 @@ namespace TaxiOnline.Server.MobileService
         public IEnumerable<PedestrianRequestDataContract> EnumeratePedestrianRequests(Guid cityId)
         {
             ICityLogic city = _server.Cities.FirstOrDefault(c => c.Info.Id == cityId);
-            return cityId == null ? new PedestrianRequestDataContract[0] : city.PedestrianRequests.Select(r => ConvertHelper.CreatePedestrianRequestsDataContract(r)).ToArray();
+            return cityId == null ? new PedestrianRequestDataContract[0] : city.PedestrianRequests.Select(r => ConvertHelper.CreatePedestrianRequestDataContract(r)).ToArray();
+        }
+        
+        public IEnumerable<DriverResponseDataContract> EnumerateDriverResponses(Guid cityId)
+        {
+            ICityLogic city = _server.Cities.FirstOrDefault(c => c.Info.Id == cityId);
+            return cityId == null ? new DriverResponseDataContract[0] : city.DriverResponses.Select(r => ConvertHelper.CreateDriverResponseDataContract(r)).ToArray();
         }
 
         public void PushPedestrianRequest(PedestrianRequestDataContract request)

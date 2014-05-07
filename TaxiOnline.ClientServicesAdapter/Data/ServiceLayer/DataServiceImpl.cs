@@ -83,9 +83,9 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
             return RequestCollection<IPedestrianRequest, PedestrianRequestDataContract>(channel => channel.EnumeratePedestrianRequests(cityId), data => new PedestrianRequestSLO(data));
         }
 
-        public ActionResult<IEnumerable<IDriverResponse>> EnumerateDriverResponses(Guid driverId)
+        public ActionResult<IEnumerable<IDriverResponse>> EnumerateDriverResponses(Guid cityId)
         {
-            throw new NotImplementedException();
+            return RequestCollection<IDriverResponse, DriverResponseDataContract>(channel => channel.EnumerateDriverResponses(cityId), data => new DriverResponseSLO(data));
         }
 
         public IPedestrianRequest CreatePedestrianRequest(Guid pedestrianId, Guid driverId)

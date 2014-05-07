@@ -166,7 +166,7 @@ namespace TaxiOnline.Logic.Logic
 
         private ActionResult<IEnumerable<DriverProfileResponseLogic>> RetriveDriverResponses()
         {
-            ActionResult<IEnumerable<IDriverResponse>> requestResult = _adaptersExtender.ServicesFactory.GetCurrentDataService().EnumerateDriverResponses(_model.PersonId);
+            ActionResult<IEnumerable<IDriverResponse>> requestResult = _city.EnumerateDriverResponses();
             return requestResult.IsValid ? ActionResult<IEnumerable<DriverProfileResponseLogic>>.GetValidResult(requestResult.Result.Select(r => CreateDriverResponseLogic(r)).Where(l => l != null).ToArray())
                 : ActionResult<IEnumerable<DriverProfileResponseLogic>>.GetErrorResult(requestResult);
         }

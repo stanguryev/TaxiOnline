@@ -33,9 +33,9 @@ namespace TaxiOnline.Android.Adapters
             _model = model;
             _viewCache = new ViewsCacheDecorator<DriverModel>(() => _context.LayoutInflater.Inflate(Resource.Layout.DriverInfoLayout, null, false));
             _selfItemView = new Lazy<View>(() => _context.LayoutInflater.Inflate(Resource.Layout.PedestrianSelfInfoLayout, null, false));
-            _model.DriversChanged += Model_DriversChanged;
-            _model.DriversCollectionChanged += Model_DriversCollectionChanged;
-            _model.CurrentLocationChanged += Model_CurrentLocationChanged;
+            model.DriversChanged += Model_DriversChanged;
+            model.DriversCollectionChanged += Model_DriversCollectionChanged;
+            model.CurrentLocationChanged += Model_CurrentLocationChanged;
             model.Map.MapService.Map.MapCenterChanged += Map_MapCenterChanged;
             model.Map.MapService.Map.MapZoomChanged += Map_MapZoomChanged;
             UpdateDrivers();

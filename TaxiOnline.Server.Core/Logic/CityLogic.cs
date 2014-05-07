@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TaxiOnline.Server.Core.Objects;
 using TaxiOnline.ServerInfrastructure.EntitiesInterfaces;
 using TaxiOnline.ServerInfrastructure.LogicInterfaces;
+using TaxiOnline.Toolkit.Events;
 using TaxiOnline.Toolkit.Threading.CollectionsDecorators;
 
 namespace TaxiOnline.Server.Core.Logic
@@ -17,6 +18,7 @@ namespace TaxiOnline.Server.Core.Logic
         private readonly ReadonlyCollectionDecorator<PedestrianInfo> _pedestrians = new ReadonlyCollectionDecorator<PedestrianInfo>();
         private readonly ReadonlyCollectionDecorator<DriverInfo> _drivers = new ReadonlyCollectionDecorator<DriverInfo>();
         private readonly ReadonlyCollectionDecorator<PedestrianRequestsInfo> _pedestrianRequests = new ReadonlyCollectionDecorator<PedestrianRequestsInfo>();
+        private ReadonlyCollectionDecorator<DriverResponseInfo> _driverResponses = new ReadonlyCollectionDecorator<DriverResponseInfo>();
 
         public ICityInfo Info
         {
@@ -38,6 +40,11 @@ namespace TaxiOnline.Server.Core.Logic
             get { return _pedestrianRequests.Items; }
         }
 
+        public IEnumerable<IDriverResponseInfo> DriverResponses
+        {
+            get { return _driverResponses.Items; }
+        }
+
         public CityLogic(CityInfo info, TaxiOnlineServer server, LogicExtender extender)
         {
             _info = info;
@@ -52,11 +59,13 @@ namespace TaxiOnline.Server.Core.Logic
             _drivers.ModifyCollection<IDriverInfo>(col => drivers.ForEach(d => col.Add(d)));
         }
 
+        [Obsolete]
         public void ModifyPedestriansCollection(Action<IList<IPedestrianInfo>> modificationDelegate)
         {
             _pedestrians.ModifyCollection(modificationDelegate);
         }
 
+        [Obsolete]
         public void ModifyDriversCollection(Action<IList<IDriverInfo>> modificationDelegate)
         {
             _drivers.ModifyCollection(modificationDelegate);
@@ -65,6 +74,39 @@ namespace TaxiOnline.Server.Core.Logic
         public void ModifyPedestrianRequestsCollection(Action<IList<IPedestrianRequestsInfo>> modificationDelegate)
         {
             _pedestrianRequests.ModifyCollection(modificationDelegate);
+        }
+
+        public ActionResult Authenticate(IPersonInfo info)
+        {
+            DriverInfo driverInfo = info as DriverInfo;
+            if (driverInfo != null)
+            {
+                ActionResult addResult = _extender.Storage.AddDriver(driverInfo);
+                if (!addResult.IsValid)
+                    return addResult;
+                _drivers.ModifyCollection(col => col.Add(driverInfo));
+                return ActionResult.ValidResult;
+            }
+            PedestrianInfo pedestrianInfo = info as PedestrianInfo;
+            if (pedestrianInfo != null)
+            {
+                ActionResult addResult = _extender.Storage.AddPedestrian(pedestrianInfo);
+                if (!addResult.IsValid)
+                    return addResult;
+                _pedestrians.ModifyCollection(col => col.Add(pedestrianInfo));
+                return ActionResult.ValidResult;
+            }
+            return ActionResult.GetErrorResult(new NotSupportedException());
+        }
+
+        public void LogOut(Guid personId)
+        {
+            DriverInfo driverInfo = _drivers.Items.FirstOrDefault(d => d.Id == personId);
+            if (driverInfo != null)
+            {
+                _drivers.ModifyCollection(col => col.Remove(driverInfo));
+                _extender.Storage.RemoveDriver(driverInfo);
+            }
         }
     }
 }

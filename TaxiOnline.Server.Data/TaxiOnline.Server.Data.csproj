@@ -64,6 +64,10 @@
       <Project>{D7C0C773-0611-45E3-9F75-436FB5FF38C9}</Project>
       <Name>TaxiOnline.ServerInfrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.Toolkit\TaxiOnline.Toolkit.csproj">
+      <Project>{8247f1d1-76c4-4ed7-a089-eb9c648fd885}</Project>
+      <Name>TaxiOnline.Toolkit</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="hibernate.cfg.xml" />

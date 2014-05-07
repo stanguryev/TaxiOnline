@@ -29,6 +29,9 @@ namespace TaxiOnline.ServiceContract
         IEnumerable<PedestrianRequestDataContract> EnumeratePedestrianRequests(Guid cityId);
 
         [OperationContract]
+        IEnumerable<DriverResponseDataContract> EnumerateDriverResponses(Guid cityId);
+
+        [OperationContract]
         void PushPedestrianRequest(PedestrianRequestDataContract request);
 
         [OperationContract]
