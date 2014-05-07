@@ -153,16 +153,22 @@ namespace TaxiOnline.Android.Adapters
 
         private void Map_MapCenterChanged(object sender, EventArgs e)
         {
-            _viewCache.NotifyFillStarted();
-            NotifyDataSetChanged();
-            _viewCache.NotifyFillFinished();
+            _context.RunOnUiThread(() =>
+            {
+                _viewCache.NotifyFillStarted();
+                NotifyDataSetChanged();
+                _viewCache.NotifyFillFinished();
+            });
         }
 
         private void Map_MapZoomChanged(object sender, EventArgs e)
         {
-            _viewCache.NotifyFillStarted();
-            NotifyDataSetChanged();
-            _viewCache.NotifyFillFinished();
+            _context.RunOnUiThread(() =>
+            {
+                _viewCache.NotifyFillStarted();
+                NotifyDataSetChanged();
+                _viewCache.NotifyFillFinished();
+            });
         }
     }
 }

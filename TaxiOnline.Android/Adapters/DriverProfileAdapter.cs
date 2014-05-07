@@ -13,6 +13,7 @@ using TaxiOnline.Logic.Models;
 using TaxiOnline.Toolkit.Collections.Helpers;
 using TaxiOnline.Android.Helpers;
 using TaxiOnline.Android.Activities;
+using TaxiOnline.Android.Decorators;
 
 namespace TaxiOnline.Android.Adapters
 {
@@ -21,14 +22,21 @@ namespace TaxiOnline.Android.Adapters
         private readonly Activity _context;
         private readonly DriverProfileModel _model;
         private List<PedestrianModel> _items;
+        private ViewsCacheDecorator<PedestrianModel> _viewCache;
+        private Lazy<View> _selfItemView;
 
         public DriverProfileAdapter(Activity context, DriverProfileModel model)
         {
             _context = context;
             _model = model;
+            _viewCache = new ViewsCacheDecorator<PedestrianModel>(() => _context.LayoutInflater.Inflate(Resource.Layout.PedestrianInfoLayout, null, false));
+            _selfItemView = new Lazy<View>(() => _context.LayoutInflater.Inflate(Resource.Layout.DriverSelfInfoLayout, null, false));
             _model.PedestriansChanged += Model_PedestriansChanged;
             _model.PedestriansCollectionChanged += Model_PedestriansCollectionChanged;
             _model.PedestrianRequestsCollectionChanged += Model_PedestrianRequestsCollectionChanged;
+            _model.CurrentLocationChanged += Model_CurrentLocationChanged;
+            model.Map.MapService.Map.MapCenterChanged += Map_MapCenterChanged;
+            model.Map.MapService.Map.MapZoomChanged += Map_MapZoomChanged;
             UpdatePedestrians();
         }
 
@@ -49,8 +57,7 @@ namespace TaxiOnline.Android.Adapters
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            int layoutId = position == 0 ? Resource.Layout.DriverSelfInfoLayout : Resource.Layout.PedestrianInfoLayout;
-            View view = _context.LayoutInflater.Inflate(layoutId, parent, false);
+            View view = position == 0 ? _selfItemView.Value : _viewCache.GetView(_items[position - 1]);
             if (position == 0)
                 HookCurrentModelToView(view, parent);
             else
@@ -95,6 +102,36 @@ namespace TaxiOnline.Android.Adapters
                         _model.SelectedPedestrianRequest = request;
                         UIHelper.GoActivity(_context, typeof(PedestrianPopupDetailsActivity));
                     }
+            });
+        }
+
+        private void Model_CurrentLocationChanged(object sender, EventArgs e)
+        {
+            _context.RunOnUiThread(() =>
+            {
+                _viewCache.NotifyFillStarted();
+                NotifyDataSetChanged();
+                _viewCache.NotifyFillFinished();
+            });
+        }
+
+        private void Map_MapCenterChanged(object sender, EventArgs e)
+        {
+            _context.RunOnUiThread(() =>
+            {
+                _viewCache.NotifyFillStarted();
+                NotifyDataSetChanged();
+                _viewCache.NotifyFillFinished();
+            });
+        }
+
+        private void Map_MapZoomChanged(object sender, EventArgs e)
+        {
+            _context.RunOnUiThread(() =>
+            {
+                _viewCache.NotifyFillStarted();
+                NotifyDataSetChanged();
+                _viewCache.NotifyFillFinished();
             });
         }
     }

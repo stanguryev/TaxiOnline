@@ -57,12 +57,7 @@ namespace TaxiOnline.Android.Adapters
 
         private void HookModelToView(View view, PersonModel personModel, ViewGroup upperView)
         {
-            view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map,personModel.CurrentLocation);
-            //MapPoint mapCenter = _model.Map.MapService.Map.MapCenter;
-            //int iconSize = 32;
-            //int x = upperView.Width / 2 - iconSize / 2 + _model.Map.MapService.Map.LongitudeOffsetToPixels(mapCenter.Longitude, personModel.CurrentLocation.Longitude, mapCenter.Latitude);
-            //int y = upperView.Height / 2 - iconSize / 2 - _model.Map.MapService.Map.LatitudeOffsetToPixels(mapCenter.Latitude, personModel.CurrentLocation.Latitude, mapCenter.Longitude);
-            //view.LayoutParameters = new AbsoluteLayout.LayoutParams(/*view.Width, view.Height*/iconSize, iconSize, x, y);
+            view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map, personModel.CurrentLocation);
         }
 
         private void UpdatePersons()
@@ -79,12 +74,12 @@ namespace TaxiOnline.Android.Adapters
 
         private void Map_MapZoomChanged(object sender, EventArgs e)
         {
-            NotifyDataSetChanged();
+            _context.RunOnUiThread(NotifyDataSetChanged);
         }
 
         private void Map_MapCenterChanged(object sender, EventArgs e)
         {
-            NotifyDataSetChanged();
+            _context.RunOnUiThread(NotifyDataSetChanged);
         }
     }
 }
