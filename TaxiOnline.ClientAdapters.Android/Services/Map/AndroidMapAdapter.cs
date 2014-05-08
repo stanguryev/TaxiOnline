@@ -28,9 +28,9 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Map
             return new AndroidMapWrapper();
         }
 
-        public void VisualizeMap(Context context, ViewGroup viewGroup)
+        public IDisposable VisualizeMap(Context context, ViewGroup viewGroup)
         {
-            ((AndroidMapWrapper)_map).VisualizeMap(context, viewGroup);
+            return ((AndroidMapWrapper)_map).VisualizeMap(context, viewGroup);
         }
     }
 }

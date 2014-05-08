@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\AuthenticationActivity.cs" />
+    <Compile Include="Activities\DriverPopupDetailsActivity.cs" />
     <Compile Include="Activities\DriverProfileActivity.cs" />
     <Compile Include="Activities\DriverProfileResponseActivity.cs" />
     <Compile Include="Activities\DriverResponsesActivity.cs" />

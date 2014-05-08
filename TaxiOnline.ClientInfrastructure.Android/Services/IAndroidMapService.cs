@@ -15,6 +15,6 @@ namespace TaxiOnline.ClientInfrastructure.Android.Services
 {
     public interface IAndroidMapService : IMapService
     {
-        void VisualizeMap(Context context, ViewGroup viewGroup);
+        IDisposable VisualizeMap(Context context, ViewGroup viewGroup);
     }
 }

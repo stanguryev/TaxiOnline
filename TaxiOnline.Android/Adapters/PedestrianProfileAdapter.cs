@@ -79,8 +79,17 @@ namespace TaxiOnline.Android.Adapters
             ImageView driverIconImageView = view.FindViewById<ImageView>(Resource.Id.driverIconImageView);
             driverIconImageView.Hover += (sender, e) =>
             {
-                ShowDriverInfoToast(driverModel, driverIconImageView);
+                _model.SelectedDriver = driverModel;
+                UIHelper.GoActivity(_context, typeof(DriverPopupDetailsActivity));
             };
+            driverIconImageView.Click += (sender, e) =>
+            {
+                _model.SelectedDriver = driverModel;
+                UIHelper.GoActivity(_context, typeof(DriverPopupDetailsActivity));
+            };
+            //{
+            //    ShowDriverInfoToast(driverModel, driverIconImageView);
+            //};
         }
 
         private void UpdateDrivers()
@@ -92,44 +101,44 @@ namespace TaxiOnline.Android.Adapters
             _viewCache.NotifyFillFinished();
         }
 
-        private void ShowDriverInfoToast(DriverModel driverModel, View briefView)
-        {
-            using (Toast driverInfoToast = new Toast(_context.Application.BaseContext)
-                {
-                    View = _context.LayoutInflater.Inflate(Resource.Layout.DriverPopupDetailsLayout, null),
-                    Duration = ToastLength.Long
-                })
-            {
-                driverInfoToast.SetGravity(GravityFlags.Center, 0, 0);
-                HookModelToDetailsView(driverInfoToast.View, driverModel);
-                driverInfoToast.Show();
-            }
-        }
+        //private void ShowDriverInfoToast(DriverModel driverModel, View briefView)
+        //{
+        //    using (Toast driverInfoToast = new Toast(_context.Application.BaseContext)
+        //        {
+        //            View = _context.LayoutInflater.Inflate(Resource.Layout.DriverPopupDetailsLayout, null),
+        //            Duration = ToastLength.Long
+        //        })
+        //    {
+        //        driverInfoToast.SetGravity(GravityFlags.Center, 0, 0);
+        //        HookModelToDetailsView(driverInfoToast.View, driverModel);
+        //        driverInfoToast.Show();
+        //    }
+        //}
 
-        private void HookModelToDetailsView(View view, DriverModel driverModel)
-        {
-            _model.SelectedDriver = driverModel;
-            view.Click += (sender, e) => UIHelper.GoResultActivity(_context, typeof(PedestrianProfileRequestActivity), 1);
-            Button quickCallToDriverButton = view.FindViewById<Button>(Resource.Id.quickCallToDriverButton);
-            quickCallToDriverButton.Click += (sender, e) =>
-            {
-                if (!_model.CallToDriver(driverModel).IsValid)
-                    using (Toast errorToast = Toast.MakeText(Application.Context, Resource.String.PhoneCallError, ToastLength.Short))
-                        errorToast.Show();
-            };
-            TextView driverPopupCarBrandTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarBrandTextView);
-            TextView driverPopupCarColorTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarColorTextView);
-            TextView driverPopupCarNumberTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarNumberTextView);
-            TextView driverPopupPersonNameTextView = view.FindViewById<TextView>(Resource.Id.driverPopupPersonNameTextView);
-            TextView driverPopupPhoneNumberTextView = view.FindViewById<TextView>(Resource.Id.driverPopupPhoneNumberTextView);
-            TextView driverPopupSkypeNumberTextView = view.FindViewById<TextView>(Resource.Id.driverPopupSkypeNumberTextView);
-            driverPopupPersonNameTextView.Text = driverModel.PersonName;
-            driverPopupCarColorTextView.Text = driverModel.CarColor;
-            driverPopupCarBrandTextView.Text = driverModel.CarBrand;
-            driverPopupCarNumberTextView.Text = driverModel.CarNumber;
-            driverPopupPhoneNumberTextView.Text = driverModel.PhoneNumber;
-            driverPopupSkypeNumberTextView.Text = driverModel.SkypeNumber;
-        }
+        //private void HookModelToDetailsView(View view, DriverModel driverModel)
+        //{
+        //    _model.SelectedDriver = driverModel;
+        //    view.Click += (sender, e) => UIHelper.GoResultActivity(_context, typeof(PedestrianProfileRequestActivity), 1);
+        //    Button quickCallToDriverButton = view.FindViewById<Button>(Resource.Id.quickCallToDriverButton);
+        //    quickCallToDriverButton.Click += (sender, e) =>
+        //    {
+        //        if (!_model.CallToDriver(driverModel).IsValid)
+        //            using (Toast errorToast = Toast.MakeText(Application.Context, Resource.String.PhoneCallError, ToastLength.Short))
+        //                errorToast.Show();
+        //    };
+        //    TextView driverPopupCarBrandTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarBrandTextView);
+        //    TextView driverPopupCarColorTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarColorTextView);
+        //    TextView driverPopupCarNumberTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarNumberTextView);
+        //    TextView driverPopupPersonNameTextView = view.FindViewById<TextView>(Resource.Id.driverPopupPersonNameTextView);
+        //    TextView driverPopupPhoneNumberTextView = view.FindViewById<TextView>(Resource.Id.driverPopupPhoneNumberTextView);
+        //    TextView driverPopupSkypeNumberTextView = view.FindViewById<TextView>(Resource.Id.driverPopupSkypeNumberTextView);
+        //    driverPopupPersonNameTextView.Text = driverModel.PersonName;
+        //    driverPopupCarColorTextView.Text = driverModel.CarColor;
+        //    driverPopupCarBrandTextView.Text = driverModel.CarBrand;
+        //    driverPopupCarNumberTextView.Text = driverModel.CarNumber;
+        //    driverPopupPhoneNumberTextView.Text = driverModel.PhoneNumber;
+        //    driverPopupSkypeNumberTextView.Text = driverModel.SkypeNumber;
+        //}
 
         private void Model_DriversChanged(object sender, EventArgs e)
         {

@@ -33,6 +33,7 @@ namespace TaxiOnline.Android.Activities
         private DriverProfileModel _activeDriverProfileModel;
         private PedestrianProfileModel _activePedestrianProfileModel;
         private ProgressDialogDecorator _authorizationProgressDialogDecorator;
+        private IDisposable _currentMap;
 
         public InteractionModel InteractionModel
         {
@@ -66,7 +67,19 @@ namespace TaxiOnline.Android.Activities
                     _cityModel = _interactionModel.CurrentCity;
             }
             SetContentView(Resource.Layout.AuthenticationLayout);
+            //HookModel();
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
             HookModel();
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+            UnhookModel();
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
@@ -86,9 +99,23 @@ namespace TaxiOnline.Android.Activities
             Button registerButton = FindViewById<Button>(Resource.Id.registerButton);
             registerButton.Click += (sender, e) => UIHelper.GoResultActivity(this, typeof(RegistrationActivity), (int)Dialogs.Registration);
             LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
-            ((IAndroidMapService)_cityModel.Map.MapService).VisualizeMap(this, mapLayout);
+            if (_currentMap == null)
+                _currentMap = ((IAndroidMapService)_cityModel.Map.MapService).VisualizeMap(this, mapLayout);
             CanvasView personsView = FindViewById<CanvasView>(Resource.Id.personsView);
             personsView.Adapter = new PersonsAdapter(this, _cityModel);
+        }
+
+        private void UnhookModel()
+        {
+            if (_currentMap != null)
+                _currentMap.Dispose();
+             CanvasView personsView = FindViewById<CanvasView>(Resource.Id.personsView);
+             if (personsView.Adapter != null)
+                 personsView.Adapter.Dispose();
+             if (_interactionModel == null || _cityModel == null)
+                 return;
+             _cityModel.PersonsRequestFailed -= CityModel_PersonsRequestFailed;
+             _cityModel.AuthenticationFailed -= CityModel_AuthenticationFailed;
         }
 
         private void ActivateProfile()
