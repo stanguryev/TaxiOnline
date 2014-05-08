@@ -13,7 +13,7 @@ using TaxiOnline.Android.Helpers;
 
 namespace TaxiOnline.Android.Activities
 {
-    [Activity(Label = "@string/ApplicationName", NoHistory = true, FinishOnTaskLaunch = true)]
+    [Activity(Label = "@string/ApplicationName", NoHistory = true, FinishOnTaskLaunch = true, Theme = "@android:style/Theme.Dialog")]
     public class DriverPopupDetailsActivity : Activity
     {
         private Logic.Models.DriverModel _model;

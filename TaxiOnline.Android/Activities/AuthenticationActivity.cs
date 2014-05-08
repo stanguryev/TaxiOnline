@@ -109,13 +109,13 @@ namespace TaxiOnline.Android.Activities
         {
             if (_currentMap != null)
                 _currentMap.Dispose();
-             CanvasView personsView = FindViewById<CanvasView>(Resource.Id.personsView);
-             if (personsView.Adapter != null)
-                 personsView.Adapter.Dispose();
-             if (_interactionModel == null || _cityModel == null)
-                 return;
-             _cityModel.PersonsRequestFailed -= CityModel_PersonsRequestFailed;
-             _cityModel.AuthenticationFailed -= CityModel_AuthenticationFailed;
+            CanvasView personsView = FindViewById<CanvasView>(Resource.Id.personsView);
+            if (personsView.Adapter != null)
+                personsView.Adapter.Dispose();
+            if (_interactionModel == null || _cityModel == null)
+                return;
+            _cityModel.PersonsRequestFailed -= CityModel_PersonsRequestFailed;
+            _cityModel.AuthenticationFailed -= CityModel_AuthenticationFailed;
         }
 
         private void ActivateProfile()
@@ -150,8 +150,8 @@ namespace TaxiOnline.Android.Activities
         {
             RunOnUiThread(() =>
             {
-                _authorizationProgressDialogDecorator.Hide();
                 ActivateProfile();
+                _authorizationProgressDialogDecorator.Hide();
             });
         }
 

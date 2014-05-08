@@ -145,7 +145,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[CityNames](
-	[Id] [int] NOT NULL,
+	[Id] [int] NOT NULL IDENTITY,
 	[Name] [nvarchar](100) NULL,
 	[CultureName] [nvarchar](8) NULL,
 	[CityId] [uniqueidentifier] NOT NULL,
@@ -197,7 +197,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[PersonsInfo](
-	[Id] [int] NOT NULL,
+	[Id] [int] NOT NULL IDENTITY,
 	[PersonId] [uniqueidentifier] NOT NULL,
 	[CityId] [uniqueidentifier] NOT NULL,
 	[Latitude] [float] NULL,
@@ -235,7 +235,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[PedestrianAccounts](
-	[Id] [int] NOT NULL,
+	[Id] [int] NOT NULL IDENTITY,
 	[PersonId] [uniqueidentifier] NOT NULL,
  CONSTRAINT [PK_PedestrianAccounts] PRIMARY KEY CLUSTERED 
 (
@@ -263,7 +263,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[PedestriansInfo](
-	[Id] [int] NOT NULL,
+	[Id] [int] NOT NULL IDENTITY,
 	[PersonInfo] [int] NOT NULL,
  CONSTRAINT [PK_PedestriansInfo] PRIMARY KEY CLUSTERED 
 (
@@ -291,7 +291,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[DriverAccounts](
-	[Id] [int] NOT NULL,
+	[Id] [int] NOT NULL IDENTITY,
 	[PersonId] [uniqueidentifier] NOT NULL,
 	[PersonName] [nvarchar](100) NULL,
 	[CarColor] [nvarchar](50) NULL,
@@ -323,7 +323,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[DriversInfo](
-	[Id] [int] NOT NULL,
+	[Id] [int] NOT NULL IDENTITY,
 	[PersonInfo] [int] NOT NULL,
  CONSTRAINT [PK_DriversInfo] PRIMARY KEY CLUSTERED 
 (
@@ -340,4 +340,66 @@ GO
 ALTER TABLE [dbo].[DriversInfo] CHECK CONSTRAINT [FK_DriversInfo_PersonsInfo]
 GO
 
+
+USE [TaxiOnline]
+GO
+
+/****** Object:  StoredProcedure [dbo].[AddCity]    Script Date: 05/08/2014 15:02:35 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+create procedure [dbo].[AddCity] @latitude float, @longitude float, @initzoom float, @englishName nvarchar(100) as
+	declare @cityId table (Id uniqueidentifier);
+	insert into Cities (InitialLatitude , InitialLongitude, InitialZoom) output inserted.Id into @cityId values (@latitude,@longitude,@initzoom);
+	insert into CityNames( CityId, CultureName, Name) select id, 'en-US' as culname, @englishName as name from @cityId;
+
+GO
+
+USE [TaxiOnline]
+GO
+
+/****** Object:  StoredProcedure [dbo].[AddPedestrian]    Script Date: 05/08/2014 15:32:02 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+create procedure [dbo].[AddPedestrian] @phone nvarchar(50), @skype nvarchar(50), @cityEnglishName nvarchar(100) as
+declare @personId table (personId uniqueidentifier);
+declare @cityId uniqueidentifier;
+select top 1 @cityId = Cities.Id from Cities inner join CityNames on Cities.Id = CityNames.CityId where CityNames.Name like '%' + @cityEnglishName + '%';
+insert into PersonAccounts(PhoneNumber, SkypeNumber) output inserted.Id into @personId values (@phone, @skype);
+declare @personInfoId table (personId int);
+insert into PersonsInfo ( PersonId, CityId) output inserted.Id into @personInfoId select personId, @cityId as cityId from @personId;
+declare @pedestrianId table (Id int);
+insert into PedestrianAccounts (PersonId) output inserted.Id into @pedestrianId select personId from @personId;
+insert into PedestriansInfo (PersonInfo) select personId from @personInfoId;
+
+GO
+
+USE [TaxiOnline]
+GO
+
+/****** Object:  StoredProcedure [dbo].[AddDriver]    Script Date: 05/08/2014 15:40:16 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+create procedure [dbo].[AddDriver] @phone nvarchar(50), @skype nvarchar(50), @cityEnglishName nvarchar(100), @personName nvarchar(100), @carColor nvarchar(50), @carBrand nvarchar(50), @carNumber nvarchar(50) as
+declare @personId table (personId uniqueidentifier);
+declare @cityId uniqueidentifier;
+select top 1 @cityId = Cities.Id from Cities inner join CityNames on Cities.Id = CityNames.CityId where CityNames.Name like '%' + @cityEnglishName + '%';
+insert into PersonAccounts(PhoneNumber, SkypeNumber) output inserted.Id into @personId values (@phone, @skype);
+declare @personInfoId table (personId int);
+insert into PersonsInfo ( PersonId, CityId) output inserted.Id into @personInfoId select personId, @cityId as cityId from @personId;
+insert into DriverAccounts (PersonId, PersonName, CarColor, CarBrand, CarNumber) select personId, @personName as personName, @carColor as carColor, @carBrand as carBrand, @carNumber as carNumber from @personId;
+insert into DriversInfo (PersonInfo) select personId from @personInfoId;
+
+GO
 

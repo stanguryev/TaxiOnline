@@ -77,16 +77,16 @@ namespace TaxiOnline.Android.Adapters
         {
             view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map, driverModel.CurrentLocation);
             ImageView driverIconImageView = view.FindViewById<ImageView>(Resource.Id.driverIconImageView);
-            driverIconImageView.Hover += (sender, e) =>
-            {
-                _model.SelectedDriver = driverModel;
-                UIHelper.GoActivity(_context, typeof(DriverPopupDetailsActivity));
-            };
-            driverIconImageView.Click += (sender, e) =>
-            {
-                _model.SelectedDriver = driverModel;
-                UIHelper.GoActivity(_context, typeof(DriverPopupDetailsActivity));
-            };
+            driverIconImageView.Hover += (sender, e) => ShowDriverInfoPopupWindows(driverModel, view);
+            //{
+            //    _model.SelectedDriver = driverModel;
+            //    UIHelper.GoActivity(_context, typeof(DriverPopupDetailsActivity));
+            //};
+            driverIconImageView.Click += (sender, e) => ShowDriverInfoPopupWindows(driverModel, view);
+            //{
+            //    _model.SelectedDriver = driverModel;
+            //    UIHelper.GoActivity(_context, typeof(DriverPopupDetailsActivity));
+            //};
             //{
             //    ShowDriverInfoToast(driverModel, driverIconImageView);
             //};
@@ -99,6 +99,15 @@ namespace TaxiOnline.Android.Adapters
             _viewCache.NotifyFillStarted();
             NotifyDataSetChanged();
             _viewCache.NotifyFillFinished();
+        }
+
+        private void ShowDriverInfoPopupWindows(DriverModel driverModel, View briefView)
+        {
+            using (PopupWindow popup = new PopupWindow(_context.LayoutInflater.Inflate(Resource.Layout.DriverPopupDetailsLayout, null)))
+            {
+                HookModelToDetailsPopupWindow(popup, driverModel);
+                popup.ShowAsDropDown(briefView, 32, -32);
+            }
         }
 
         //private void ShowDriverInfoToast(DriverModel driverModel, View briefView)
@@ -115,30 +124,46 @@ namespace TaxiOnline.Android.Adapters
         //    }
         //}
 
-        //private void HookModelToDetailsView(View view, DriverModel driverModel)
-        //{
-        //    _model.SelectedDriver = driverModel;
-        //    view.Click += (sender, e) => UIHelper.GoResultActivity(_context, typeof(PedestrianProfileRequestActivity), 1);
-        //    Button quickCallToDriverButton = view.FindViewById<Button>(Resource.Id.quickCallToDriverButton);
-        //    quickCallToDriverButton.Click += (sender, e) =>
-        //    {
-        //        if (!_model.CallToDriver(driverModel).IsValid)
-        //            using (Toast errorToast = Toast.MakeText(Application.Context, Resource.String.PhoneCallError, ToastLength.Short))
-        //                errorToast.Show();
-        //    };
-        //    TextView driverPopupCarBrandTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarBrandTextView);
-        //    TextView driverPopupCarColorTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarColorTextView);
-        //    TextView driverPopupCarNumberTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarNumberTextView);
-        //    TextView driverPopupPersonNameTextView = view.FindViewById<TextView>(Resource.Id.driverPopupPersonNameTextView);
-        //    TextView driverPopupPhoneNumberTextView = view.FindViewById<TextView>(Resource.Id.driverPopupPhoneNumberTextView);
-        //    TextView driverPopupSkypeNumberTextView = view.FindViewById<TextView>(Resource.Id.driverPopupSkypeNumberTextView);
-        //    driverPopupPersonNameTextView.Text = driverModel.PersonName;
-        //    driverPopupCarColorTextView.Text = driverModel.CarColor;
-        //    driverPopupCarBrandTextView.Text = driverModel.CarBrand;
-        //    driverPopupCarNumberTextView.Text = driverModel.CarNumber;
-        //    driverPopupPhoneNumberTextView.Text = driverModel.PhoneNumber;
-        //    driverPopupSkypeNumberTextView.Text = driverModel.SkypeNumber;
-        //}
+        private void HookModelToDetailsPopupWindow(PopupWindow popup, DriverModel driverModel)
+        {
+            HookModelToDetailsView(popup.ContentView, driverModel);
+            popup.ContentView.Click += (sender, e) =>
+            {
+                popup.Dismiss();
+                popup.Dispose();
+            };
+            Button quickCallToDriverButton = popup.ContentView.FindViewById<Button>(Resource.Id.quickCallToDriverButton);
+            quickCallToDriverButton.Click += (sender, e) =>
+            {
+                popup.Dismiss();
+                popup.Dispose();
+            };
+        }
+
+        private void HookModelToDetailsView(View view, DriverModel driverModel)
+        {
+            _model.SelectedDriver = driverModel;
+            view.Click += (sender, e) => UIHelper.GoResultActivity(_context, typeof(PedestrianProfileRequestActivity), 1);
+            Button quickCallToDriverButton = view.FindViewById<Button>(Resource.Id.quickCallToDriverButton);
+            quickCallToDriverButton.Click += (sender, e) =>
+            {
+                if (!_model.CallToDriver(driverModel).IsValid)
+                    using (Toast errorToast = Toast.MakeText(Application.Context, Resource.String.PhoneCallError, ToastLength.Short))
+                        errorToast.Show();
+            };
+            TextView driverPopupCarBrandTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarBrandTextView);
+            TextView driverPopupCarColorTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarColorTextView);
+            TextView driverPopupCarNumberTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarNumberTextView);
+            TextView driverPopupPersonNameTextView = view.FindViewById<TextView>(Resource.Id.driverPopupPersonNameTextView);
+            TextView driverPopupPhoneNumberTextView = view.FindViewById<TextView>(Resource.Id.driverPopupPhoneNumberTextView);
+            TextView driverPopupSkypeNumberTextView = view.FindViewById<TextView>(Resource.Id.driverPopupSkypeNumberTextView);
+            driverPopupPersonNameTextView.Text = driverModel.PersonName;
+            driverPopupCarColorTextView.Text = driverModel.CarColor;
+            driverPopupCarBrandTextView.Text = driverModel.CarBrand;
+            driverPopupCarNumberTextView.Text = driverModel.CarNumber;
+            driverPopupPhoneNumberTextView.Text = driverModel.PhoneNumber;
+            driverPopupSkypeNumberTextView.Text = driverModel.SkypeNumber;
+        }
 
         private void Model_DriversChanged(object sender, EventArgs e)
         {
