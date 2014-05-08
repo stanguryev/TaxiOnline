@@ -25,7 +25,7 @@ namespace TaxiOnline.Android.Adapters
         {
             _context = context;
             _model = model;
-            _model.PersonsChanged += Model_PersonsChanged;
+            model.PersonsChanged += Model_PersonsChanged;
             model.Map.MapService.Map.MapCenterChanged += Map_MapCenterChanged;
             model.Map.MapService.Map.MapZoomChanged += Map_MapZoomChanged;
             UpdatePersons();
@@ -53,6 +53,14 @@ namespace TaxiOnline.Android.Adapters
             View view = _context.LayoutInflater.Inflate(layoutId, parent, false);
             HookModelToView(view, _items[position], parent);
             return view;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            _model.PersonsChanged -= Model_PersonsChanged;
+            _model.Map.MapService.Map.MapCenterChanged -= Map_MapCenterChanged;
+            _model.Map.MapService.Map.MapZoomChanged -= Map_MapZoomChanged;
         }
 
         private void HookModelToView(View view, PersonModel personModel, ViewGroup upperView)

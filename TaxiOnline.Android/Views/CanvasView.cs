@@ -38,14 +38,22 @@ namespace TaxiOnline.Android.Views
         }
 
         private IAdapter _adapter;
+        private DataSetObserver _dataSetObserver;
 
         public override IAdapter Adapter
         {
             get { return _adapter; }
             set
             {
+                if (_adapter != null && _dataSetObserver != null)
+                {
+                    _adapter.UnregisterDataSetObserver(_dataSetObserver);
+                    _dataSetObserver.Dispose();
+                    _dataSetObserver = null;
+                }
                 _adapter = value;
-                _adapter.RegisterDataSetObserver(new CanvasViewDataSetObserver(this));
+                if (_adapter != null)
+                    _adapter.RegisterDataSetObserver(_dataSetObserver = new CanvasViewDataSetObserver(this));
                 RemoveAllViewsInLayout();
                 RequestLayout();
             }

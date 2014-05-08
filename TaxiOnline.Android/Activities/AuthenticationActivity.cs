@@ -111,7 +111,11 @@ namespace TaxiOnline.Android.Activities
                 _currentMap.Dispose();
             CanvasView personsView = FindViewById<CanvasView>(Resource.Id.personsView);
             if (personsView.Adapter != null)
-                personsView.Adapter.Dispose();
+            {
+                IAdapter personsViewAdapter = personsView.Adapter;
+                personsView.Adapter = null;
+                personsViewAdapter.Dispose();
+            }
             if (_interactionModel == null || _cityModel == null)
                 return;
             _cityModel.PersonsRequestFailed -= CityModel_PersonsRequestFailed;

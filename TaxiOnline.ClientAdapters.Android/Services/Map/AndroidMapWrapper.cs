@@ -17,20 +17,23 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Map
         {
             private readonly MapViewSurface _surface;
             private readonly MapView _mapView;
+            private readonly ViewGroup _viewGroup;
 
             public MapView MapView
             {
                 get { return _mapView; }
             }
 
-            public MapViewWrapper(Context context)
+            public MapViewWrapper(Context context, ViewGroup viewGroup)
             {
                 _surface = new MapViewSurface(context);
                 _mapView = new MapView(context, _surface);
+                _viewGroup = viewGroup;
             }
 
             public void Dispose()
             {
+                _viewGroup.RemoveView(_mapView);
                 _mapView.Dispose();
                 _surface.Dispose();
             }
@@ -40,7 +43,7 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Map
 
         public IDisposable VisualizeMap(Context context, ViewGroup viewGroup)
         {
-            _mapViewWrapper = new MapViewWrapper(context);
+            _mapViewWrapper = new MapViewWrapper(context, viewGroup);
             _mapViewWrapper.MapView.Map = _map;
             SetMapCenter(_mapCenter);
             SetMapZoom(_mapZoom);

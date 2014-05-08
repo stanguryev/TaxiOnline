@@ -26,7 +26,7 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Hardware
 
             public LocationListener(Action<Location> locationChangedCallback)
             {
-                locationChangedCallback = _locationChangedCallback;
+                _locationChangedCallback = locationChangedCallback;
             }
 
             public void OnLocationChanged(Location location)
@@ -71,7 +71,7 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Hardware
                     return ActionResult<MapPoint>.GetValidResult(new MapPoint(location.Latitude, location.Longitude));
             }
         }
-        
+
         private void SubscribeToLocationChanged(EventHandler<ValueEventArgs<MapPoint>> handler)
         {
             Criteria criteria = new Criteria();
