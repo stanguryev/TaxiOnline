@@ -17,6 +17,7 @@ namespace TaxiOnline.Logic.Models
         private Guid _requestId;
         private decimal _paymentAmount;
         private string _currency = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+        private string _comment;
         private MapLocationModel _target = new MapLocationModel();
         //private readonly SimpleCollectionLoadDecorator<DriverResponseModel> _availableResponses;
         //private DriverResponseModel _selectedResponse; 
@@ -50,6 +51,12 @@ namespace TaxiOnline.Logic.Models
         {
             get { return _currency; }
             set { _currency = value; }
+        }
+
+        public string Comment
+        {
+            get { return _comment; }
+            set { _comment = value; }
         }
 
         public DriverResponseModel Response

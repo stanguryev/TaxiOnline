@@ -106,8 +106,8 @@ namespace TaxiOnline.Android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f07002b
-			public const int applySettingsButton = 2131165227;
+			// aapt resource value: 0x7f07002c
+			public const int applySettingsButton = 2131165228;
 			
 			// aapt resource value: 0x7f070012
 			public const int callToDriverAfterResponseButton = 2131165202;
@@ -115,23 +115,23 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f07001b
 			public const int callToDriverButton = 2131165211;
 			
-			// aapt resource value: 0x7f07001d
-			public const int cancelMessageToDriverButton = 2131165213;
+			// aapt resource value: 0x7f07001e
+			public const int cancelMessageToDriverButton = 2131165214;
 			
-			// aapt resource value: 0x7f070029
-			public const int cancelRegistrationButton = 2131165225;
+			// aapt resource value: 0x7f07002a
+			public const int cancelRegistrationButton = 2131165226;
 			
-			// aapt resource value: 0x7f07002d
-			public const int cancelSettingsButton = 2131165229;
-			
-			// aapt resource value: 0x7f070024
-			public const int carBrandEditText = 2131165220;
-			
-			// aapt resource value: 0x7f070023
-			public const int carColorEditText = 2131165219;
+			// aapt resource value: 0x7f07002e
+			public const int cancelSettingsButton = 2131165230;
 			
 			// aapt resource value: 0x7f070025
-			public const int carNumberEditText = 2131165221;
+			public const int carBrandEditText = 2131165221;
+			
+			// aapt resource value: 0x7f070024
+			public const int carColorEditText = 2131165220;
+			
+			// aapt resource value: 0x7f070026
+			public const int carNumberEditText = 2131165222;
 			
 			// aapt resource value: 0x7f070015
 			public const int chooseCityButton = 2131165205;
@@ -145,14 +145,14 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f07000f
 			public const int confirmPedestrianRequestButton = 2131165199;
 			
-			// aapt resource value: 0x7f070028
-			public const int confirmRegistrationButton = 2131165224;
+			// aapt resource value: 0x7f070029
+			public const int confirmRegistrationButton = 2131165225;
 			
 			// aapt resource value: 0x7f070005
 			public const int driverIconImageView = 2131165189;
 			
-			// aapt resource value: 0x7f070027
-			public const int driverPhoneNumberEditText = 2131165223;
+			// aapt resource value: 0x7f070028
+			public const int driverPhoneNumberEditText = 2131165224;
 			
 			// aapt resource value: 0x7f070009
 			public const int driverPopupCarBrandTextView = 2131165193;
@@ -178,8 +178,8 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f07000e
 			public const int driverProfileView = 2131165198;
 			
-			// aapt resource value: 0x7f07001f
-			public const int driverRadioButton = 2131165215;
+			// aapt resource value: 0x7f070020
+			public const int driverRadioButton = 2131165216;
 			
 			// aapt resource value: 0x7f070011
 			public const int driverResponseTextView = 2131165201;
@@ -187,20 +187,23 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f070013
 			public const int driverResponsesListView = 2131165203;
 			
-			// aapt resource value: 0x7f070026
-			public const int driverSkypeNumberEditText = 2131165222;
+			// aapt resource value: 0x7f070027
+			public const int driverSkypeNumberEditText = 2131165223;
 			
 			// aapt resource value: 0x7f070017
 			public const int mapLayout = 2131165207;
 			
-			// aapt resource value: 0x7f070021
-			public const int pedestrianPhoneNumberEditText = 2131165217;
+			// aapt resource value: 0x7f07001c
+			public const int messageToDriverEditText = 2131165212;
+			
+			// aapt resource value: 0x7f070022
+			public const int pedestrianPhoneNumberEditText = 2131165218;
 			
 			// aapt resource value: 0x7f07001a
 			public const int pedestrianProfileView = 2131165210;
 			
-			// aapt resource value: 0x7f07001e
-			public const int pedestrianRadioButton = 2131165214;
+			// aapt resource value: 0x7f07001f
+			public const int pedestrianRadioButton = 2131165215;
 			
 			// aapt resource value: 0x7f070018
 			public const int pedestrianRequestLayout = 2131165208;
@@ -208,11 +211,11 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f070019
 			public const int pedestrianRequestTextView = 2131165209;
 			
-			// aapt resource value: 0x7f070020
-			public const int pedestrianSkypeNumberEditText = 2131165216;
+			// aapt resource value: 0x7f070021
+			public const int pedestrianSkypeNumberEditText = 2131165217;
 			
-			// aapt resource value: 0x7f070022
-			public const int personNameEditText = 2131165218;
+			// aapt resource value: 0x7f070023
+			public const int personNameEditText = 2131165219;
 			
 			// aapt resource value: 0x7f070002
 			public const int personsView = 2131165186;
@@ -229,14 +232,14 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f070010
 			public const int rejectPedestrianRequestButton = 2131165200;
 			
-			// aapt resource value: 0x7f07002c
-			public const int restartApplicationForSettingsButton = 2131165228;
+			// aapt resource value: 0x7f07002d
+			public const int restartApplicationForSettingsButton = 2131165229;
 			
-			// aapt resource value: 0x7f07001c
-			public const int sendMessageToDriverButton = 2131165212;
+			// aapt resource value: 0x7f07001d
+			public const int sendMessageToDriverButton = 2131165213;
 			
-			// aapt resource value: 0x7f07002a
-			public const int serverAddressEditText = 2131165226;
+			// aapt resource value: 0x7f07002b
+			public const int serverAddressEditText = 2131165227;
 			
 			// aapt resource value: 0x7f070000
 			public const int settingsButton = 2131165184;

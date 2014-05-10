@@ -40,7 +40,7 @@ namespace TaxiOnline.Android.Activities
             base.OnCreate(bundle);
             _connectionProgressDialogDecorator = new ProgressDialogDecorator(this, Resources.GetString(Resource.String.ConnectingToServerTitle), Resources.GetString(Resource.String.ConnectingToServerMessage));
             RequestWindowFeature(WindowFeatures.ActionBar);
-            SetContentView(Resource.Layout.MainLayout);
+            SetContentView(Resource.Layout.MainLayout);             
             HookModel();
         }
 

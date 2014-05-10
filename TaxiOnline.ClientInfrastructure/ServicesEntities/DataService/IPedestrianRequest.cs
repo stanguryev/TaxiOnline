@@ -16,6 +16,7 @@ namespace TaxiOnline.ClientInfrastructure.ServicesEntities.DataService
         MapPoint TargetLocation { get; set; }
         decimal PaymentAmount { get; set; }
         string Currency { get; set; }
+        string Comment { get; set; }
         bool IsCanceled { get; set; }
     }
 }

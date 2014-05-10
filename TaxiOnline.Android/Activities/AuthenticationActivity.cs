@@ -67,19 +67,19 @@ namespace TaxiOnline.Android.Activities
                     _cityModel = _interactionModel.CurrentCity;
             }
             SetContentView(Resource.Layout.AuthenticationLayout);
-            //HookModel();
+            HookModel();
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-            HookModel();
+            //HookModel();
         }
 
         protected override void OnPause()
         {
             base.OnPause();
-            UnhookModel();
+            //UnhookModel();
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
@@ -97,7 +97,7 @@ namespace TaxiOnline.Android.Activities
             _cityModel.AuthenticationFailed += CityModel_AuthenticationFailed;
             _interactionModel.CurrentProfileChanged += InteractionModel_CurrentProfileChanged;
             Button registerButton = FindViewById<Button>(Resource.Id.registerButton);
-            registerButton.Click += (sender, e) => UIHelper.GoResultActivity(this, typeof(RegistrationActivity), (int)Dialogs.Registration);
+            registerButton.Click += RegisterButton_Click;
             LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
             if (_currentMap == null)
                 _currentMap = ((IAndroidMapService)_cityModel.Map.MapService).VisualizeMap(this, mapLayout);
@@ -120,6 +120,9 @@ namespace TaxiOnline.Android.Activities
                 return;
             _cityModel.PersonsRequestFailed -= CityModel_PersonsRequestFailed;
             _cityModel.AuthenticationFailed -= CityModel_AuthenticationFailed;
+            _interactionModel.CurrentProfileChanged -= InteractionModel_CurrentProfileChanged;
+            Button registerButton = FindViewById<Button>(Resource.Id.registerButton);
+            registerButton.Click -= RegisterButton_Click;
         }
 
         private void ActivateProfile()
@@ -142,6 +145,11 @@ namespace TaxiOnline.Android.Activities
         {
             _activePedestrianProfileModel = pedestrianProfileModel;
             UIHelper.GoActivity(this, typeof(PedestrianProfileActivity));
+        }
+
+        private void RegisterButton_Click(object sender, EventArgs e)
+        {
+            UIHelper.GoResultActivity(this, typeof(RegistrationActivity), (int)Dialogs.Registration);
         }
 
         private void CityModel_PersonsRequestFailed(object sender, Toolkit.Events.ActionResultEventArgs e)

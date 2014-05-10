@@ -17,6 +17,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
         private MapPoint _targetLocation;
         private decimal _paymentAmount;
         private string _currency;
+        private string _comment;
         private bool _isCanceled;
 
         public Guid Id
@@ -57,6 +58,12 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
         {
             get { return _currency; }
             set { _currency = value; }
+        }
+
+        public string Comment
+        {
+            get { return _comment; }
+            set { _comment = value; }
         }
 
         public bool IsCanceled

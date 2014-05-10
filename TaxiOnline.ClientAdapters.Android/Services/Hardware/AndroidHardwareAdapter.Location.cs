@@ -62,13 +62,17 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Hardware
             using (LocationManager locationManager = (LocationManager)Application.Context.GetSystemService(Application.LocationService))
             {
                 string providerName = locationManager.GetBestProvider(criteria, true);
-                using (LocationListener locationListener = new LocationListener(l => { }))
-                    locationManager.RequestSingleUpdate(providerName, locationListener, null);
-                Location location = string.IsNullOrWhiteSpace(providerName) ? null : locationManager.GetLastKnownLocation(providerName);
-                if (location == null)
-                    return ActionResult<MapPoint>.GetErrorResult(new NotSupportedException());
-                using (location)
-                    return ActionResult<MapPoint>.GetValidResult(new MapPoint(location.Latitude, location.Longitude));
+                using (System.Threading.EventWaitHandle waitLocation = new System.Threading.EventWaitHandle(false, System.Threading.EventResetMode.ManualReset))
+                {
+                    using (LocationListener locationListener = new LocationListener(l => waitLocation.Set()))
+                        locationManager.RequestSingleUpdate(providerName, locationListener, null);
+                    waitLocation.WaitOne(2000);
+                    Location location = string.IsNullOrWhiteSpace(providerName) ? null : locationManager.GetLastKnownLocation(providerName);
+                    if (location == null)
+                        return ActionResult<MapPoint>.GetErrorResult(new NotSupportedException());
+                    using (location)
+                        return ActionResult<MapPoint>.GetValidResult(new MapPoint(location.Latitude, location.Longitude));
+                }
             }
         }
 

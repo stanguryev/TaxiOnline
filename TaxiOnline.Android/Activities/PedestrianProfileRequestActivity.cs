@@ -48,6 +48,8 @@ namespace TaxiOnline.Android.Activities
                     using (Toast errorToast = Toast.MakeText(Application.Context, Resource.String.PhoneCallError, ToastLength.Short))
                         errorToast.Show();
             };
+            TextView messageToDriverEditText = FindViewById<TextView>(Resource.Id.messageToDriverEditText);
+            messageToDriverEditText.TextChanged += (sender, e) => _model.Comment = messageToDriverEditText.Text;
             Button sendMessageToDriverButton = FindViewById<Button>(Resource.Id.sendMessageToDriverButton);
             sendMessageToDriverButton.Click += (sender, e) => _model.Confirm();
             Button cancelMessageToDriverButton = FindViewById<Button>(Resource.Id.cancelMessageToDriverButton);

@@ -26,6 +26,7 @@ namespace TaxiOnline.Android.Adapters
         private List<DriverModel> _items;
         private ViewsCacheDecorator<DriverModel> _viewCache;
         private Lazy<View> _selfItemView;
+        private PopupWindow _driverInfoPopup;
 
         public PedestrianProfileAdapter(Activity context, PedestrianProfileModel model)
         {
@@ -78,18 +79,7 @@ namespace TaxiOnline.Android.Adapters
             view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map, driverModel.CurrentLocation);
             ImageView driverIconImageView = view.FindViewById<ImageView>(Resource.Id.driverIconImageView);
             driverIconImageView.Hover += (sender, e) => ShowDriverInfoPopupWindows(driverModel, view);
-            //{
-            //    _model.SelectedDriver = driverModel;
-            //    UIHelper.GoActivity(_context, typeof(DriverPopupDetailsActivity));
-            //};
             driverIconImageView.Click += (sender, e) => ShowDriverInfoPopupWindows(driverModel, view);
-            //{
-            //    _model.SelectedDriver = driverModel;
-            //    UIHelper.GoActivity(_context, typeof(DriverPopupDetailsActivity));
-            //};
-            //{
-            //    ShowDriverInfoToast(driverModel, driverIconImageView);
-            //};
         }
 
         private void UpdateDrivers()
@@ -103,53 +93,46 @@ namespace TaxiOnline.Android.Adapters
 
         private void ShowDriverInfoPopupWindows(DriverModel driverModel, View briefView)
         {
-            using (PopupWindow popup = new PopupWindow(_context.LayoutInflater.Inflate(Resource.Layout.DriverPopupDetailsLayout, null)))
+            if (_driverInfoPopup == null)
             {
-                HookModelToDetailsPopupWindow(popup, driverModel);
-                popup.ShowAsDropDown(briefView, 32, -32);
+                _driverInfoPopup = new PopupWindow(_context.LayoutInflater.Inflate(Resource.Layout.DriverPopupDetailsLayout, null), 200, 300);
+                HookModelToDetailsPopupWindow(_driverInfoPopup, driverModel);
+                _driverInfoPopup.ShowAsDropDown(briefView, 32, -32);
+                _driverInfoPopup.Update();
             }
         }
 
-        //private void ShowDriverInfoToast(DriverModel driverModel, View briefView)
-        //{
-        //    using (Toast driverInfoToast = new Toast(_context.Application.BaseContext)
-        //        {
-        //            View = _context.LayoutInflater.Inflate(Resource.Layout.DriverPopupDetailsLayout, null),
-        //            Duration = ToastLength.Long
-        //        })
-        //    {
-        //        driverInfoToast.SetGravity(GravityFlags.Center, 0, 0);
-        //        HookModelToDetailsView(driverInfoToast.View, driverModel);
-        //        driverInfoToast.Show();
-        //    }
-        //}
+        private void CloseDriverInfoPopupWindows(DriverModel driverModel)
+        {
+            if (_driverInfoPopup != null)
+            {
+                _driverInfoPopup.Dismiss();
+                _driverInfoPopup.Dispose();
+                _driverInfoPopup = null;
+            }
+        }
 
         private void HookModelToDetailsPopupWindow(PopupWindow popup, DriverModel driverModel)
         {
-            HookModelToDetailsView(popup.ContentView, driverModel);
-            popup.ContentView.Click += (sender, e) =>
-            {
-                popup.Dismiss();
-                popup.Dispose();
-            };
+            HookModelToDetailsView(popup.ContentView, driverModel);            
             Button quickCallToDriverButton = popup.ContentView.FindViewById<Button>(Resource.Id.quickCallToDriverButton);
-            quickCallToDriverButton.Click += (sender, e) =>
-            {
-                popup.Dismiss();
-                popup.Dispose();
-            };
         }
 
         private void HookModelToDetailsView(View view, DriverModel driverModel)
         {
             _model.SelectedDriver = driverModel;
-            view.Click += (sender, e) => UIHelper.GoResultActivity(_context, typeof(PedestrianProfileRequestActivity), 1);
+            view.Click += (sender, e) =>
+            {
+                CloseDriverInfoPopupWindows(driverModel);
+                UIHelper.GoResultActivity(_context, typeof(PedestrianProfileRequestActivity), 1);
+            };
             Button quickCallToDriverButton = view.FindViewById<Button>(Resource.Id.quickCallToDriverButton);
             quickCallToDriverButton.Click += (sender, e) =>
             {
                 if (!_model.CallToDriver(driverModel).IsValid)
                     using (Toast errorToast = Toast.MakeText(Application.Context, Resource.String.PhoneCallError, ToastLength.Short))
                         errorToast.Show();
+                CloseDriverInfoPopupWindows(driverModel);
             };
             TextView driverPopupCarBrandTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarBrandTextView);
             TextView driverPopupCarColorTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarColorTextView);

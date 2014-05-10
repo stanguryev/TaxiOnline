@@ -8,6 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/callToDriverButton" />
+<EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/messageToDriverEditText" />
     <Button
         android:text="@string/SendMessageToDriver"
         android:layout_width="match_parent"

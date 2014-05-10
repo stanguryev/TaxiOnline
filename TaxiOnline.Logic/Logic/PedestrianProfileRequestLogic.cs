@@ -61,7 +61,7 @@ namespace TaxiOnline.Logic.Logic
         public void Confirm(Action<ActionResult> resultCallback)
         {
             System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
+            {                
                 ActionResult confirmResult = _requestDecorator.Confirm();
                 resultCallback(confirmResult);
                 //if (confirmResult.IsValid)
@@ -83,6 +83,7 @@ namespace TaxiOnline.Logic.Logic
             IPedestrianRequest requestSLO = _adaptersExtender.ServicesFactory.GetCurrentDataService().CreatePedestrianRequest(_user.Model.PersonId, _response.ResponseAuthor.Model.PersonId);
             requestSLO.TargetName = _model.Target.Name;
             requestSLO.TargetLocation = _model.Target.Location;
+            requestSLO.Comment = _model.Comment;
             return _adaptersExtender.ServicesFactory.GetCurrentDataService().PushPedestrianRequest(requestSLO);
         }
 
