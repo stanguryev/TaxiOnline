@@ -211,9 +211,8 @@ namespace TaxiOnline.Logic.Models
         {
             Func<DriverModel, ActionResult> callToDriverDelegate = CallToDriverDelegate;
             if (callToDriverDelegate == null)
-                return callToDriverDelegate(driverModel);
-            else
                 return ActionResult.GetErrorResult(new NotSupportedException());
+            return callToDriverDelegate(driverModel);
         }
 
         internal void ModifyDriversCollection(Action<IList<DriverModel>> modificationDelegate)

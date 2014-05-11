@@ -8,12 +8,13 @@ using System.Linq;
 using System.Text;
 using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.ClientServicesAdapter.Map;
+using TaxiOnline.Toolkit.Patterns;
 
 namespace TaxiOnline.ClientAdapters.Android.Services.Map
 {
     public class AndroidMapWrapper : MapWrapperBase
     {
-        private class MapViewWrapper : IDisposable
+        private class MapViewWrapper : DisposableObject
         {
             private readonly MapViewSurface _surface;
             private readonly MapView _mapView;
@@ -31,9 +32,15 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Map
                 _viewGroup = viewGroup;
             }
 
-            public void Dispose()
+            protected override void DisposeManagedResources()
             {
+                base.DisposeManagedResources();
                 _viewGroup.RemoveView(_mapView);
+            }
+
+            protected override void DisposeUnmanagedResources()
+            {
+                base.DisposeUnmanagedResources();
                 _mapView.Dispose();
                 _surface.Dispose();
             }

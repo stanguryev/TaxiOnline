@@ -67,19 +67,19 @@ namespace TaxiOnline.Android.Activities
                     _cityModel = _interactionModel.CurrentCity;
             }
             SetContentView(Resource.Layout.AuthenticationLayout);
-            HookModel();
+            //HookModel();
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-            //HookModel();
+            HookModel();
         }
 
         protected override void OnPause()
         {
             base.OnPause();
-            //UnhookModel();
+            UnhookModel();
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
