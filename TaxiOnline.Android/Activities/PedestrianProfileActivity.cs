@@ -74,6 +74,7 @@ namespace TaxiOnline.Android.Activities
             ((IAndroidMapService)_model.Map.MapService).VisualizeMap(this, mapLayout);
             CanvasView pedestrianProfileView = FindViewById<CanvasView>(Resource.Id.pedestrianProfileView);
             pedestrianProfileView.Adapter = new PedestrianProfileAdapter(this, _model);
+            mapLayout.Click += (sender, e) => _model.CheckedDriver = null;
         }
 
         private void HookRequest(PedestrianProfileRequestModel request)

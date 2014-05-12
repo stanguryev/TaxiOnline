@@ -19,6 +19,7 @@ namespace TaxiOnline.Logic.Models
         private readonly SimpleCollectionLoadDecorator<DriverResponseModel> _acceptedResponses;
         private PedestrianProfileRequestModel _selectedRequest;
         private DriverModel _selectedDriver;
+        private DriverModel _checkedDriver;
 
         public DriverModel SelectedDriver
         {
@@ -29,6 +30,19 @@ namespace TaxiOnline.Logic.Models
                 {
                     _selectedDriver = value;
                     OnSelectedDriverChanged();
+                }
+            }
+        }
+        
+        public DriverModel CheckedDriver
+        {
+            get { return _checkedDriver; }
+            set
+            {
+                if (_checkedDriver != value)
+                {
+                    _checkedDriver = value;
+                    OnCheckedDriverChanged();
                 }
             }
         }
@@ -153,6 +167,8 @@ namespace TaxiOnline.Logic.Models
 
         public event EventHandler SelectedRequestChanged;
 
+        public event EventHandler CheckedDriverChanged;
+
         internal Func<DriverModel, Logic.PedestrianProfileRequestLogic> InitRequestDelegate { get; set; }
 
         internal Func<ActionResult<Logic.PedestrianProfileRequestLogic>> CheckCurrentRequest { get; set; }
@@ -257,6 +273,13 @@ namespace TaxiOnline.Logic.Models
         protected virtual void OnSelectedDriverChanged()
         {
             EventHandler handler = SelectedDriverChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnCheckedDriverChanged()
+        {
+            EventHandler handler = CheckedDriverChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }

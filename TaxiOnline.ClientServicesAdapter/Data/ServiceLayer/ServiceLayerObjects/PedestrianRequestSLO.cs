@@ -34,8 +34,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
         {
             get { return _driverId; }
         }
-
-
+        
         public string TargetName
         {
             get { return _targetName; }
@@ -78,6 +77,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
             _driverId = dataContract.DriverId;
             _pedestrianId = dataContract.PedestrianId;
             _driverId = dataContract.DriverId;
+            _comment = dataContract.Comment;
         }
 
         public PedestrianRequestSLO(Guid pedestrianId, Guid driverId)
@@ -94,6 +94,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
                 Id = _id,
                 DriverId = _driverId,
                 PedestrianId = _pedestrianId,
+                Comment = _comment,
                 IsCanceled = _isCanceled
             };
         }

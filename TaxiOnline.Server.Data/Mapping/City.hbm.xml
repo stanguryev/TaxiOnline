@@ -2,7 +2,7 @@
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="TaxiOnline.Server.Data" namespace="TaxiOnline.Server.Data.DataAccess">
   <class name="CityDA" table="Cities" lazy="true">
     <id name="Id" column="Id" type="Guid">
-      <generator class="native"></generator>
+      <generator class="native"/>
     </id>
     <property name="InitialLatitude" column="InitialLatitude" type="Double"/>
     <property name="InitialLongitude" column="InitialLongitude" type="Double"/>

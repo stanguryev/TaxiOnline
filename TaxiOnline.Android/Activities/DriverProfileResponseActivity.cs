@@ -36,7 +36,7 @@ namespace TaxiOnline.Android.Activities
             if (_model == null)
                 return;
             _model.ConfirmApplied += Model_ConfirmApplied;
-            _model.RejectApplied+=Model_RejectApplied;
+            _model.RejectApplied += Model_RejectApplied;
             Button confirmPedestrianRequestButton = FindViewById<Button>(Resource.Id.confirmPedestrianRequestButton);
             confirmPedestrianRequestButton.Click += (sender, e) => _model.Confirm();
             Button rejectPedestrianRequestButton = FindViewById<Button>(Resource.Id.rejectPedestrianRequestButton);

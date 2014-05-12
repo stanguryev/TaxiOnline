@@ -110,12 +110,17 @@ namespace TaxiOnline.Server.Core
             return CreateDriverInfo(Guid.NewGuid());
         }
 
-        public IPedestrianRequestsInfo CreatePedestrianRequestInfo(IPedestrianInfo pedestrian, IDriverInfo driver)
+        public IPedestrianRequestInfo CreatePedestrianRequestInfo(IPedestrianInfo pedestrian, IDriverInfo driver)
         {
-            return new PedestrianRequestsInfo(Guid.NewGuid(), driver.Id, pedestrian.Id);
+            return new PedestrianRequestInfo(Guid.NewGuid(), driver.Id, pedestrian.Id);
         }
 
-        public void PushPedestrianRequestInfo(IPedestrianRequestsInfo requestInfo)
+        public IPedestrianRequestInfo CreatePedestrianRequestInfo(Guid id, Guid pedestrianId, Guid driverId)
+        {
+            return new PedestrianRequestInfo(id, driverId, pedestrianId);
+        }
+
+        public void PushPedestrianRequestInfo(IPedestrianRequestInfo requestInfo)
         {
             CityLogic city = _cities.Items.FirstOrDefault(c => c.Pedestrians.Any(p => p.Id == requestInfo.PedestrianId));
             if (city != null)

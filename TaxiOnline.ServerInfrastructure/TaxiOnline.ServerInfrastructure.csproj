@@ -45,7 +45,7 @@
     <Compile Include="EntitiesInterfaces\IDriverInfo.cs" />
     <Compile Include="EntitiesInterfaces\IDriverResponseInfo.cs" />
     <Compile Include="EntitiesInterfaces\IPedestrianInfo.cs" />
-    <Compile Include="EntitiesInterfaces\IPedestrianRequestsInfo.cs" />
+    <Compile Include="EntitiesInterfaces\IPedestrianRequestInfo.cs" />
     <Compile Include="EntitiesInterfaces\IPersonInfo.cs" />
     <Compile Include="ITaxiOnlineMobileService.cs" />
     <Compile Include="ITaxiOnlineServer.cs" />

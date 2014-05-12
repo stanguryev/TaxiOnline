@@ -20,7 +20,8 @@ namespace TaxiOnline.ServerInfrastructure
         IDriverInfo CreateDriverInfo(Guid id);
         void AuthenticateAsPedestrian(IPedestrianInfo pedestrianInfo, Guid cityId);
         void AuthenticateAsDriver(IDriverInfo driverInfo, Guid cityId);
-        IPedestrianRequestsInfo CreatePedestrianRequestInfo(IPedestrianInfo pedestrian, IDriverInfo driver);
-        void PushPedestrianRequestInfo(IPedestrianRequestsInfo requestInfo);
+        IPedestrianRequestInfo CreatePedestrianRequestInfo(IPedestrianInfo pedestrian, IDriverInfo driver);
+        IPedestrianRequestInfo CreatePedestrianRequestInfo(Guid id, Guid pedestrianId, Guid driverId);
+        void PushPedestrianRequestInfo(IPedestrianRequestInfo requestInfo);
     }
 }

@@ -47,7 +47,7 @@
     <Compile Include="Objects\DriverInfo.cs" />
     <Compile Include="Objects\DriverResponseInfo.cs" />
     <Compile Include="Objects\PedestrianInfo.cs" />
-    <Compile Include="Objects\PedestrianRequestsInfo.cs" />
+    <Compile Include="Objects\PedestrianRequestInfo.cs" />
     <Compile Include="Objects\PersonInfo.cs" />
     <Compile Include="TaxiOnlineServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

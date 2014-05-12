@@ -75,7 +75,7 @@ namespace TaxiOnline.Server.MobileService
             IDriverInfo driver = _server.Cities.SelectMany(c => c.Drivers).FirstOrDefault(d => d.Id == request.DriverId);
             if (pedestrian != null && driver != null)
             {
-                IPedestrianRequestsInfo requestInfo = _server.CreatePedestrianRequestInfo(pedestrian, driver);
+                IPedestrianRequestInfo requestInfo = _server.CreatePedestrianRequestInfo(pedestrian, driver);
                 ConvertHelper.FillPedestrianRequestInfo(requestInfo, request);
                 _server.PushPedestrianRequestInfo(requestInfo);
             }
@@ -86,7 +86,7 @@ namespace TaxiOnline.Server.MobileService
             ICityLogic city = _server.Cities.FirstOrDefault(c => c.PedestrianRequests.Any(r => r.Id == requestId));
             if (city != null)
             {
-                IPedestrianRequestsInfo request = city.PedestrianRequests.FirstOrDefault(r => r.Id == requestId);
+                IPedestrianRequestInfo request = city.PedestrianRequests.FirstOrDefault(r => r.Id == requestId);
                 if (request != null)
                     city.ModifyPedestrianRequestsCollection(col => col.Remove(request));
             }

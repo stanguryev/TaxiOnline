@@ -53,9 +53,9 @@ namespace TaxiOnline.Server.Data
         public IEnumerable<IPedestrianInfo> EnumeratePedestrians(Guid cityId)
         {
             IList<PedestrianAccountDA> accounts = _dataProxy.Session.CreateCriteria<PedestrianAccountDA>().List<PedestrianAccountDA>();
-            IList<PedestrianInfoDA> pedestrians = _dataProxy.Session.CreateCriteria<PedestrianInfoDA>()/*.Add(Expression.Where<PersonInfoDA>(p => p.City.Id == cityId))*/.List<PedestrianInfoDA>();
+            IList<PedestrianInfoDA> pedestrians = _dataProxy.Session.CreateCriteria<PedestrianInfoDA>()/*.Add(Restrictions.Where<PedestrianInfoDA>(p => p.PersonInfo.City.Id == cityId))*/.List<PedestrianInfoDA>();
             foreach (var info in accounts.Join(pedestrians, account => account.Person.Id, pedestrian => pedestrian.PersonInfo.Person.Id,
-                (account, pedestrian) => new { AccountInfo = account, PedestrianInfo = pedestrian }))
+                (account, pedestrian) => new { AccountInfo = account, PedestrianInfo = pedestrian }).Where(i => i.PedestrianInfo.PersonInfo.City.Id == cityId).ToArray())
             {
                 IPedestrianInfo pedesrtianInfo = _server.CreatePedestrianInfo(info.AccountInfo.Person.Id);
                 pedesrtianInfo.PhoneNumber = info.AccountInfo.Person.PhoneNumber;
@@ -69,9 +69,9 @@ namespace TaxiOnline.Server.Data
         public IEnumerable<IDriverInfo> EnumerateDrivers(Guid cityId)
         {
             IList<DriverAccountDA> accounts = _dataProxy.Session.CreateCriteria<DriverAccountDA>().List<DriverAccountDA>();
-            IList<DriverInfoDA> drivers = _dataProxy.Session.CreateCriteria<DriverInfoDA>()/*.Add(Expression.Where<PersonInfoDA>(p => p.City.Id == cityId))*/.List<DriverInfoDA>();
+            IList<DriverInfoDA> drivers = _dataProxy.Session.CreateCriteria<DriverInfoDA>()/*.Add(Restrictions.Where<DriverInfoDA>(p => p.PersonInfo.City.Id == cityId))*/.List<DriverInfoDA>();
             foreach (var info in accounts.Join(drivers, account => account.Person.Id, driver => driver.PersonInfo.Person.Id,
-                (account, driver) => new { AccountInfo = account, DriverInfo = driver }))
+                (account, driver) => new { AccountInfo = account, DriverInfo = driver }).Where(i => i.DriverInfo.PersonInfo.City.Id == cityId).ToArray())
             {
                 IDriverInfo driverInfo = _server.CreateDriverInfo(info.AccountInfo.Person.Id);
                 driverInfo.PhoneNumber = info.AccountInfo.Person.PhoneNumber;
@@ -83,6 +83,17 @@ namespace TaxiOnline.Server.Data
                 driverInfo.CarBrand = info.AccountInfo.CarBrand;
                 driverInfo.CarNumber = info.AccountInfo.CarNumber;
                 yield return driverInfo;
+            }
+        }
+
+        public IEnumerable<IPedestrianRequestInfo> EnumeratePedestrianRequests(Guid cityId)
+        {
+            IList<PedestrianRequestDA> requests = _dataProxy.Session.CreateCriteria<PedestrianRequestDA>()/*.Add(Restrictions.Where<PedestrianRequestDA>(p => p.Author.PersonInfo.City.Id == cityId))*/.List<PedestrianRequestDA>();
+            foreach (PedestrianRequestDA request in requests.Where(r => r.Author.PersonInfo.City.Id == cityId).ToArray())
+            {
+                IPedestrianRequestInfo requestInfo = _server.CreatePedestrianRequestInfo(request.Id, request.Author.PersonInfo.Person.Id, request.Target.PersonInfo.Person.Id);
+                requestInfo.Comment = request.Comment;
+                yield return requestInfo;
             }
         }
 

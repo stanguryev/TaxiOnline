@@ -5,10 +5,11 @@ using System.Text;
 
 namespace TaxiOnline.ServerInfrastructure.EntitiesInterfaces
 {
-    public interface IPedestrianRequestsInfo
+    public interface IPedestrianRequestInfo
     {
         Guid Id { get; }
         Guid DriverId { get; }
         Guid PedestrianId { get; }
+        string Comment { get; set; }
     }
 }

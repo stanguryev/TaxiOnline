@@ -340,6 +340,42 @@ GO
 ALTER TABLE [dbo].[DriversInfo] CHECK CONSTRAINT [FK_DriversInfo_PersonsInfo]
 GO
 
+USE [TaxiOnline]
+GO
+
+/****** Object:  Table [dbo].[PedestrianRequests]    Script Date: 12.05.2014 08:06:08 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[PedestrianRequests](
+	[Id] [uniqueidentifier] NOT NULL default newid(),
+	[Author] [int] NOT NULL,
+	[Target] [int] NOT NULL,
+	[Comment] [nvarchar](500) NULL,
+ CONSTRAINT [PK_PedestrianRequests] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[PedestrianRequests]  WITH CHECK ADD CONSTRAINT [FK_PedestrianRequests_PedestriansInfo] FOREIGN KEY([Author])
+REFERENCES [dbo].[PedestriansInfo] ([Id])
+GO
+
+ALTER TABLE [dbo].[PedestrianRequests] CHECK CONSTRAINT [FK_PedestrianRequests_PedestriansInfo]
+GO
+
+ALTER TABLE [dbo].[PedestrianRequests]  WITH CHECK ADD CONSTRAINT [FK_PedestrianRequests_DriversInfo] FOREIGN KEY([Target])
+REFERENCES [dbo].[DriversInfo] ([Id])
+GO
+
+ALTER TABLE [dbo].[PedestrianRequests] CHECK CONSTRAINT [FK_PedestrianRequests_DriversInfo]
+GO
 
 USE [TaxiOnline]
 GO

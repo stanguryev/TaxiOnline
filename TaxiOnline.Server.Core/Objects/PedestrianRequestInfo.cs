@@ -6,11 +6,12 @@ using TaxiOnline.ServerInfrastructure.EntitiesInterfaces;
 
 namespace TaxiOnline.Server.Core.Objects
 {
-    internal class PedestrianRequestsInfo : IPedestrianRequestsInfo
+    internal class PedestrianRequestInfo : IPedestrianRequestInfo
     {
         private readonly Guid _id;
         private readonly Guid _driverId;
         private readonly Guid _pedestrianId;
+        private string _comment;
 
         public Guid Id
         {
@@ -27,7 +28,13 @@ namespace TaxiOnline.Server.Core.Objects
             get { return _pedestrianId; }
         }
 
-        public PedestrianRequestsInfo(Guid id, Guid driverId, Guid pedestrianId)
+        public string Comment
+        {
+            get { return _comment; }
+            set { _comment = value; }
+        }
+
+        public PedestrianRequestInfo(Guid id, Guid driverId, Guid pedestrianId)
         {
             _id = id;
             _driverId = driverId;

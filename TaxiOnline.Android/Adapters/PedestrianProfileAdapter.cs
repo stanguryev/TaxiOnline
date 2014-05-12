@@ -34,6 +34,7 @@ namespace TaxiOnline.Android.Adapters
             _model = model;
             _viewCache = new ViewsCacheDecorator<DriverModel>(() => _context.LayoutInflater.Inflate(Resource.Layout.DriverInfoLayout, null, false));
             _selfItemView = new Lazy<View>(() => _context.LayoutInflater.Inflate(Resource.Layout.PedestrianSelfInfoLayout, null, false));
+            model.CheckedDriverChanged += Model_CheckedDriverChanged;
             model.DriversChanged += Model_DriversChanged;
             model.DriversCollectionChanged += Model_DriversCollectionChanged;
             model.CurrentLocationChanged += Model_CurrentLocationChanged;
@@ -95,27 +96,34 @@ namespace TaxiOnline.Android.Adapters
         {
             if (_driverInfoPopup == null)
             {
+                _model.CheckedDriver = driverModel;
                 _driverInfoPopup = new PopupWindow(_context.LayoutInflater.Inflate(Resource.Layout.DriverPopupDetailsLayout, null), 200, 300);
                 HookModelToDetailsPopupWindow(_driverInfoPopup, driverModel);
                 _driverInfoPopup.ShowAsDropDown(briefView, 32, -32);
                 _driverInfoPopup.Update();
+                Handler closePopupWindowHandler = new Handler();
+                closePopupWindowHandler.PostDelayed(() =>
+                {
+                    if (_driverInfoPopup != null && _model.CheckedDriver == driverModel)
+                        CloseDriverInfoPopupWindow();
+                }, 20000L);
             }
         }
 
-        private void CloseDriverInfoPopupWindow(DriverModel driverModel)
+        private void CloseDriverInfoPopupWindow()
         {
             if (_driverInfoPopup != null)
             {
                 _driverInfoPopup.Dismiss();
                 _driverInfoPopup.Dispose();
                 _driverInfoPopup = null;
+                _model.CheckedDriver = null;
             }
         }
 
         private void HookModelToDetailsPopupWindow(PopupWindow popup, DriverModel driverModel)
         {
-            HookModelToDetailsView(popup.ContentView, driverModel);            
-            Button quickCallToDriverButton = popup.ContentView.FindViewById<Button>(Resource.Id.quickCallToDriverButton);
+            HookModelToDetailsView(popup.ContentView, driverModel);
         }
 
         private void HookModelToDetailsView(View view, DriverModel driverModel)
@@ -123,7 +131,7 @@ namespace TaxiOnline.Android.Adapters
             _model.SelectedDriver = driverModel;
             view.Click += (sender, e) =>
             {
-                CloseDriverInfoPopupWindow(driverModel);
+                CloseDriverInfoPopupWindow();
                 UIHelper.GoResultActivity(_context, typeof(PedestrianProfileRequestActivity), 1);
             };
             Button quickCallToDriverButton = view.FindViewById<Button>(Resource.Id.quickCallToDriverButton);
@@ -132,7 +140,7 @@ namespace TaxiOnline.Android.Adapters
                 if (!_model.CallToDriver(driverModel).IsValid)
                     using (Toast errorToast = Toast.MakeText(Application.Context, Resource.String.PhoneCallError, ToastLength.Short))
                         errorToast.Show();
-                CloseDriverInfoPopupWindow(driverModel);
+                CloseDriverInfoPopupWindow();
             };
             TextView driverPopupCarBrandTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarBrandTextView);
             TextView driverPopupCarColorTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarColorTextView);
@@ -146,6 +154,12 @@ namespace TaxiOnline.Android.Adapters
             driverPopupCarNumberTextView.Text = driverModel.CarNumber;
             driverPopupPhoneNumberTextView.Text = driverModel.PhoneNumber;
             driverPopupSkypeNumberTextView.Text = driverModel.SkypeNumber;
+        }
+
+        private void Model_CheckedDriverChanged(object sender, EventArgs e)
+        {
+            if (_model.CheckedDriver == null)
+                CloseDriverInfoPopupWindow();
         }
 
         private void Model_DriversChanged(object sender, EventArgs e)
