@@ -48,5 +48,10 @@ namespace TaxiOnline.Android.Decorators
                 _itemsUsage[model] = true;
             return _cacheDictionary[model];
         }
+
+        public View GetCachedView(TModel model)
+        {
+            return _cacheDictionary.ContainsKey(model) ? _cacheDictionary[model] : null;
+        }
     }
 }

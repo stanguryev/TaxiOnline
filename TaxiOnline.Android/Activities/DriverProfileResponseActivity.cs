@@ -23,9 +23,9 @@ namespace TaxiOnline.Android.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            PedestrianPopupDetailsActivity pedestrianPopupDetailsActivity = UIHelper.GetUpperActivity<PedestrianPopupDetailsActivity>(this, bundle);
-            ActionResult<DriverProfileResponseModel> initResult = pedestrianPopupDetailsActivity.Model.InitResponse();
-            if (pedestrianPopupDetailsActivity != null && initResult.IsValid)
+            DriverProfileActivity driverProfileActivity = UIHelper.GetUpperActivity<DriverProfileActivity>(this, bundle);
+            ActionResult<DriverProfileResponseModel> initResult = driverProfileActivity.Model.SelectedPedestrianRequest.InitResponse();
+            if (driverProfileActivity != null && initResult.IsValid)
                 _model = initResult.Result;
             SetContentView(Resource.Layout.DriverProfileResponseLayout);
             HookModel();

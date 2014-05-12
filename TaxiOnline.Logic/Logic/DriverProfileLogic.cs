@@ -160,6 +160,7 @@ namespace TaxiOnline.Logic.Logic
                 RequestId = requestSLO.Id,
                 PaymentAmount = requestSLO.PaymentAmount,
                 Currency = requestSLO.Currency,
+                Comment = requestSLO.Comment,
                 IsCancelled = requestSLO.IsCanceled,
             }, _adaptersExtender, requestAuthor, this);
         }

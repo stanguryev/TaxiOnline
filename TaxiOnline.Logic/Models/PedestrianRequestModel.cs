@@ -18,12 +18,18 @@ namespace TaxiOnline.Logic.Models
         private decimal _paymentAmount;
         private string _currency = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
         private MapLocationModel _target = new MapLocationModel();
+        private string _comment;
         private bool _isCancelled;
 
         public Guid AuthorId
         {
             get { return _requestAuthor.PersonId; }
         }
+
+        public PedestrianModel RequestAuthor
+        {
+            get { return _requestAuthor; }
+        } 
 
         public Guid RequestId
         {
@@ -46,6 +52,12 @@ namespace TaxiOnline.Logic.Models
         {
             get { return _currency; }
             set { _currency = value; }
+        }
+
+        public string Comment
+        {
+            get { return _comment; }
+            set { _comment = value; }
         }
 
         public bool IsCancelled

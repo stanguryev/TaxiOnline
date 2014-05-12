@@ -24,6 +24,7 @@ namespace TaxiOnline.Android.Adapters
         private List<PedestrianModel> _items;
         private ViewsCacheDecorator<PedestrianModel> _viewCache;
         private Lazy<View> _selfItemView;
+        private Dictionary<PedestrianRequestModel, PopupWindow> _pedestrianInfoPopups = new Dictionary<PedestrianRequestModel, PopupWindow>();
 
         public DriverProfileAdapter(Activity context, DriverProfileModel model)
         {
@@ -82,6 +83,31 @@ namespace TaxiOnline.Android.Adapters
             NotifyDataSetChanged();
         }
 
+        private void ShowPedestrianInfoPopupWindow(PedestrianRequestModel request)
+        {
+            View pedestrianView = _viewCache.GetCachedView(request.RequestAuthor);
+            if (pedestrianView != null && !_pedestrianInfoPopups.ContainsKey(request))
+            {
+                PopupWindow pedestrianInfoPopup = new PopupWindow(_context.LayoutInflater.Inflate(Resource.Layout.PedestrianPopupDetailsLayout, null), 100, 100);
+                _pedestrianInfoPopups.Add(request, pedestrianInfoPopup);
+                HookModelToDetailsPopupWindow(pedestrianInfoPopup, request);
+                pedestrianInfoPopup.ShowAsDropDown(pedestrianView, 32, -32);
+                pedestrianInfoPopup.Update();
+            }
+        }
+
+        private void HookModelToDetailsPopupWindow(PopupWindow pedestrianInfoPopup, PedestrianRequestModel request)
+        {
+            TextView pedestrianRequestTextView = pedestrianInfoPopup.ContentView.FindViewById<TextView>(Resource.Id.pedestrianRequestTextView);
+            pedestrianRequestTextView.Text = request.Comment;
+            LinearLayout pedestrianRequestLayout = pedestrianInfoPopup.ContentView.FindViewById<LinearLayout>(Resource.Id.pedestrianRequestLayout);
+            pedestrianRequestLayout.Click += (sender, e) =>
+            {
+                _model.SelectedPedestrianRequest = request;
+                UIHelper.GoResultActivity(_context, typeof(DriverProfileResponseActivity), 1);
+            };
+        }
+
         private void Model_PedestriansChanged(object sender, EventArgs e)
         {
             _context.RunOnUiThread(UpdatePedestrians);
@@ -98,10 +124,11 @@ namespace TaxiOnline.Android.Adapters
             {
                 if (e.NewItems != null)
                     foreach (PedestrianRequestModel request in e.NewItems.OfType<PedestrianRequestModel>().ToArray())
-                    {
-                        _model.SelectedPedestrianRequest = request;
-                        UIHelper.GoActivity(_context, typeof(PedestrianPopupDetailsActivity));
-                    }
+                        ShowPedestrianInfoPopupWindow(request);
+                //{
+                //    _model.SelectedPedestrianRequest = request;
+                //    UIHelper.GoActivity(_context, typeof(PedestrianPopupDetailsActivity));
+                //}
             });
         }
 

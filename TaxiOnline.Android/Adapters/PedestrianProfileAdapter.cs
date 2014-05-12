@@ -78,8 +78,8 @@ namespace TaxiOnline.Android.Adapters
         {
             view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map, driverModel.CurrentLocation);
             ImageView driverIconImageView = view.FindViewById<ImageView>(Resource.Id.driverIconImageView);
-            driverIconImageView.Hover += (sender, e) => ShowDriverInfoPopupWindows(driverModel, view);
-            driverIconImageView.Click += (sender, e) => ShowDriverInfoPopupWindows(driverModel, view);
+            driverIconImageView.Hover += (sender, e) => ShowDriverInfoPopupWindow(driverModel, view);
+            driverIconImageView.Click += (sender, e) => ShowDriverInfoPopupWindow(driverModel, view);
         }
 
         private void UpdateDrivers()
@@ -91,7 +91,7 @@ namespace TaxiOnline.Android.Adapters
             _viewCache.NotifyFillFinished();
         }
 
-        private void ShowDriverInfoPopupWindows(DriverModel driverModel, View briefView)
+        private void ShowDriverInfoPopupWindow(DriverModel driverModel, View briefView)
         {
             if (_driverInfoPopup == null)
             {
@@ -102,7 +102,7 @@ namespace TaxiOnline.Android.Adapters
             }
         }
 
-        private void CloseDriverInfoPopupWindows(DriverModel driverModel)
+        private void CloseDriverInfoPopupWindow(DriverModel driverModel)
         {
             if (_driverInfoPopup != null)
             {
@@ -123,7 +123,7 @@ namespace TaxiOnline.Android.Adapters
             _model.SelectedDriver = driverModel;
             view.Click += (sender, e) =>
             {
-                CloseDriverInfoPopupWindows(driverModel);
+                CloseDriverInfoPopupWindow(driverModel);
                 UIHelper.GoResultActivity(_context, typeof(PedestrianProfileRequestActivity), 1);
             };
             Button quickCallToDriverButton = view.FindViewById<Button>(Resource.Id.quickCallToDriverButton);
@@ -132,7 +132,7 @@ namespace TaxiOnline.Android.Adapters
                 if (!_model.CallToDriver(driverModel).IsValid)
                     using (Toast errorToast = Toast.MakeText(Application.Context, Resource.String.PhoneCallError, ToastLength.Short))
                         errorToast.Show();
-                CloseDriverInfoPopupWindows(driverModel);
+                CloseDriverInfoPopupWindow(driverModel);
             };
             TextView driverPopupCarBrandTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarBrandTextView);
             TextView driverPopupCarColorTextView = view.FindViewById<TextView>(Resource.Id.driverPopupCarColorTextView);
