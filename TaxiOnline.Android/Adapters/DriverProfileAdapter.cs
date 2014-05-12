@@ -34,6 +34,7 @@ namespace TaxiOnline.Android.Adapters
             _selfItemView = new Lazy<View>(() => _context.LayoutInflater.Inflate(Resource.Layout.DriverSelfInfoLayout, null, false));
             model.PedestriansChanged += Model_PedestriansChanged;
             model.PedestriansCollectionChanged += Model_PedestriansCollectionChanged;
+            model.PedestrianRequestsChanged += Model_PedestrianRequestsChanged;
             model.PedestrianRequestsCollectionChanged += Model_PedestrianRequestsCollectionChanged;
             model.CurrentLocationChanged += Model_CurrentLocationChanged;
             model.Map.MapService.Map.MapCenterChanged += Map_MapCenterChanged;
@@ -91,7 +92,7 @@ namespace TaxiOnline.Android.Adapters
                 PopupWindow pedestrianInfoPopup = new PopupWindow(_context.LayoutInflater.Inflate(Resource.Layout.PedestrianPopupDetailsLayout, null), 100, 100);
                 _pedestrianInfoPopups.Add(request, pedestrianInfoPopup);
                 HookModelToDetailsPopupWindow(pedestrianInfoPopup, request);
-                pedestrianInfoPopup.ShowAsDropDown(pedestrianView, 32, -32);
+                pedestrianInfoPopup.ShowAsDropDown(pedestrianView, -32, 0);
                 pedestrianInfoPopup.Update();
             }
         }
@@ -116,6 +117,17 @@ namespace TaxiOnline.Android.Adapters
         private void Model_PedestriansCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             _context.RunOnUiThread(() => ObservableCollectionHelper.ApplyChanges(e, _items));
+        }
+
+        private void Model_PedestrianRequestsChanged(object sender, EventArgs e)
+        {
+            IEnumerable<PedestrianRequestModel> requests = _model.PedestrianRequests;
+            _context.RunOnUiThread(() =>
+            {
+                if (requests != null)
+                    foreach (PedestrianRequestModel request in requests)
+                        ShowPedestrianInfoPopupWindow(request);
+            });
         }
 
         private void Model_PedestrianRequestsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

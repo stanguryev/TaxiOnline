@@ -51,10 +51,17 @@ namespace TaxiOnline.Android.Activities
             TextView messageToDriverEditText = FindViewById<TextView>(Resource.Id.messageToDriverEditText);
             messageToDriverEditText.TextChanged += (sender, e) => _model.Comment = messageToDriverEditText.Text;
             Button sendMessageToDriverButton = FindViewById<Button>(Resource.Id.sendMessageToDriverButton);
-            sendMessageToDriverButton.Click += (sender, e) => _model.Confirm();
+            sendMessageToDriverButton.Click += (sender, e) =>
+            {
+                _model.Confirm();
+                Finish();
+            };
             Button cancelMessageToDriverButton = FindViewById<Button>(Resource.Id.cancelMessageToDriverButton);
-            cancelMessageToDriverButton.Click += (sender, e) => _model.Cancel();
-
+            cancelMessageToDriverButton.Click += (sender, e) =>
+            {
+                _model.Cancel();
+                Finish();
+            };
         }
     }
 }
