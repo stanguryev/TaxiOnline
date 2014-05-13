@@ -40,6 +40,7 @@ namespace TaxiOnline.Android.Adapters
             model.Map.MapService.Map.MapCenterChanged += Map_MapCenterChanged;
             model.Map.MapService.Map.MapZoomChanged += Map_MapZoomChanged;
             UpdatePedestrians();
+            ShowAllPedestriansInfo();
         }
 
         public override Java.Lang.Object GetItem(int position)
@@ -97,6 +98,31 @@ namespace TaxiOnline.Android.Adapters
             }
         }
 
+        private void ClosePedestrianInfoPopupWindow(PedestrianRequestModel request)
+        {
+            if (!_pedestrianInfoPopups.ContainsKey(request))
+                return;
+            PopupWindow pedestrianInfoPopup = _pedestrianInfoPopups[request];
+            UnhookModelFromDetailsPopupWindow(pedestrianInfoPopup, request);
+            _pedestrianInfoPopups.Remove(request);
+            pedestrianInfoPopup.Dismiss();
+            pedestrianInfoPopup.Dispose();
+        }
+
+        private void ShowAllPedestriansInfo()
+        {
+            IEnumerable<PedestrianRequestModel> requests = _model.PedestrianRequests;
+            if (requests != null)
+                foreach (PedestrianRequestModel request in requests)
+                    ShowPedestrianInfoPopupWindow(request);
+        }
+
+        private void ClearPedestriansInfo()
+        {
+            foreach (PedestrianRequestModel request in _pedestrianInfoPopups.Keys.ToArray())
+                ClosePedestrianInfoPopupWindow(request);
+        }
+
         private void HookModelToDetailsPopupWindow(PopupWindow pedestrianInfoPopup, PedestrianRequestModel request)
         {
             TextView pedestrianRequestTextView = pedestrianInfoPopup.ContentView.FindViewById<TextView>(Resource.Id.pedestrianRequestTextView);
@@ -107,6 +133,11 @@ namespace TaxiOnline.Android.Adapters
                 _model.SelectedPedestrianRequest = request;
                 UIHelper.GoResultActivity(_context, typeof(DriverProfileResponseActivity), 1);
             };
+        }
+
+        private void UnhookModelFromDetailsPopupWindow(PopupWindow pedestrianInfoPopup, PedestrianRequestModel request)
+        {
+
         }
 
         private void Model_PedestriansChanged(object sender, EventArgs e)
@@ -121,12 +152,10 @@ namespace TaxiOnline.Android.Adapters
 
         private void Model_PedestrianRequestsChanged(object sender, EventArgs e)
         {
-            IEnumerable<PedestrianRequestModel> requests = _model.PedestrianRequests;
             _context.RunOnUiThread(() =>
             {
-                if (requests != null)
-                    foreach (PedestrianRequestModel request in requests)
-                        ShowPedestrianInfoPopupWindow(request);
+                ClearPedestriansInfo();
+                ShowAllPedestriansInfo();
             });
         }
 
@@ -134,13 +163,12 @@ namespace TaxiOnline.Android.Adapters
         {
             _context.RunOnUiThread(() =>
             {
+                if (e.OldItems != null)
+                    foreach (PedestrianRequestModel request in e.OldItems.OfType<PedestrianRequestModel>().ToArray())
+                        ClosePedestrianInfoPopupWindow(request);
                 if (e.NewItems != null)
                     foreach (PedestrianRequestModel request in e.NewItems.OfType<PedestrianRequestModel>().ToArray())
                         ShowPedestrianInfoPopupWindow(request);
-                //{
-                //    _model.SelectedPedestrianRequest = request;
-                //    UIHelper.GoActivity(_context, typeof(PedestrianPopupDetailsActivity));
-                //}
             });
         }
 
