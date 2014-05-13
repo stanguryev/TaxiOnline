@@ -363,18 +363,33 @@ CREATE TABLE [dbo].[PedestrianRequests](
 
 GO
 
-ALTER TABLE [dbo].[PedestrianRequests]  WITH CHECK ADD CONSTRAINT [FK_PedestrianRequests_PedestriansInfo] FOREIGN KEY([Author])
-REFERENCES [dbo].[PedestriansInfo] ([Id])
+USE [TaxiOnline]
 GO
 
-ALTER TABLE [dbo].[PedestrianRequests] CHECK CONSTRAINT [FK_PedestrianRequests_PedestriansInfo]
+/****** Object:  Table [dbo].[DriverResponses]    Script Date: 13.05.2014 08:51:08 ******/
+SET ANSI_NULLS ON
 GO
 
-ALTER TABLE [dbo].[PedestrianRequests]  WITH CHECK ADD CONSTRAINT [FK_PedestrianRequests_DriversInfo] FOREIGN KEY([Target])
-REFERENCES [dbo].[DriversInfo] ([Id])
+SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER TABLE [dbo].[PedestrianRequests] CHECK CONSTRAINT [FK_PedestrianRequests_DriversInfo]
+CREATE TABLE [dbo].[DriverResponses](
+	[Id] [uniqueidentifier] NOT NULL default newid(),
+	[RequestId] [uniqueidentifier] NOT NULL,
+	[IsAccepted] [bit] NULL,
+ CONSTRAINT [PK_DriverResponses] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[DriverResponses]  WITH CHECK ADD CONSTRAINT [FK_DriverResponses_PedestrianRequests] FOREIGN KEY([RequestId])
+REFERENCES [dbo].[PedestrianRequests] ([Id])
+GO
+
+ALTER TABLE [dbo].[DriverResponses] CHECK CONSTRAINT [FK_DriverResponses_PedestrianRequests]
 GO
 
 USE [TaxiOnline]

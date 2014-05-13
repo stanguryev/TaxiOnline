@@ -91,24 +91,58 @@ namespace TaxiOnline.Android.Activities
 
         private void HookModel()
         {
-            if (_interactionModel == null || _cityModel == null)
+            if (_interactionModel == null)
                 return;
-            _cityModel.PersonsRequestFailed += CityModel_PersonsRequestFailed;
-            _cityModel.AuthenticationFailed += CityModel_AuthenticationFailed;
+            HookCityModel();
             _interactionModel.CurrentProfileChanged += InteractionModel_CurrentProfileChanged;
+            _interactionModel.CurrentCityChanged += InteractionModel_CurrentCityChanged;
             Button registerButton = FindViewById<Button>(Resource.Id.registerButton);
             registerButton.Click += RegisterButton_Click;
             LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
             if (_currentMap == null)
                 _currentMap = ((IAndroidMapService)_cityModel.Map.MapService).VisualizeMap(this, mapLayout);
-            CanvasView personsView = FindViewById<CanvasView>(Resource.Id.personsView);
-            personsView.Adapter = new PersonsAdapter(this, _cityModel);
+            AutoCompleteTextView changeCityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.changeCityTextView);
+            changeCityTextView.Text = _cityModel.Name;
+            changeCityTextView.Adapter = new CitiesAdapter(this, _interactionModel);
+            Button changeCityButton = FindViewById<Button>(Resource.Id.changeCityButton);
+            changeCityButton.Click += ChangeCityButton_Click;
         }
 
         private void UnhookModel()
         {
             if (_currentMap != null)
                 _currentMap.Dispose();
+            UnhookCityModel();
+            AutoCompleteTextView changeCityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.changeCityTextView);
+            if (changeCityTextView.Adapter != null)
+            {
+                IAdapter changeCityAdapter = changeCityTextView.Adapter;
+                changeCityTextView.Adapter = null;
+                changeCityAdapter.Dispose();
+            }
+            if (_interactionModel != null)
+            {
+                _interactionModel.CurrentProfileChanged -= InteractionModel_CurrentProfileChanged;
+                _interactionModel.CurrentCityChanged -= InteractionModel_CurrentCityChanged;
+            }
+            Button registerButton = FindViewById<Button>(Resource.Id.registerButton);
+            registerButton.Click -= RegisterButton_Click;
+        }
+
+        private void HookCityModel()
+        {
+            if (_cityModel == null)
+                return;
+            _cityModel.PersonsRequestFailed += CityModel_PersonsRequestFailed;
+            _cityModel.AuthenticationFailed += CityModel_AuthenticationFailed;
+            CanvasView personsView = FindViewById<CanvasView>(Resource.Id.personsView);
+            personsView.Adapter = new PersonsAdapter(this, _cityModel);
+            AutoCompleteTextView changeCityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.changeCityTextView);
+            changeCityTextView.Text = _cityModel.Name;
+        }
+
+        private void UnhookCityModel()
+        {
             CanvasView personsView = FindViewById<CanvasView>(Resource.Id.personsView);
             if (personsView.Adapter != null)
             {
@@ -116,13 +150,11 @@ namespace TaxiOnline.Android.Activities
                 personsView.Adapter = null;
                 personsViewAdapter.Dispose();
             }
-            if (_interactionModel == null || _cityModel == null)
-                return;
-            _cityModel.PersonsRequestFailed -= CityModel_PersonsRequestFailed;
-            _cityModel.AuthenticationFailed -= CityModel_AuthenticationFailed;
-            _interactionModel.CurrentProfileChanged -= InteractionModel_CurrentProfileChanged;
-            Button registerButton = FindViewById<Button>(Resource.Id.registerButton);
-            registerButton.Click -= RegisterButton_Click;
+            if (_cityModel != null)
+            {
+                _cityModel.PersonsRequestFailed -= CityModel_PersonsRequestFailed;
+                _cityModel.AuthenticationFailed -= CityModel_AuthenticationFailed;
+            }
         }
 
         private void ActivateProfile()
@@ -152,6 +184,18 @@ namespace TaxiOnline.Android.Activities
             UIHelper.GoResultActivity(this, typeof(RegistrationActivity), (int)Dialogs.Registration);
         }
 
+        private void ChangeCityButton_Click(object sender, EventArgs e)
+        {
+            AutoCompleteTextView changeCityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.changeCityTextView);
+            IEnumerable<CityModel> cities = _interactionModel.Cities;
+            CityModel city = cities == null ? null : cities.FirstOrDefault(c => c.Name == changeCityTextView.Text);
+            if (city != null)
+                _interactionModel.CurrentCity = city;
+            else
+                using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resource.String.NoCityFound, ToastLength.Short))
+                    errorToast.Show();
+        }
+
         private void CityModel_PersonsRequestFailed(object sender, Toolkit.Events.ActionResultEventArgs e)
         {
             using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resources.GetString(Resource.String.FailedToLoadPersons), ToastLength.Short))
@@ -164,6 +208,16 @@ namespace TaxiOnline.Android.Activities
             {
                 ActivateProfile();
                 _authorizationProgressDialogDecorator.Hide();
+            });
+        }
+
+        private void InteractionModel_CurrentCityChanged(object sender, EventArgs e)
+        {
+            RunOnUiThread(() =>
+            {
+                UnhookCityModel();
+                _cityModel = _interactionModel.CurrentCity;
+                HookCityModel();
             });
         }
 

@@ -39,6 +39,7 @@
       <HintPath>..\Libs\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,6 +52,7 @@
     <Compile Include="DataAccess\CityNameDA.cs" />
     <Compile Include="DataAccess\DriverAccountDA.cs" />
     <Compile Include="DataAccess\DriverInfoDA.cs" />
+    <Compile Include="DataAccess\DriverResponseDA.cs" />
     <Compile Include="DataAccess\PedestrianAccountDA.cs" />
     <Compile Include="DataAccess\PedestrianInfoDA.cs" />
     <Compile Include="DataAccess\PedestrianRequestDA.cs" />
@@ -91,6 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mapping\PedestrianRequest.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\DriverResponse.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

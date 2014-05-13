@@ -56,7 +56,12 @@ namespace TaxiOnline.Android.Adapters
             TextView driverResponseTextView = view.FindViewById<TextView>(Resource.Id.driverResponseTextView);
             driverResponseTextView.Text = driverResponseModel.GetBriefInfo();
             Button callToDriverAfterResponseButton = view.FindViewById<Button>(Resource.Id.callToDriverAfterResponseButton);
-            callToDriverAfterResponseButton.Click += (sender, e) => { };
+            callToDriverAfterResponseButton.Click += (sender, e) =>
+            {
+                if (!_model.CallToDriver(driverResponseModel.ResponseAuthor).IsValid)
+                    using (Toast errorToast = Toast.MakeText(Application.Context, Resource.String.PhoneCallError, ToastLength.Short))
+                        errorToast.Show();
+            };
         }
 
         private void UpdateDriverResponses()

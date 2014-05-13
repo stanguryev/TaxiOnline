@@ -38,6 +38,7 @@
   <string name="SendMessageToDriver">Add comment</string>
   <string name="CancelMessageToDriver">Cancel comment</string>
   <string name="FailedToInitRequest">Failed to init request</string>
+  <string name="Passanger">Passanger: </string>
   <string name="ConfirmPedestrianRequest">Confirm</string>
   <string name="RejectPedestrianRequest">Reject</string>
 </resources>

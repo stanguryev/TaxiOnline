@@ -10,8 +10,8 @@ namespace TaxiOnline.Logic.Models
     public class DriverProfileResponseModel
     {
         private Guid _responseId;
-        private DriverProfileModel _responseAuthor;
-        private PedestrianRequestModel _request;
+        private readonly DriverProfileModel _responseAuthor;
+        private readonly PedestrianRequestModel _request;
         private RequestState _confirmState;
         private RequestState _rejectState;
 
@@ -20,6 +20,11 @@ namespace TaxiOnline.Logic.Models
             get { return _responseId; }
             internal set { _responseId = value; }
         }
+
+        public PedestrianRequestModel Request
+        {
+            get { return _request; }
+        } 
 
         public RequestState ConfirmState
         {

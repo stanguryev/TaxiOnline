@@ -126,5 +126,10 @@ namespace TaxiOnline.Server.Core
             if (city != null)
                 city.ModifyPedestrianRequestsCollection(col => col.Add(requestInfo));
         }
+
+        public IDriverResponseInfo CreateDriverResponseInfo(Guid id, Guid pedestrianRequestId)
+        {
+            return new DriverResponseInfo(id, pedestrianRequestId);
+        }
     }
 }

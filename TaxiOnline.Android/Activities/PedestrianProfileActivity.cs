@@ -27,6 +27,7 @@ namespace TaxiOnline.Android.Activities
         private NotificationManager _notificationManager;
         private ProgressDialogDecorator _loadProgressDialogDecorator;
         private DriverResponseModel _updatedResponse;
+        private Dictionary<DriverResponseModel, int> _responseIds = new Dictionary<DriverResponseModel, int>();
 
         public PedestrianProfileModel Model
         {
@@ -46,7 +47,6 @@ namespace TaxiOnline.Android.Activities
             if (authenticationActivity != null)
                 _model = authenticationActivity.ActivePedestrianProfileModel;
             SetContentView(Resource.Layout.PedestrianProfileLayout);
-            _model.RequestsCollectionChanged += Model_RequestsCollectionChanged;
             _notificationManager = (NotificationManager)GetSystemService(Application.NotificationService);
             HookModel();
         }
@@ -55,6 +55,9 @@ namespace TaxiOnline.Android.Activities
         {
             if (_model == null)
                 return;
+            _model.RequestsCollectionChanged += Model_RequestsCollectionChanged;
+            _model.AcceptedResponsesChanged += Model_AcceptedResponsesChanged;
+            _model.AcceptedResponsesCollectionChanged += Model_AcceptedResponsesCollectionChanged;
             _model.LoadCompleted += (sender, e) => _loadProgressDialogDecorator.Hide();
             _model.EnumrateDriversFailed += (sender, e) =>
             {
@@ -77,14 +80,41 @@ namespace TaxiOnline.Android.Activities
             mapLayout.Click += (sender, e) => _model.CheckedDriver = null;
         }
 
+        private void UpdateAcceptedResponses()
+        {
+            foreach(DriverResponseModel response in _responseIds.Keys.ToArray())
+                RemoveResponseNotification(response);
+            IEnumerable<DriverResponseModel> acceptedResponses = _model.AcceptedResponses;
+            if (acceptedResponses != null)
+                foreach (DriverResponseModel response in acceptedResponses)
+                    AddResponseNotification(response);
+        }
+
+        private void AddResponseNotification(DriverResponseModel response)
+        {
+            PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, UIHelper.GetIntent(this, typeof(DriverResponsesActivity)), PendingIntentFlags.UpdateCurrent);
+            Notification.Builder builder = new Notification.Builder(this);
+            builder.SetContentIntent(pendingIntent);
+            //builder.SetContentText();
+            _notificationManager.Notify(++_notificationsCounter, builder.Notification);
+            _responseIds.Add(response, _notificationsCounter);
+        }
+
+        private void RemoveResponseNotification(DriverResponseModel response)
+        {
+            if (!_responseIds.ContainsKey(response))
+                return;
+            _notificationManager.Cancel(_responseIds[response]);
+        }
+
         private void HookRequest(PedestrianProfileRequestModel request)
         {
-            request.Response.StateChanged += Response_StateChanged;
+            //request.Response.StateChanged += Response_StateChanged;
         }
 
         private void UnhookRequest(PedestrianProfileRequestModel request)
         {
-            request.Response.StateChanged -= Response_StateChanged;
+            //request.Response.StateChanged -= Response_StateChanged;
         }
 
         private void Model_RequestsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -112,17 +142,34 @@ namespace TaxiOnline.Android.Activities
         //        });
         //}
 
-        private void Response_StateChanged(object sender, EventArgs e)
+        private void Model_AcceptedResponsesChanged(object sender, EventArgs e)
+        {
+            RunOnUiThread(UpdateAcceptedResponses);
+        }
+
+        private void Model_AcceptedResponsesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             RunOnUiThread(() =>
             {
-                UIHelper.GetIntent(this, typeof(DriverResponsesActivity));
-                PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, null, PendingIntentFlags.UpdateCurrent);
-                Notification.Builder builder = new Notification.Builder(this);
-                builder.SetContentIntent(pendingIntent);
-                //builder.SetContentText();
-                _notificationManager.Notify(++_notificationsCounter, builder.Notification);
+                if (e.OldItems != null)
+                    foreach (DriverResponseModel response in e.NewItems.OfType<DriverResponseModel>().ToArray())
+                        RemoveResponseNotification(response);
+                if (e.NewItems != null)
+                    foreach (DriverResponseModel response in e.NewItems.OfType<DriverResponseModel>().ToArray())
+                        AddResponseNotification(response);
             });
         }
+
+        //private void Response_StateChanged(object sender, EventArgs e)
+        //{
+        //    RunOnUiThread(() =>
+        //    {
+        //        PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, UIHelper.GetIntent(this, typeof(DriverResponsesActivity)), PendingIntentFlags.UpdateCurrent);
+        //        Notification.Builder builder = new Notification.Builder(this);
+        //        builder.SetContentIntent(pendingIntent);
+        //        //builder.SetContentText();
+        //        _notificationManager.Notify(++_notificationsCounter, builder.Notification);
+        //    });
+        //}
     }
 }

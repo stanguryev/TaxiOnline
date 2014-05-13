@@ -8,15 +8,15 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        android:id="@+id/changeCityButtonTextView" />
+        android:id="@+id/changeCityTextView" />
     <ImageButton
         android:src="@drawable/SearchIcon"
         style="@style/OverlayImageButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/changeCityButton" />
-<LinearLayout 
-    android:orientation="horizontal"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1" />

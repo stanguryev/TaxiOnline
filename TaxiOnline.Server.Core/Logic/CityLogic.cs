@@ -56,9 +56,11 @@ namespace TaxiOnline.Server.Core.Logic
             List<IPedestrianInfo> pedestrians = _extender.Storage.EnumeratePedestrians(_info.Id).ToList();
             List<IDriverInfo> drivers = _extender.Storage.EnumerateDrivers(_info.Id).ToList();
             List<IPedestrianRequestInfo> pedestrianRequests = _extender.Storage.EnumeratePedestrianRequests(_info.Id).ToList();
+            List<IDriverResponseInfo> driverResponses = _extender.Storage.EnumerateDriverResponses(_info.Id).ToList();
             _pedestrians.ModifyCollection<IPedestrianInfo>(col => pedestrians.ForEach(p => col.Add(p)));
             _drivers.ModifyCollection<IDriverInfo>(col => drivers.ForEach(d => col.Add(d)));
-            _pedestrianRequests.ModifyCollection<IPedestrianRequestInfo>(col => pedestrianRequests.ForEach(p => col.Add(p)));
+            _pedestrianRequests.ModifyCollection<IPedestrianRequestInfo>(col => pedestrianRequests.ForEach(r => col.Add(r)));
+            _driverResponses.ModifyCollection<IDriverResponseInfo>(col => driverResponses.ForEach(r => col.Add(r)));
         }
 
         [Obsolete]
