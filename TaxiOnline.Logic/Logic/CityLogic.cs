@@ -60,6 +60,11 @@ namespace TaxiOnline.Logic.Logic
 
         public ActionResult<IEnumerable<IDriverResponse>> EnumerateDriverResponses()
         {
+            if (_driverResponses.Items == null)
+            {
+                _lastDriverResponsesResult = ActionResult.ValidResult;
+                _driverResponses.FillItemsList();
+            }
             return _lastDriverResponsesResult.IsValid ? ActionResult<IEnumerable<IDriverResponse>>.GetValidResult(_driverResponses.Items) : ActionResult<IEnumerable<IDriverResponse>>.GetErrorResult(_lastDriverResponsesResult);
         }
 

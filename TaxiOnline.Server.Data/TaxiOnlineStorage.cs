@@ -102,7 +102,7 @@ namespace TaxiOnline.Server.Data
             IList<DriverResponseDA> responses = _dataProxy.Session.CreateCriteria<DriverResponseDA>()/*.Add(Restrictions.Where<DriverResponseDA>(p => p.Author.PersonInfo.City.Id == cityId))*/.List<DriverResponseDA>();
             foreach (DriverResponseDA response in responses.Where(r => r.Request.Author.PersonInfo.City.Id == cityId).ToArray())
             {
-                IDriverResponseInfo responseInfo = _server.CreateDriverResponseInfo(response.Id, response.Id);
+                IDriverResponseInfo responseInfo = _server.CreateDriverResponseInfo(response.Id, response.Request.Id);
                 responseInfo.IsAccepted = response.IsAccepted;
                 yield return responseInfo;
             }

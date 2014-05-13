@@ -82,7 +82,7 @@ namespace TaxiOnline.Android.Activities
 
         private void UpdateAcceptedResponses()
         {
-            foreach(DriverResponseModel response in _responseIds.Keys.ToArray())
+            foreach (DriverResponseModel response in _responseIds.Keys.ToArray())
                 RemoveResponseNotification(response);
             IEnumerable<DriverResponseModel> acceptedResponses = _model.AcceptedResponses;
             if (acceptedResponses != null)
@@ -92,10 +92,15 @@ namespace TaxiOnline.Android.Activities
 
         private void AddResponseNotification(DriverResponseModel response)
         {
+            if (_responseIds.ContainsKey(response))
+                return;
             PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, UIHelper.GetIntent(this, typeof(DriverResponsesActivity)), PendingIntentFlags.UpdateCurrent);
             Notification.Builder builder = new Notification.Builder(this);
             builder.SetContentIntent(pendingIntent);
+            //builder.SetContentTitle();
             //builder.SetContentText();
+            builder.SetAutoCancel(true);
+            builder.SetSmallIcon(Resource.Drawable.DriverIcon);
             _notificationManager.Notify(++_notificationsCounter, builder.Notification);
             _responseIds.Add(response, _notificationsCounter);
         }

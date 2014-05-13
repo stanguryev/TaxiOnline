@@ -145,7 +145,11 @@ namespace TaxiOnline.Logic.Logic
             DriverLogic driver = _city.Persons.OfType<DriverLogic>().SingleOrDefault(d => d.Model.PersonId == requestSLO.DriverId);
             if (driver == null)
                 return null;
-            PedestrianProfileRequestLogic outResult = new PedestrianProfileRequestLogic(new PedestrianProfileRequestModel(_model, driver.Model), _adaptersExtender, this);
+            PedestrianProfileRequestLogic outResult = new PedestrianProfileRequestLogic(new PedestrianProfileRequestModel(_model, driver.Model)
+            {
+                RequestId = requestSLO.Id,
+                Comment = requestSLO.Comment
+            }, _adaptersExtender, this);
             outResult.Response = new DriverResponseLogic(new DriverResponseModel(outResult.Model, driver.Model), _adaptersExtender, outResult, driver);
             return outResult;
         }

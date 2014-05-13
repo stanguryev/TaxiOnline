@@ -104,7 +104,7 @@ namespace TaxiOnline.Android.Activities
             AutoCompleteTextView changeCityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.changeCityTextView);
             changeCityTextView.Text = _cityModel.Name;
             changeCityTextView.Adapter = new CitiesAdapter(this, _interactionModel);
-            Button changeCityButton = FindViewById<Button>(Resource.Id.changeCityButton);
+            ImageButton changeCityButton = FindViewById<ImageButton>(Resource.Id.changeCityButton);
             changeCityButton.Click += ChangeCityButton_Click;
         }
 

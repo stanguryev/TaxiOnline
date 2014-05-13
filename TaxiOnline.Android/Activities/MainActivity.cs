@@ -45,7 +45,7 @@ namespace TaxiOnline.Android.Activities
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
-        {
+        {            
             ActionBar.SetDisplayShowCustomEnabled(true);
             ActionBar.SetCustomView(Resource.Layout.ActionBarLayout);
             ActionBar.Show();
