@@ -60,8 +60,6 @@ namespace TaxiOnline.Android.Adapters
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            //int layoutId = position == 0 ? Resource.Layout.PedestrianSelfInfoLayout : Resource.Layout.DriverInfoLayout;
-            //View view = _context.LayoutInflater.Inflate(layoutId, parent, false);
             View view = position == 0 ? _selfItemView.Value : _viewCache.GetView(_items[position - 1]);
             if (position == 0)
                 HookCurrentModelToView(view, parent);
@@ -154,6 +152,10 @@ namespace TaxiOnline.Android.Adapters
             driverPopupCarNumberTextView.Text = driverModel.CarNumber;
             driverPopupPhoneNumberTextView.Text = driverModel.PhoneNumber;
             driverPopupSkypeNumberTextView.Text = driverModel.SkypeNumber;
+            TextView driverAgreesTextView = view.FindViewById<TextView>(Resource.Id.driverAgreesTextView);
+            if (driverModel.HasAcceptedRequest)
+                driverAgreesTextView.Visibility = ViewStates.Visible;
+            driverModel.HasAcceptedRequestChanged += (sender, e) => driverAgreesTextView.Visibility = driverModel.HasAcceptedRequest ? ViewStates.Visible : ViewStates.Gone;
         }
 
         private void Model_CheckedDriverChanged(object sender, EventArgs e)

@@ -22,21 +22,14 @@ namespace TaxiOnline.Android.Activities
     public class PedestrianProfileActivity : Activity
     {
         private PedestrianProfileModel _model;
-        //private PedestrianProfileRequestModel _selectedRequest;
         private int _notificationsCounter;
         private NotificationManager _notificationManager;
         private ProgressDialogDecorator _loadProgressDialogDecorator;
-        private DriverResponseModel _updatedResponse;
         private Dictionary<DriverResponseModel, int> _responseIds = new Dictionary<DriverResponseModel, int>();
 
         public PedestrianProfileModel Model
         {
             get { return _model; }
-        }
-
-        public DriverResponseModel UpdatedResponse
-        {
-            get { return _updatedResponse; }
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -89,8 +82,9 @@ namespace TaxiOnline.Android.Activities
             ((IAndroidMapService)_model.Map.MapService).VisualizeMap(this, mapLayout);
             CanvasView pedestrianProfileView = FindViewById<CanvasView>(Resource.Id.pedestrianProfileView);
             pedestrianProfileView.Adapter = new PedestrianProfileAdapter(this, _model);
+            mapLayout.Clickable = true;
             mapLayout.Click += (sender, e) => _model.CheckedDriver = null;
-        }
+        }        
 
         private void UpdateAcceptedResponses()
         {
@@ -143,21 +137,6 @@ namespace TaxiOnline.Android.Activities
                 foreach (PedestrianProfileRequestModel request in e.OldItems.OfType<PedestrianProfileRequestModel>().ToArray())
                     UnhookRequest(request);
         }
-
-        //private void CurrentRequest_AvailableResponsesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        //{
-        //    if (e.NewItems != null)
-        //        RunOnUiThread(() =>
-        //        {
-        //            _activeRequests = e.NewItems.OfType<DriverResponseModel>().Select(r => r.Request).Distinct().ToArray();
-        //            UIHelper.GetIntent(this, typeof(DriverResponsesActivity));
-        //            PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, null, PendingIntentFlags.UpdateCurrent);
-        //            Notification.Builder builder = new Notification.Builder(this);
-        //            builder.SetContentIntent(pendingIntent);
-        //            //builder.SetContentText();
-        //            _notificationManager.Notify(++_notificationsCounter, builder.Notification);
-        //        });
-        //}
 
         private void Model_AcceptedResponsesChanged(object sender, EventArgs e)
         {

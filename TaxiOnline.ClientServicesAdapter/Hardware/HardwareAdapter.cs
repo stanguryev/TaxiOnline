@@ -11,12 +11,11 @@ namespace TaxiOnline.ClientServicesAdapter.Hardware
 {
     public abstract class HardwareAdapter : IHardwareService
     {
-        public abstract string GetDeviceId();
-
-        public abstract ActionResult<MapPoint> GetCurrentLocation();
-
-        public abstract ActionResult PhoneCall(string number);
-
         public abstract event EventHandler<ValueEventArgs<MapPoint>> LocationChanged;
+        public abstract event EventHandler<ValueEventArgs<string>> IncomingCallArrived;
+
+        public abstract string GetDeviceId();
+        public abstract ActionResult<MapPoint> GetCurrentLocation();
+        public abstract ActionResult PhoneCall(string number);
     }
 }

@@ -173,6 +173,7 @@
     <AndroidResource Include="Resources\Drawable\OnlineIcon.png" />
     <AndroidResource Include="Resources\Values\Styles.xml" />
     <AndroidResource Include="Resources\Values\Colors.xml" />
+    <AndroidResource Include="Resources\Drawable\CallIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TaxiOnline.ClientAdapters.Android\TaxiOnline.ClientAdapters.Android.csproj">

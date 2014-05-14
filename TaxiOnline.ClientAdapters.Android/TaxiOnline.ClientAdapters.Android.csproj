@@ -58,6 +58,7 @@
     <Compile Include="Services\AndroidServicesFactory.cs" />
     <Compile Include="Services\Hardware\AndroidHardwareAdapter.cs" />
     <Compile Include="Services\Hardware\AndroidHardwareAdapter.Location.cs" />
+    <Compile Include="Services\Hardware\AndroidHardwareAdapter.Telephony.cs" />
     <Compile Include="Services\Map\AndroidMapAdapter.cs" />
     <Compile Include="Services\Map\AndroidMapWrapper.cs" />
     <Compile Include="Services\Settings\AndroidSettingsAdapter.cs" />

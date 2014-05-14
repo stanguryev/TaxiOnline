@@ -241,6 +241,11 @@ namespace TaxiOnline.Logic.Models
             _requests.ModifyCollection(modificationDelegate);
         }
 
+        internal void ModifyAcceptedResponsesCollection(Action<IList<DriverResponseModel>> modificationDelegate)
+        {
+            _acceptedResponses.ModifyCollection(modificationDelegate);
+        }
+
         private ActionResult<IEnumerable<DriverModel>> EnumerateDrivers()
         {
             return UpdateHelper.EnumerateModels(EnumerateDriversDelegate, l => l.Model);

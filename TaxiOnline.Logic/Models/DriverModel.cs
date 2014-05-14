@@ -15,6 +15,7 @@ namespace TaxiOnline.Logic.Models
         private string _carColor;
         private string _carBrand;
         private string _carNumber;
+        private bool _hasAcceptedRequest;
 
         public string PersonName
         {
@@ -40,6 +41,21 @@ namespace TaxiOnline.Logic.Models
             internal set { _carNumber = value; }
         }
 
+        public bool HasAcceptedRequest
+        {
+            get { return _hasAcceptedRequest; }
+            internal set
+            {
+                if (_hasAcceptedRequest != value)
+                {
+                    _hasAcceptedRequest = value;
+                    OnHasAcceptedRequestChanged();
+                }
+            }
+        }
+
+        public event EventHandler HasAcceptedRequestChanged;
+
         internal DriverModel(IDriverInfo info)
             : base(info)
         {
@@ -47,6 +63,13 @@ namespace TaxiOnline.Logic.Models
             _carColor = info.CarColor;
             _carBrand = info.CarBrand;
             _carNumber = info.CarNumber;
+        }
+
+        protected virtual void OnHasAcceptedRequestChanged()
+        {
+            EventHandler handler = HasAcceptedRequestChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
         }
     }
 }

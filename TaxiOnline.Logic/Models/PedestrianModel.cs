@@ -26,15 +26,29 @@ namespace TaxiOnline.Logic.Models
 
         public event EventHandler CurrentRequestChanged;
 
+        public event EventHandler MadeCall;
+
         internal PedestrianModel(IPedestrianInfo info)
             : base(info)
         {
 
         }
 
+        internal void InvokeMadeCall()
+        {
+            OnMadeCall();
+        }
+
         protected virtual void OnCurrentRequestChanged()
         {
             EventHandler handler = CurrentRequestChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnMadeCall()
+        {
+            EventHandler handler = MadeCall;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }

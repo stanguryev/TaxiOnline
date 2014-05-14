@@ -43,4 +43,5 @@
   <string name="Passanger">Passanger: </string>
   <string name="ConfirmPedestrianRequest">Confirm</string>
   <string name="RejectPedestrianRequest">Reject</string>
+  <string name="Agree">Agree</string>
 </resources>

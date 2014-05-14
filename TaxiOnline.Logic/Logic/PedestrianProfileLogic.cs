@@ -42,6 +42,7 @@ namespace TaxiOnline.Logic.Logic
             _requests = new UpdatableCollectionLoadDecorator<PedestrianProfileRequestLogic, IPedestrianRequest>(RetriveRequests, CompareRequestsInfo, ValidateRequest, CreateRequestLogic);
             _acceptedResponses = new SimpleCollectionLoadDecorator<DriverResponseLogic>(RetriveAcceptedResponse);
             _drivers.ItemsCollectionChanged += Drivers_ItemsCollectionChanged;
+            _acceptedResponses.ItemsCollectionChanged += AcceptedResponses_ItemsCollectionChanged;
         }
 
         public PedestrianProfileRequestLogic InitRequest(DriverModel driver)
@@ -100,6 +101,9 @@ namespace TaxiOnline.Logic.Logic
         {
             if (_acceptedResponses.Items == null)
                 _acceptedResponses.FillItemsList();
+            if (_acceptedResponses.Items != null)
+                foreach (DriverResponseLogic response in _acceptedResponses.Items)
+                    response.ResponseAuthor.Model.HasAcceptedRequest = true;
             return _acceptedResponses.Items == null ? ActionResult<IEnumerable<DriverResponseLogic>>.GetErrorResult(new Exception()) : ActionResult<IEnumerable<DriverResponseLogic>>.GetValidResult(_acceptedResponses.Items);
         }
 
@@ -175,6 +179,17 @@ namespace TaxiOnline.Logic.Logic
         private void Drivers_ItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             _model.ModifyDriversCollection(col => ObservableCollectionHelper.ApplyChangesByObjects<DriverLogic, DriverModel>(e, col, l => l.Model, l => l.Model));
+        }
+
+        private void AcceptedResponses_ItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            _model.ModifyAcceptedResponsesCollection(col => ObservableCollectionHelper.ApplyChangesByObjects<DriverResponseLogic, DriverResponseModel>(e, col, l => l.Model, l => l.Model));
+            if (e.NewItems != null)
+                foreach (DriverResponseLogic response in e.NewItems.OfType<DriverResponseLogic>().ToArray())
+                    response.ResponseAuthor.Model.HasAcceptedRequest = true;
+            if (e.OldItems != null)
+                foreach (DriverResponseLogic response in e.OldItems.OfType<DriverResponseLogic>().ToArray())
+                    response.ResponseAuthor.Model.HasAcceptedRequest = true;
         }
     }
 }

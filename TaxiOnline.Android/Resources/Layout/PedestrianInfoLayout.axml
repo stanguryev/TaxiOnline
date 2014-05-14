@@ -8,4 +8,13 @@
         android:layout_height="32px"
         android:scaleType="fitXY"
         android:adjustViewBounds="true" />
+    <ImageView
+        android:id="@+id/pedestrianCallIcon"
+        android:src="@drawable/CallIcon"
+        android:layout_width="10px"
+        android:layout_height="10px"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_gravity="top|right"
+        android:visibility="gone" />
 </FrameLayout>

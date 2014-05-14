@@ -26,22 +26,5 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Hardware
         {
             return null;
         }
-
-        public override ActionResult PhoneCall(string number)
-        {
-            try
-            {
-                string unifiedNumber = string.Format("tel:{0}", new string(number.Where(c => char.IsDigit(c) || c == '+').ToArray()));
-                Intent callIntent = new Intent(Intent.ActionCall);
-                callIntent.AddFlags(ActivityFlags.NewTask);
-                callIntent.SetData(global::Android.Net.Uri.Parse(unifiedNumber));
-                Application.Context.StartActivity(callIntent);
-                return ActionResult.ValidResult;
-            }
-            catch (global::Android.Util.AndroidRuntimeException ex)
-            {
-                return ActionResult.GetErrorResult(ex);
-            }
-        }
     }
 }

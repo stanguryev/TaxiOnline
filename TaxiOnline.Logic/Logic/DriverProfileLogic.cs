@@ -59,6 +59,7 @@ namespace TaxiOnline.Logic.Logic
             _pedestrians = new UpdatableCollectionLoadDecorator<PedestrianLogic, IPedestrianInfo>(RetrivePedestrians, ComparePedestriansInfo, p => p.IsOnline, CreatePedestrianLogic);
             _pedestrianRequests = new UpdatableCollectionLoadDecorator<PedestrianRequestLogic, IPedestrianRequest>(RetrivePedestrianRequests, ComparePedestrianRequests, ValidatePedestrianRequest, CreatePedestrianRequestLogic);
             _currentResponses = new UpdatableCollectionLoadDecorator<DriverProfileResponseLogic, IDriverResponse>(RetriveDriverResponses, CompareDriverResponses, ValidateDriverResponse, CreateDriverResponseLogic);
+            _adaptersExtender.ServicesFactory.GetCurrentHardwareService().IncomingCallArrived += HardwareService_IncomingCallArrived;
             _adaptersExtender.ServicesFactory.GetCurrentDataService().PedestrianRequestChanged += DataService_PedestrianRequestChanged;
             _adaptersExtender.ServicesFactory.GetCurrentDataService().PedestrianInfoChanged += DataService_PedestrianInfoChanged;
             _pedestrians.ItemsCollectionChanged += Pedestrians_ItemsCollectionChanged;
@@ -188,6 +189,14 @@ namespace TaxiOnline.Logic.Logic
             return request == null ? null : new DriverProfileResponseLogic(new DriverProfileResponseModel(request.Model, _model), _adaptersExtender, request, this);
         }
 
+        private void HardwareService_IncomingCallArrived(object sender, ValueEventArgs<string> e)
+        {
+            PedestrianLogic callingPedestrian = _pedestrians.Items.FirstOrDefault(p => e.Value.Contains(p.Model.PhoneNumber));
+            if (callingPedestrian == null)
+                return;
+            callingPedestrian.Model.InvokeMadeCall();
+        }
+
         private void DataService_PedestrianRequestChanged(object sender, ValueEventArgs<IPedestrianRequest> e)
         {
             _pedestrianRequests.Update(e.Value);
@@ -211,14 +220,14 @@ namespace TaxiOnline.Logic.Logic
         private void PedestrianRequests_ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
-                foreach(PedestrianRequestLogic request in e.NewItems.OfType<PedestrianRequestLogic>().ToArray())
+                foreach (PedestrianRequestLogic request in e.NewItems.OfType<PedestrianRequestLogic>().ToArray())
                 {
                     PedestrianLogic author = _pedestrians.Items.SingleOrDefault(p => p.Model.PersonId == request.Model.AuthorId);
                     if (author != null)
                         author.ResetCurrentRequest();
                 }
             if (e.NewItems != null)
-                foreach(PedestrianRequestLogic request in e.NewItems.OfType<PedestrianRequestLogic>().ToArray())
+                foreach (PedestrianRequestLogic request in e.NewItems.OfType<PedestrianRequestLogic>().ToArray())
                 {
                     PedestrianLogic author = _pedestrians.Items.SingleOrDefault(p => p.Model.PersonId == request.Model.AuthorId);
                     if (author != null)

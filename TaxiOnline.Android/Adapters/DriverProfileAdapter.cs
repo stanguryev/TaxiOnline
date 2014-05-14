@@ -76,6 +76,8 @@ namespace TaxiOnline.Android.Adapters
         private void HookModelToView(View view, PedestrianModel pedestrianModel, ViewGroup upperView)
         {
             view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map, pedestrianModel.CurrentLocation);
+            ImageView pedestrianCallIcon = view.FindViewById<ImageView>(Resource.Id.pedestrianCallIcon);
+            pedestrianModel.MadeCall += (sender, e) => pedestrianCallIcon.Visibility = ViewStates.Visible;
         }
 
         private void UpdatePedestrians()

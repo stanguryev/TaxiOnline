@@ -10,6 +10,8 @@ namespace TaxiOnline.ClientInfrastructure.Services
     public interface IHardwareService
     {
         event EventHandler<ValueEventArgs<MapPoint>> LocationChanged;
+        event EventHandler<ValueEventArgs<string>> IncomingCallArrived;
+
         string GetDeviceId();
         ActionResult<MapPoint> GetCurrentLocation();
         ActionResult PhoneCall(string number);
