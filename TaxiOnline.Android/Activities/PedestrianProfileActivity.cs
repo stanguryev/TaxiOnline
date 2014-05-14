@@ -65,6 +65,18 @@ namespace TaxiOnline.Android.Activities
                     errorToast.Show();
                 _loadProgressDialogDecorator.Hide();
             };
+            _model.EnumrateRequestsFailed += (sender, e) =>
+            {
+                using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resource.String.FailedToEnumrateRequests, ToastLength.Short))
+                    errorToast.Show();
+                _loadProgressDialogDecorator.Hide();
+            };
+            _model.EnumrateAcceptedResponsesFailed += (sender, e) =>
+            {
+                using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resource.String.FailedToEnumrateAcceptedResponses, ToastLength.Short))
+                    errorToast.Show();
+                _loadProgressDialogDecorator.Hide();
+            };
             //_model.CheckCurrentRequestFailed += (sender, e) =>
             //{
             //    using (Toast errorToast = Toast.MakeText(Application.BaseContext, Resources.GetString(Resource.String.FailedToCheckCurrentRequest), ToastLength.Short))
@@ -97,8 +109,8 @@ namespace TaxiOnline.Android.Activities
             PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, UIHelper.GetIntent(this, typeof(DriverResponsesActivity)), PendingIntentFlags.UpdateCurrent);
             Notification.Builder builder = new Notification.Builder(this);
             builder.SetContentIntent(pendingIntent);
-            //builder.SetContentTitle();
-            //builder.SetContentText();
+            builder.SetContentTitle(response.GetBriefInfo());
+            builder.SetContentText(response.GetBriefInfo());
             builder.SetAutoCancel(true);
             builder.SetSmallIcon(Resource.Drawable.DriverIcon);
             _notificationManager.Notify(++_notificationsCounter, builder.Notification);

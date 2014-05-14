@@ -454,3 +454,24 @@ insert into DriversInfo (PersonInfo) select personId from @personInfoId;
 
 GO
 
+USE [TaxiOnline]
+GO
+
+/****** Object:  StoredProcedure [dbo].[AddAcceptedRequest]    Script Date: 05/14/2014 09:31:11 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+create procedure [dbo].[AddAcceptedRequest]  @pedestrianPhone nvarchar(50), @driverName nvarchar(100), @comment nvarchar(500) as
+declare @pedestrianId int;
+select top 1 @pedestrianId = PedestriansInfo.Id from PedestriansInfo inner join PersonsInfo on PedestriansInfo.PersonInfo = PersonsInfo.Id inner join PersonAccounts on PersonsInfo.PersonId = PersonAccounts.Id where PersonAccounts.PhoneNumber like '%'+@pedestrianPhone+'%';
+declare @driverId int;
+select top 1 @driverId = DriversInfo.Id from DriversInfo inner join PersonsInfo on DriversInfo.PersonInfo = PersonsInfo.Id inner join PersonAccounts on PersonsInfo.PersonId = PersonAccounts.Id inner join DriverAccounts on PersonAccounts.Id = DriverAccounts.PersonId where DriverAccounts.PersonName like '%'+@driverName+'%';
+declare @requestId table (Id uniqueidentifier);
+insert into PedestrianRequests (Author, [Target], Comment) output inserted.Id into @requestId values (@pedestrianId, @driverId, @comment)
+insert into DriverResponses (RequestId, IsAccepted) select Id, 1 as accepted from @requestId
+GO
+
+

@@ -32,6 +32,8 @@
   <string name="LoadTitle">Loading</string>
   <string name="LoadDataMessage">Loading the data...</string>
   <string name="FailedToEnumrateDrivers">Failed to load drivers location data</string>
+  <string name="FailedToEnumrateRequests">Failed to load your requests in processing</string>
+  <string name="FailedToEnumrateAcceptedResponses">Failed to load drivers responses to you</string>
   <string name="FailedToEnumratePedestrians">Failed to load pedestrians location data</string>
   <string name="CallToDriver">Call to the driver</string>
   <string name="PhoneCallError">Call failed</string>
