@@ -53,6 +53,9 @@ namespace TaxiOnline.Android
 			// aapt resource value: 0x7f050000
 			public const int OverlayButtonColor = 2131034112;
 			
+			// aapt resource value: 0x7f050001
+			public const int popupcolor = 2131034113;
+			
 			static Color()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -88,13 +91,16 @@ namespace TaxiOnline.Android
 			public const int PedestrianIcon = 2130837510;
 			
 			// aapt resource value: 0x7f020007
-			public const int RefreshIcon = 2130837511;
+			public const int PedestrianInfoPopup = 2130837511;
 			
 			// aapt resource value: 0x7f020008
-			public const int SearchIcon = 2130837512;
+			public const int RefreshIcon = 2130837512;
 			
 			// aapt resource value: 0x7f020009
-			public const int SettingsIcon = 2130837513;
+			public const int SearchIcon = 2130837513;
+			
+			// aapt resource value: 0x7f02000a
+			public const int SettingsIcon = 2130837514;
 			
 			static Drawable()
 			{

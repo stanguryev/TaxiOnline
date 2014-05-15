@@ -94,6 +94,7 @@ namespace TaxiOnline.Android.Adapters
             {
                 PopupWindow pedestrianInfoPopup = new PopupWindow(_context.LayoutInflater.Inflate(Resource.Layout.PedestrianPopupDetailsLayout, null), 100, 100);
                 _pedestrianInfoPopups.Add(request, pedestrianInfoPopup);
+                pedestrianInfoPopup.SetBackgroundDrawable(_context.Resources.GetDrawable(Resource.Drawable.PedestrianInfoPopup));
                 HookModelToDetailsPopupWindow(pedestrianInfoPopup, request);
                 pedestrianInfoPopup.ShowAsDropDown(pedestrianView, -32, 0);
                 pedestrianInfoPopup.Update();
