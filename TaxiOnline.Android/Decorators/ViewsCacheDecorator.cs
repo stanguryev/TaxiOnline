@@ -30,6 +30,7 @@ namespace TaxiOnline.Android.Decorators
 
         public void NotifyFillFinished()
         {
+            return;
             View[] oldViews = _itemsUsage.Where(kv => !kv.Value).Select(kv => kv.Key).Join(_cacheDictionary, m => m, kv => kv.Key, (m, kv) => kv.Value).ToArray();
             if (oldViews.Length > 0)
             {

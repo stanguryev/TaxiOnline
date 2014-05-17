@@ -31,7 +31,7 @@ namespace TaxiOnline.Android.Activities
 
         public DriverProfileActivity()
         {
-            
+
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -56,12 +56,14 @@ namespace TaxiOnline.Android.Activities
                     errorToast.Show();
                 _loadProgressDialogDecorator.Hide();
             };
+            LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
+            ((IAndroidMapService)_model.Map.MapService).VisualizeMap(this, mapLayout);
+            CanvasView driverProfileView = FindViewById<CanvasView>(Resource.Id.driverProfileView);
+            DriverProfileAdapter driverProfileAdapter = new DriverProfileAdapter(this, _model);
+            driverProfileView.LayoutChange += (sender, e) => driverProfileAdapter.UpdatePedestrianInfoPopups();
+            driverProfileView.Adapter = driverProfileAdapter;
             _loadProgressDialogDecorator.Show();
             _model.BeginLoad();
-            LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
-            ((IAndroidMapService)_model.Map.MapService).VisualizeMap(this, mapLayout);       
-            CanvasView driverProfileView = FindViewById<CanvasView>(Resource.Id.driverProfileView);
-            driverProfileView.Adapter = new DriverProfileAdapter(this, _model);
         }
     }
 }

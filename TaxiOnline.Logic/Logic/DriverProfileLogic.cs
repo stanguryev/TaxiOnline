@@ -64,6 +64,7 @@ namespace TaxiOnline.Logic.Logic
             _adaptersExtender.ServicesFactory.GetCurrentDataService().PedestrianInfoChanged += DataService_PedestrianInfoChanged;
             _pedestrians.ItemsCollectionChanged += Pedestrians_ItemsCollectionChanged;
             _pedestrians.RequestFailed += Pedestrians_RequestFailed;
+            _pedestrianRequests.ItemsChanged += PedestrianRequests_ItemsChanged;
             _pedestrianRequests.ItemsCollectionChanged += PedestrianRequests_ItemsCollectionChanged;
             _pedestrianRequests.RequestFailed += PedestrianRequests_RequestFailed;
         }
@@ -215,6 +216,18 @@ namespace TaxiOnline.Logic.Logic
         private void Pedestrians_RequestFailed(object sender, ActionResultEventArgs e)
         {
             _model.NotifyEnumratePedestriansFailed(e.Result);
+        }
+
+        private void PedestrianRequests_ItemsChanged(object sender, EventArgs e)
+        {
+            IEnumerable<PedestrianRequestLogic> requests = _pedestrianRequests.Items;
+            if (requests != null)
+                foreach (PedestrianRequestLogic request in requests)
+                {
+                    PedestrianLogic author = _pedestrians.Items.SingleOrDefault(p => p.Model.PersonId == request.Model.AuthorId);
+                    if (author != null)
+                        author.SetCurrentRequest(request);
+                }
         }
 
         private void PedestrianRequests_ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
