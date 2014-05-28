@@ -123,6 +123,8 @@ CREATE TABLE [dbo].[Cities](
 	[InitialLatitude] [float] NOT NULL,
 	[InitialLongitude] [float] NOT NULL,
 	[InitialZoom] [float] NOT NULL,
+	[PhoneConstraintPattern] [nvarchar](300) NULL,
+	[PhoneCorrectionPattern] [nvarchar](300) NULL,
  CONSTRAINT [PK_Cities] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -149,6 +151,7 @@ CREATE TABLE [dbo].[CityNames](
 	[Name] [nvarchar](100) NULL,
 	[CultureName] [nvarchar](8) NULL,
 	[CityId] [uniqueidentifier] NOT NULL,
+	[PhoneConstraintDescription] [nvarchar](500) NULL,
  CONSTRAINT [PK_CityNames] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -202,6 +205,7 @@ CREATE TABLE [dbo].[PersonsInfo](
 	[CityId] [uniqueidentifier] NOT NULL,
 	[Latitude] [float] NULL,
 	[Longitude] [float] NULL,
+	[Altitude] [float] NULL,
  CONSTRAINT [PK_PersonsInfo] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
