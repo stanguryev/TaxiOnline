@@ -40,7 +40,7 @@ namespace TaxiOnline.Android.Adapters
             model.Map.MapService.Map.MapCenterChanged += Map_MapCenterChanged;
             model.Map.MapService.Map.MapZoomChanged += Map_MapZoomChanged;
             UpdatePedestrians();
-            ShowAllPedestriansInfo();
+            //ShowAllPedestriansInfo();
         }
 
         public override Java.Lang.Object GetItem(int position)
@@ -76,6 +76,9 @@ namespace TaxiOnline.Android.Adapters
         private void HookModelToView(View view, PedestrianModel pedestrianModel, ViewGroup upperView)
         {
             view.LayoutParameters = MapHelper.GetLayoutParams(upperView, _model.Map.MapService.Map, pedestrianModel.CurrentLocation);
+            //PedestrianRequestModel request = pedestrianModel.CurrentRequest;
+            //if (request != null && _pedestrianInfoPopups.ContainsKey(request))
+            //    _pedestrianInfoPopups[request].Update();
             ImageView pedestrianCallIcon = view.FindViewById<ImageView>(Resource.Id.pedestrianCallIcon);
             pedestrianModel.MadeCall += (sender, e) => pedestrianCallIcon.Visibility = ViewStates.Visible;
         }
@@ -84,12 +87,14 @@ namespace TaxiOnline.Android.Adapters
         {
             IEnumerable<PedestrianModel> modelCollection = _model.Pedestrians;
             _items = modelCollection == null ? new List<PedestrianModel>() : modelCollection.ToList();
+            _viewCache.NotifyFillStarted();
             NotifyDataSetChanged();
+            _viewCache.NotifyFillFinished();
         }
 
         private void ShowPedestrianInfoPopupWindow(PedestrianRequestModel request)
         {
-            View pedestrianView = _viewCache.GetCachedView(request.RequestAuthor);
+            View pedestrianView = _viewCache.GetView(request.RequestAuthor);// _viewCache.GetCachedView(request.RequestAuthor);
             if (pedestrianView != null && !_pedestrianInfoPopups.ContainsKey(request))
             {
                 PopupWindow pedestrianInfoPopup = new PopupWindow(_context.LayoutInflater.Inflate(Resource.Layout.PedestrianPopupDetailsLayout, null), 100, 100);
@@ -124,6 +129,19 @@ namespace TaxiOnline.Android.Adapters
         {
             foreach (PedestrianRequestModel request in _pedestrianInfoPopups.Keys.ToArray())
                 ClosePedestrianInfoPopupWindow(request);
+        }
+
+        public void UpdatePedestrianInfoPopups()
+        {
+            //foreach (PopupWindow popup in _pedestrianInfoPopups.Values)
+            //    popup.Update();
+            foreach (KeyValuePair<PedestrianRequestModel, PopupWindow> popupInfo in _pedestrianInfoPopups)
+            {
+                View pedestrianView = _viewCache.GetCachedView(popupInfo.Key.RequestAuthor);
+                if (pedestrianView == null)
+                    continue;
+                popupInfo.Value.Update(pedestrianView, 0, 0, 200, 50);
+            }
         }
 
         private void HookModelToDetailsPopupWindow(PopupWindow pedestrianInfoPopup, PedestrianRequestModel request)

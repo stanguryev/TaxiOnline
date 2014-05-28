@@ -66,7 +66,7 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Hardware
                 {
                     using (LocationListener locationListener = new LocationListener(l => waitLocation.Set()))
                         locationManager.RequestSingleUpdate(providerName, locationListener, null);
-                    waitLocation.WaitOne(2000);
+                    waitLocation.WaitOne(3000);
                     Location location = string.IsNullOrWhiteSpace(providerName) ? null : locationManager.GetLastKnownLocation(providerName);
                     if (location == null)
                         return ActionResult<MapPoint>.GetErrorResult(new NotSupportedException());
