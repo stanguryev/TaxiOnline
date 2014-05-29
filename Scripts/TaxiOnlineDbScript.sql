@@ -347,6 +347,15 @@ GO
 USE [TaxiOnline]
 GO
 
+ALTER TABLE [dbo].[PedestriansInfo]
+ADD CONSTRAINT [FK_PedestriansInfo_PersonsInfo]
+    FOREIGN KEY ([PersonInfo])
+    REFERENCES [dbo].[PersonsInfo]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+GO
+
 /****** Object:  Table [dbo].[PedestrianRequests]    Script Date: 12.05.2014 08:06:08 ******/
 SET ANSI_NULLS ON
 GO
