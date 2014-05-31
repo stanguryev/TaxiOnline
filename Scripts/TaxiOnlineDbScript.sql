@@ -379,6 +379,26 @@ GO
 USE [TaxiOnline]
 GO
 
+ALTER TABLE [dbo].[PedestrianRequests]  WITH CHECK ADD  CONSTRAINT [FK_PedestrianRequests_PedestriansInfo] FOREIGN KEY([Author])
+REFERENCES [dbo].[PedestriansInfo] ([Id])
+GO
+
+ALTER TABLE [dbo].[PedestrianRequests] CHECK CONSTRAINT [FK_PedestrianRequests_PedestriansInfo]
+GO
+
+USE [TaxiOnline]
+GO
+
+ALTER TABLE [dbo].[PedestrianRequests]  WITH CHECK ADD  CONSTRAINT [FK_PedestrianRequests_DriversInfo] FOREIGN KEY([Target])
+REFERENCES [dbo].[DriversInfo] ([Id])
+GO
+
+ALTER TABLE [dbo].[PedestrianRequests] CHECK CONSTRAINT [FK_PedestrianRequests_DriversInfo]
+GO
+
+USE [TaxiOnline]
+GO
+
 /****** Object:  Table [dbo].[DriverResponses]    Script Date: 13.05.2014 08:51:08 ******/
 SET ANSI_NULLS ON
 GO
