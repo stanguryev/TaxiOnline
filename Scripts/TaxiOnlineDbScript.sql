@@ -464,6 +464,13 @@ GO
 ALTER TABLE [dbo].[OnlinePedestrians] ADD  DEFAULT (sysutcdatetime()) FOR [CreatedAt]
 GO
 
+ALTER TABLE [dbo].[OnlinePedestrians]  WITH CHECK ADD  CONSTRAINT [FK_OnlinePedestrians_Cities] FOREIGN KEY([CityId])
+REFERENCES [dbo].[Cities] ([Id])
+GO
+
+ALTER TABLE [dbo].[OnlinePedestrians] CHECK CONSTRAINT [FK_OnlinePedestrians_Cities]
+GO
+
 USE [TaxiOnline]
 GO
 
@@ -499,6 +506,13 @@ CREATE TABLE [dbo].[OnlineDrivers](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
+GO
+
+ALTER TABLE [dbo].[OnlineDrivers]  WITH CHECK ADD  CONSTRAINT [FK_OnlineDrivers_Cities] FOREIGN KEY([CityId])
+REFERENCES [dbo].[Cities] ([Id])
+GO
+
+ALTER TABLE [dbo].[OnlineDrivers] CHECK CONSTRAINT [FK_OnlineDrivers_Cities]
 GO
 
 USE [TaxiOnline]
