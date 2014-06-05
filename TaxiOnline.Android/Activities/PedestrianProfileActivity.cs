@@ -78,13 +78,15 @@ namespace TaxiOnline.Android.Activities
             //};
             _loadProgressDialogDecorator.Show();
             _model.BeginLoad();
-            LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
-            ((IAndroidMapService)_model.Map.MapService).VisualizeMap(this, mapLayout);
+            //LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
+            //((IAndroidMapService)_model.Map.MapService).VisualizeMap(this, mapLayout);
+            View map = FindViewById<View>(Resource.Id.map);
+            ((IAndroidMapService)_model.Map.MapService).HookMap(map);
             CanvasView pedestrianProfileView = FindViewById<CanvasView>(Resource.Id.pedestrianProfileView);
             pedestrianProfileView.Adapter = new PedestrianProfileAdapter(this, _model);
-            mapLayout.Clickable = true;
-            mapLayout.Click += (sender, e) => _model.CheckedDriver = null;
-        }        
+            //mapLayout.Clickable = true;
+            map.Click += (sender, e) => _model.CheckedDriver = null;
+        }
 
         private void UpdateAcceptedResponses()
         {

@@ -183,6 +183,7 @@
     <Compile Include="Authentication\TaxiOnlineIdentity.cs" />
     <Compile Include="Authentication\TaxiOnlineUser.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
+    <Compile Include="Controllers\DictionaryController.cs" />
     <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\PedestriansController.cs" />
     <Compile Include="DataAccess\City.cs" />
@@ -197,6 +198,8 @@
     <Compile Include="DataAccess\PersonAccount.cs" />
     <Compile Include="DataAccess\PersonsInfo.cs" />
     <Compile Include="DataObjects\AuthenticationRequestDTO.cs" />
+    <Compile Include="DataObjects\CityDTO.cs" />
+    <Compile Include="DataObjects\DriverAuthenticationDTO.cs" />
     <Compile Include="DataObjects\DriverDTO.cs" />
     <Compile Include="DataObjects\PedestrianAuthenticationDTO.cs" />
     <Compile Include="DataObjects\PedestrianDTO.cs" />

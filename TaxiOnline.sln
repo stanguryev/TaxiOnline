@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiOnline.Logic", "TaxiOnline.Logic\TaxiOnline.Logic.csproj", "{D674F7BF-1EC2-47DA-AE85-1564EC5639AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiOnline.ClientInfrastructure", "TaxiOnline.ClientInfrastructure\TaxiOnline.ClientInfrastructure.csproj", "{1EF43006-C403-4A27-8FB6-D72F2E39A808}"
@@ -17,38 +19,32 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiOnline.ServiceContract"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiOnline.Android", "TaxiOnline.Android\TaxiOnline.Android.csproj", "{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiOnline.MapEngine", "TaxiOnline.MapEngine\TaxiOnline.MapEngine.csproj", "{9EEFE8A1-03B9-4EBB-BCB0-83C59E6F2A40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiOnline.MapEngine.Android", "TaxiOnline.MapEngine.Android\TaxiOnline.MapEngine.Android.csproj", "{477E3AD4-392C-4743-8463-59E03961AF63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1EF43006-C403-4A27-8FB6-D72F2E39A808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1EF43006-C403-4A27-8FB6-D72F2E39A808}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1EF43006-C403-4A27-8FB6-D72F2E39A808}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1EF43006-C403-4A27-8FB6-D72F2E39A808}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{8247F1D1-76C4-4ED7-A089-EB9C648FD885}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8247F1D1-76C4-4ED7-A089-EB9C648FD885}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8247F1D1-76C4-4ED7-A089-EB9C648FD885}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8247F1D1-76C4-4ED7-A089-EB9C648FD885}.Release|Any CPU.Build.0 = Release|Any CPU
-		{90F53C4B-CDE0-4CE9-BFC3-E1420A203798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90F53C4B-CDE0-4CE9-BFC3-E1420A203798}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90F53C4B-CDE0-4CE9-BFC3-E1420A203798}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{90F53C4B-CDE0-4CE9-BFC3-E1420A203798}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6B7ECB5-3EC4-4993-AE6C-87E8B94E9C37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6B7ECB5-3EC4-4993-AE6C-87E8B94E9C37}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6B7ECB5-3EC4-4993-AE6C-87E8B94E9C37}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6B7ECB5-3EC4-4993-AE6C-87E8B94E9C37}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D674F7BF-1EC2-47DA-AE85-1564EC5639AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D674F7BF-1EC2-47DA-AE85-1564EC5639AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D674F7BF-1EC2-47DA-AE85-1564EC5639AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D674F7BF-1EC2-47DA-AE85-1564EC5639AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EF43006-C403-4A27-8FB6-D72F2E39A808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EF43006-C403-4A27-8FB6-D72F2E39A808}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EF43006-C403-4A27-8FB6-D72F2E39A808}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EF43006-C403-4A27-8FB6-D72F2E39A808}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90F53C4B-CDE0-4CE9-BFC3-E1420A203798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90F53C4B-CDE0-4CE9-BFC3-E1420A203798}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90F53C4B-CDE0-4CE9-BFC3-E1420A203798}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90F53C4B-CDE0-4CE9-BFC3-E1420A203798}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8247F1D1-76C4-4ED7-A089-EB9C648FD885}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8247F1D1-76C4-4ED7-A089-EB9C648FD885}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8247F1D1-76C4-4ED7-A089-EB9C648FD885}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8247F1D1-76C4-4ED7-A089-EB9C648FD885}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DE6F6D3D-2B2F-4B34-BF77-4A2AEEF7BFDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE6F6D3D-2B2F-4B34-BF77-4A2AEEF7BFDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE6F6D3D-2B2F-4B34-BF77-4A2AEEF7BFDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,11 +53,29 @@ Global
 		{F5871E71-B120-49B7-8FE2-91EB698220E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5871E71-B120-49B7-8FE2-91EB698220E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5871E71-B120-49B7-8FE2-91EB698220E5}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = TaxiOnline.Android\TaxiOnline.Android.csproj
+		{B6B7ECB5-3EC4-4993-AE6C-87E8B94E9C37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6B7ECB5-3EC4-4993-AE6C-87E8B94E9C37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6B7ECB5-3EC4-4993-AE6C-87E8B94E9C37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6B7ECB5-3EC4-4993-AE6C-87E8B94E9C37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E06BAFB-86BC-4006-8FDB-54B4F6CE4DC4}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9EEFE8A1-03B9-4EBB-BCB0-83C59E6F2A40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EEFE8A1-03B9-4EBB-BCB0-83C59E6F2A40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EEFE8A1-03B9-4EBB-BCB0-83C59E6F2A40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EEFE8A1-03B9-4EBB-BCB0-83C59E6F2A40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{477E3AD4-392C-4743-8463-59E03961AF63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{477E3AD4-392C-4743-8463-59E03961AF63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{477E3AD4-392C-4743-8463-59E03961AF63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{477E3AD4-392C-4743-8463-59E03961AF63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = TaxiOnline.Android\TaxiOnline.Android.csproj
 	EndGlobalSection
 EndGlobal

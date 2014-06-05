@@ -38,19 +38,10 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="OsmSharp.Android.UI">
-      <HintPath>..\Libs\OsmSharp.Android.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="OsmSharp.UI">
-      <HintPath>..\Libs\OsmSharp.UI.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="OsmSharp">
-      <HintPath>..\Libs\OsmSharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -81,6 +72,14 @@
     <ProjectReference Include="..\TaxiOnline.ClientServicesAdapter\TaxiOnline.ClientServicesAdapter.csproj">
       <Project>{90F53C4B-CDE0-4CE9-BFC3-E1420A203798}</Project>
       <Name>TaxiOnline.ClientServicesAdapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.MapEngine.Android\TaxiOnline.MapEngine.Android.csproj">
+      <Project>{477e3ad4-392c-4743-8463-59e03961af63}</Project>
+      <Name>TaxiOnline.MapEngine.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.MapEngine\TaxiOnline.MapEngine.csproj">
+      <Project>{9eefe8a1-03b9-4ebb-bcb0-83c59e6f2a40}</Project>
+      <Name>TaxiOnline.MapEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\TaxiOnline.Toolkit\TaxiOnline.Toolkit.csproj">
       <Project>{8247F1D1-76C4-4ED7-A089-EB9C648FD885}</Project>

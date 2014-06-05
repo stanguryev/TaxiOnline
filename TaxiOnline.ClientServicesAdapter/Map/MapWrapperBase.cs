@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.ClientInfrastructure.ServicesEntities.Map;
+using TaxiOnline.MapEngine.Common;
+using TaxiOnline.MapEngine.Composing;
 
 namespace TaxiOnline.ClientServicesAdapter.Map
 {
@@ -11,103 +13,113 @@ namespace TaxiOnline.ClientServicesAdapter.Map
     {
         private const double Epsilon = 1e-5;
 
-        protected readonly OsmSharp.UI.Map.Map _map;
+        protected readonly MapBase _map;
         protected MapPoint _mapCenter;
         protected double _mapZoom;
 
         public MapPoint MapCenter
         {
-            get { return _mapCenter; }
-            set
-            {
-                _mapCenter = value;
-                SetMapCenter(value);
-            }
+            get { return _map.Center; }
+            set { _map.Center = value; }
         }
 
         public double MapZoom
         {
-            get { return _mapZoom; }
-            set
-            {
-                _mapZoom = value;
-                SetMapZoom(value);
-            }
+            get { return _map.Zoom; }
+            set { _map.Zoom = value; }
         }
 
-        internal OsmSharp.UI.Map.Map Map
+        internal MapBase Map
         {
             get { return _map; }
         }
 
-        public event EventHandler MapChanged;
+        public event EventHandler MapChanged
+        {
+            add { _map.TotalSizeChanged += value; }
+            remove { _map.TotalSizeChanged -= value; }
+        }
 
-        public event EventHandler MapCenterChanged;
+        public event EventHandler MapCenterChanged
+        {
+            add { _map.CenterChanged += value; }
+            remove { _map.CenterChanged -= value; }
+        }
 
-        public event EventHandler MapZoomChanged;
+        public event EventHandler MapZoomChanged
+        {
+            add { _map.ZoomChanged += value; }
+            remove { _map.ZoomChanged -= value; }
+        }
 
         public MapWrapperBase()
         {
-            _map = new OsmSharp.UI.Map.Map();
-            _map.MapChanged += Map_MapChanged;
+            _map = CreateMap();
         }
 
-        public int LatitudeOffsetToPixels(double from, double to, double longitude)
+        public bool GetPixelsFromCoordinates(MapPoint coordinates, out int x, out int y)
         {
-            OsmSharp.Units.Distance.Meter distance = new OsmSharp.Math.Geo.GeoCoordinate(from, longitude).DistanceEstimate(new OsmSharp.Math.Geo.GeoCoordinate(to, longitude));
-            return (int)(distance.Value / 3980000.0 * 256.0 * Math.Pow(2.0, _mapZoom - 2));
-        }
-
-        public int LongitudeOffsetToPixels(double from, double to, double latitude)
-        {
-            OsmSharp.Units.Distance.Meter distance = new OsmSharp.Math.Geo.GeoCoordinate(latitude, from).DistanceEstimate(new OsmSharp.Math.Geo.GeoCoordinate(latitude, to));
-            return (int)(distance.Value / 3980000.0 * 256.0 * Math.Pow(2.0, _mapZoom - 2));
-        }
-
-        protected abstract void SetMapCenter(MapPoint value);
-
-        protected abstract void SetMapZoom(double value);
-
-        protected abstract MapPoint GetMapCenter();
-
-        protected abstract double GetMapZoom();
-
-        private void Map_MapChanged()
-        {
-            MapPoint mapCenter = GetMapCenter();
-            double mapZoom = GetMapZoom();
-            if (Math.Abs(_mapCenter.Latitude - mapCenter.Latitude) + Math.Abs(_mapCenter.Longitude - mapCenter.Longitude) > Epsilon)
+            BitmapSize? offset = _map.GetOffsetFromCoordinates(coordinates);
+            if (offset.HasValue)
             {
-                _mapCenter = mapCenter;
-                OnMapCenterChanged();
+                x = offset.Value.Width;
+                y = offset.Value.Height;
             }
-            if (Math.Abs(_mapZoom - mapZoom) > Epsilon)
-            {
-                _mapZoom = mapZoom;
-                OnMapZoomChanged();
-            }
-            OnMapChanged();
+            else
+                x = y = 0;
+            return offset.HasValue;
         }
 
-        protected virtual void OnMapChanged()
-        {
-            EventHandler handler = MapChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
+        //public int LatitudeOffsetToPixels(double from, double to, double longitude)
+        //{
+        //    OsmSharp.Units.Distance.Meter distance = new OsmSharp.Math.Geo.GeoCoordinate(from, longitude).DistanceEstimate(new OsmSharp.Math.Geo.GeoCoordinate(to, longitude));
+        //    return (int)(distance.Value / 3980000.0 * 256.0 * Math.Pow(2.0, _mapZoom - 2));
+        //}
 
-        protected virtual void OnMapCenterChanged()
-        {
-            EventHandler handler = MapCenterChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
+        //public int LongitudeOffsetToPixels(double from, double to, double latitude)
+        //{
+        //    OsmSharp.Units.Distance.Meter distance = new OsmSharp.Math.Geo.GeoCoordinate(latitude, from).DistanceEstimate(new OsmSharp.Math.Geo.GeoCoordinate(latitude, to));
+        //    return (int)(distance.Value / 3980000.0 * 256.0 * Math.Pow(2.0, _mapZoom - 2));
+        //}
 
-        protected virtual void OnMapZoomChanged()
-        {
-            EventHandler handler = MapZoomChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
+        protected abstract MapBase CreateMap();
+
+        //private void Map_MapChanged()
+        //{
+        //    MapPoint mapCenter = GetMapCenter();
+        //    double mapZoom = GetMapZoom();
+        //    if (Math.Abs(_mapCenter.Latitude - mapCenter.Latitude) + Math.Abs(_mapCenter.Longitude - mapCenter.Longitude) > Epsilon)
+        //    {
+        //        _mapCenter = mapCenter;
+        //        OnMapCenterChanged();
+        //    }
+        //    if (Math.Abs(_mapZoom - mapZoom) > Epsilon)
+        //    {
+        //        _mapZoom = mapZoom;
+        //        OnMapZoomChanged();
+        //    }
+        //    OnMapChanged();
+        //}
+
+        //protected virtual void OnMapChanged()
+        //{
+        //    EventHandler handler = MapChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
+
+        //protected virtual void OnMapCenterChanged()
+        //{
+        //    EventHandler handler = MapCenterChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
+
+        //protected virtual void OnMapZoomChanged()
+        //{
+        //    EventHandler handler = MapZoomChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
     }
 }

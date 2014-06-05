@@ -11,7 +11,6 @@ using Android.Views;
 using Android.Widget;
 using TaxiOnline.Android.Helpers;
 using TaxiOnline.Logic.Models;
-using OsmSharp.Android.UI;
 using TaxiOnline.ClientInfrastructure.Android.Services;
 using TaxiOnline.Android.Views;
 using TaxiOnline.Android.Adapters;
@@ -33,7 +32,6 @@ namespace TaxiOnline.Android.Activities
         private DriverProfileModel _activeDriverProfileModel;
         private PedestrianProfileModel _activePedestrianProfileModel;
         private ProgressDialogDecorator _authorizationProgressDialogDecorator;
-        private IDisposable _currentMap;
 
         public InteractionModel InteractionModel
         {
@@ -98,9 +96,11 @@ namespace TaxiOnline.Android.Activities
             _interactionModel.CurrentCityChanged += InteractionModel_CurrentCityChanged;
             Button registerButton = FindViewById<Button>(Resource.Id.registerButton);
             registerButton.Click += RegisterButton_Click;
-            LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
-            if (_currentMap == null)
-                _currentMap = ((IAndroidMapService)_cityModel.Map.MapService).VisualizeMap(this, mapLayout);
+            //LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
+            //if (_currentMap == null)
+            //    _currentMap = ((IAndroidMapService)_cityModel.Map.MapService).VisualizeMap(this, mapLayout);
+            View map = FindViewById<View>(Resource.Id.map);
+            ((IAndroidMapService)_cityModel.Map.MapService).HookMap(map);
             AutoCompleteTextView changeCityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.changeCityTextView);
             changeCityTextView.Text = _cityModel.Name;
             changeCityTextView.Adapter = new CitiesAdapter(this, _interactionModel);
@@ -110,8 +110,6 @@ namespace TaxiOnline.Android.Activities
 
         private void UnhookModel()
         {
-            if (_currentMap != null)
-                _currentMap.Dispose();
             UnhookCityModel();
             AutoCompleteTextView changeCityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.changeCityTextView);
             if (changeCityTextView.Adapter != null)

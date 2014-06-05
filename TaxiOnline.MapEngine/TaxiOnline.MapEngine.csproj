@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9EEFE8A1-03B9-4EBB-BCB0-83C59E6F2A40}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TaxiOnline.MapEngine</RootNamespace>
+    <AssemblyName>TaxiOnline.MapEngine</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\..\TaxiOnline\TaxiOnline.ClientInfrastructure\TaxiOnline.ClientInfrastructure.csproj">
+      <Project>{1ef43006-c403-4a27-8fb6-d72f2e39a808}</Project>
+      <Name>TaxiOnline.ClientInfrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TaxiOnline\TaxiOnline.Toolkit\TaxiOnline.Toolkit.csproj">
+      <Project>{8247f1d1-76c4-4ed7-a089-eb9c648fd885}</Project>
+      <Name>TaxiOnline.Toolkit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cache\CacheBase.cs" />
+    <Compile Include="Common\IMapSupplyFactory.cs" />
+    <Compile Include="Common\MapBaseT.cs" />
+    <Compile Include="Common\MapBase.cs" />
+    <Compile Include="Composing\BitmapRect.cs" />
+    <Compile Include="Composing\BitmapSize.cs" />
+    <Compile Include="Composing\BitmapTile.cs" />
+    <Compile Include="Composing\BitmapTileSet.cs" />
+    <Compile Include="Composing\ComposerBase.cs" />
+    <Compile Include="Composing\ObservableBitmapTileSet.cs" />
+    <Compile Include="Geometry\CoordinatesHelper.cs" />
+    <Compile Include="Geometry\MapDistance.cs" />
+    <Compile Include="Geometry\MapSquare.cs" />
+    <Compile Include="Geometry\MapTile.cs" />
+    <Compile Include="Geometry\MapTileSet.cs" />
+    <Compile Include="Geometry\MapVector.cs" />
+    <Compile Include="Geometry\ObservableMapTileSet.cs" />
+    <Compile Include="Layers\HttpTileLayer.cs" />
+    <Compile Include="Layers\LayerBase.cs" />
+    <Compile Include="Layers\TileLayerBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\HttpTileProvider.cs" />
+    <Compile Include="Providers\TileProviderBase.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

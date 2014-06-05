@@ -14,7 +14,8 @@ namespace TaxiOnline.ClientInfrastructure.ServicesEntities.Map
         event EventHandler MapChanged;
         event EventHandler MapCenterChanged;
         event EventHandler MapZoomChanged;
-        int LatitudeOffsetToPixels(double from, double to, double longitude);
-        int LongitudeOffsetToPixels(double from, double to, double latitude);
+        //int LatitudeOffsetToPixels(double from, double to, double longitude);
+        //int LongitudeOffsetToPixels(double from, double to, double latitude);
+        bool GetPixelsFromCoordinates(MapPoint coordinates, out int x, out int y);
     }
 }

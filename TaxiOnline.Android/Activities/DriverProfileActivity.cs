@@ -56,8 +56,10 @@ namespace TaxiOnline.Android.Activities
                     errorToast.Show();
                 _loadProgressDialogDecorator.Hide();
             };
-            LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
-            ((IAndroidMapService)_model.Map.MapService).VisualizeMap(this, mapLayout);
+            //LinearLayout mapLayout = FindViewById<LinearLayout>(Resource.Id.mapLayout);
+            //((IAndroidMapService)_model.Map.MapService).VisualizeMap(this, mapLayout);
+            View map = FindViewById<View>(Resource.Id.map);
+            ((IAndroidMapService)_model.Map.MapService).HookMap(map);
             CanvasView driverProfileView = FindViewById<CanvasView>(Resource.Id.driverProfileView);
             DriverProfileAdapter driverProfileAdapter = new DriverProfileAdapter(this, _model);
             driverProfileView.LayoutChange += (sender, e) => driverProfileAdapter.UpdatePedestrianInfoPopups();

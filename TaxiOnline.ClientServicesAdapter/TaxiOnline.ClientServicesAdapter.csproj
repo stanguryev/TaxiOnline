@@ -40,6 +40,10 @@
       <Project>{1EF43006-C403-4A27-8FB6-D72F2E39A808}</Project>
       <Name>TaxiOnline.ClientInfrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TaxiOnline.MapEngine\TaxiOnline.MapEngine.csproj">
+      <Project>{9eefe8a1-03b9-4ebb-bcb0-83c59e6f2a40}</Project>
+      <Name>TaxiOnline.MapEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TaxiOnline.ServiceContract\TaxiOnline.ServiceContract.csproj">
       <Project>{B6B7ECB5-3EC4-4993-AE6C-87E8B94E9C37}</Project>
       <Name>TaxiOnline.ServiceContract</Name>
@@ -73,17 +77,6 @@
     <Compile Include="ServicesFactoryBase.cs" />
     <Compile Include="Settings\SettingsAdapter.cs" />
     <Compile Include="Settings\SettingsObject.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="OsmSharp">
-      <HintPath>..\Libs\OsmSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="OsmSharp.Osm">
-      <HintPath>..\Libs\OsmSharp.Osm.dll</HintPath>
-    </Reference>
-    <Reference Include="OsmSharp.UI">
-      <HintPath>..\Libs\OsmSharp.UI.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

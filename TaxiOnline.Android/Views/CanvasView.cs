@@ -94,13 +94,18 @@ namespace TaxiOnline.Android.Views
             for (int i = 0; i < _adapter.Count; i++)
             {
                 View currentView = _adapter.GetView(i, null, this);
+                AbsoluteLayout.LayoutParams layoutParameters = currentView.LayoutParameters as AbsoluteLayout.LayoutParams;
+                if (layoutParameters == null)
+                    continue;
                 AddViewInLayout(currentView, i, currentView.LayoutParameters, true);
                 currentView.Measure(MeasureSpec.MakeMeasureSpec(Width, MeasureSpecMode.AtMost), MeasureSpec.MakeMeasureSpec(Height, MeasureSpecMode.AtMost));
             }
             for (int i = 0; i < ChildCount; i++)
             {
                 View currentView = GetChildAt(i);
-                AbsoluteLayout.LayoutParams layoutParameters = (AbsoluteLayout.LayoutParams)currentView.LayoutParameters;
+                AbsoluteLayout.LayoutParams layoutParameters = currentView.LayoutParameters as AbsoluteLayout.LayoutParams;
+                if (layoutParameters == null)
+                    continue;
                 int viewLeft = layoutParameters.X;
                 int viewTop = layoutParameters.Y;
                 int viewRight = layoutParameters.X + layoutParameters.Width;

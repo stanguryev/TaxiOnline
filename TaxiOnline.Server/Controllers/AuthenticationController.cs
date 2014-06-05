@@ -25,5 +25,16 @@ namespace TaxiOnline.Server.Controllers
                 return InternalServerError();
             return Ok();
         }
+
+        [Route("api/Authentication/AuthenticateAsDriver")]
+        [HttpPost]
+        public IHttpActionResult AuthenticateAsDriver(DriverAuthenticationDTO authenticationInfo)
+        {
+            InteractionModel interactionModel = InteractionModel.Instance;
+            CityModel cityModel = interactionModel.Cities.FirstOrDefault(city => city.Id == authenticationInfo.CityId);
+            if (cityModel == null)
+                return InternalServerError();
+            return Ok();
+        }
     }
 }

@@ -4,9 +4,10 @@
     android:layout_height="fill_parent"
     android:width="200sp"
     android:height="200sp"
-    android:id="@+id/mapLayout">
-    <!-- OsmSharp.Android.UI.MapView
+>
+    <TaxiOnline.MapEngine.Android.Views.MapView
         android:id="@+id/map"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" -->
+        android:layout_height="fill_parent" />
+
 </LinearLayout>

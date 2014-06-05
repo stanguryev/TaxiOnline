@@ -12,6 +12,7 @@ using Android.Widget;
 using TaxiOnline.ClientInfrastructure.Android.Services;
 using TaxiOnline.ClientServicesAdapter.Map;
 using TaxiOnline.ClientInfrastructure.Data;
+using TaxiOnline.MapEngine.Android.Views;
 
 namespace TaxiOnline.ClientAdapters.Android.Services.Map
 {
@@ -28,9 +29,14 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Map
             return new AndroidMapWrapper();
         }
 
-        public IDisposable VisualizeMap(Context context, ViewGroup viewGroup)
+        //public IDisposable VisualizeMap(Context context, ViewGroup viewGroup)
+        //{
+        //    return ((AndroidMapWrapper)_map).VisualizeMap(context, viewGroup);
+        //}
+
+        public void HookMap(View map)
         {
-            return ((AndroidMapWrapper)_map).VisualizeMap(context, viewGroup);
+            ((AndroidMapWrapper)_map).HookMap((MapView)map);
         }
     }
 }
