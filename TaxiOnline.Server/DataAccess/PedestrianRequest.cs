@@ -10,7 +10,7 @@ namespace TaxiOnline.Server.DataAccess
     {
         public PedestrianRequest()
         {
-            DriverResponses = new HashSet<DriverRespons>();
+            DriverResponses = new HashSet<DriverResponse>();
         }
 
         public Guid Id { get; set; }
@@ -22,7 +22,7 @@ namespace TaxiOnline.Server.DataAccess
         [StringLength(500)]
         public string Comment { get; set; }
 
-        public virtual ICollection<DriverRespons> DriverResponses { get; set; }
+        public virtual ICollection<DriverResponse> DriverResponses { get; set; }
 
         public virtual DriversInfo DriversInfo { get; set; }
 

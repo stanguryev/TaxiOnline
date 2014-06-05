@@ -15,7 +15,7 @@ namespace TaxiOnline.Server.DataAccess
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<CityName> CityNames { get; set; }
         public virtual DbSet<DriverAccount> DriverAccounts { get; set; }
-        public virtual DbSet<DriverRespons> DriverResponses { get; set; }
+        public virtual DbSet<DriverResponse> DriverResponses { get; set; }
         public virtual DbSet<DriversInfo> DriversInfoes { get; set; }
         public virtual DbSet<PedestrianAccount> PedestrianAccounts { get; set; }
         public virtual DbSet<PedestrianRequest> PedestrianRequests { get; set; }

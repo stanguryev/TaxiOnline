@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
@@ -36,6 +37,18 @@ namespace TaxiOnline.Server
                     .ForMember(dst => dst.Altitude, map => map.MapFrom(c => c.PersonsInfo.Altitude))
                     .ForMember(dst => dst.PhoneNumber, map => map.MapFrom(c => c.PersonsInfo.PersonAccount.PhoneNumber))
                     .ForMember(dst => dst.SkypeNumber, map => map.MapFrom(c => c.PersonsInfo.PersonAccount.SkypeNumber));
+                cfg.CreateMap<DriversInfo, DriverDTO>()
+                    .ForMember(dst => dst.Id, map => map.MapFrom(c => c.PersonsInfo.PersonId.ToString()))
+                    .ForMember(dst => dst.CityId, map => map.MapFrom(c => c.PersonsInfo.CityId))
+                    .ForMember(dst => dst.Latitude, map => map.MapFrom(c => c.PersonsInfo.Latitude))
+                    .ForMember(dst => dst.Longitude, map => map.MapFrom(c => c.PersonsInfo.Longitude))
+                    .ForMember(dst => dst.Altitude, map => map.MapFrom(c => c.PersonsInfo.Altitude))
+                    .ForMember(dst => dst.PhoneNumber, map => map.MapFrom(c => c.PersonsInfo.PersonAccount.PhoneNumber))
+                    .ForMember(dst => dst.SkypeNumber, map => map.MapFrom(c => c.PersonsInfo.PersonAccount.SkypeNumber))
+                    .ForMember(dst => dst.PersonName, map => map.MapFrom(c => c.PersonsInfo.PersonAccount.DriverAccounts.FirstOrDefault().PersonName))
+                    .ForMember(dst => dst.CarColor, map => map.MapFrom(c => c.PersonsInfo.PersonAccount.DriverAccounts.FirstOrDefault().CarColor))
+                    .ForMember(dst => dst.CarBrand, map => map.MapFrom(c => c.PersonsInfo.PersonAccount.DriverAccounts.FirstOrDefault().CarBrand))
+                    .ForMember(dst => dst.CarNumber, map => map.MapFrom(c => c.PersonsInfo.PersonAccount.DriverAccounts.FirstOrDefault().CarNumber));
             });
 
             Database.SetInitializer(new DatabaseModelInitializer());

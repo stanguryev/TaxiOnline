@@ -9,6 +9,7 @@ using TaxiOnline.Server.Models;
 using TaxiOnline.Server.DomainManagers;
 using TaxiOnline.Server.DataObjects;
 using TaxiOnline.Server.Authentication;
+using Microsoft.WindowsAzure.Mobile.Service.Security;
 
 namespace TaxiOnline.Server.Controllers
 {
@@ -36,14 +37,14 @@ namespace TaxiOnline.Server.Controllers
             return Lookup(id);
         }
 
-        [AuthorizeLevel(Microsoft.WindowsAzure.Mobile.Service.Security.AuthorizationLevel.Admin)]
+        [AuthorizeLevel(AuthorizationLevel.Admin)]
         // PATCH tables/Pedestrians/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public Task<PedestrianDTO> PatchPedestrianModel(string id, Delta<PedestrianDTO> patch)
         {
             return UpdateAsync(id, patch);
         }
 
-        [AuthorizeLevel(Microsoft.WindowsAzure.Mobile.Service.Security.AuthorizationLevel.Admin)]
+        [AuthorizeLevel(AuthorizationLevel.Admin)]
         // POST tables/Pedestrians/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public async Task<IHttpActionResult> PostPedestrianModel(PedestrianDTO item)
         {
@@ -51,7 +52,7 @@ namespace TaxiOnline.Server.Controllers
             return CreatedAtRoute("Tables", new { id = current.Id }, current);
         }
 
-        [AuthorizeLevel(Microsoft.WindowsAzure.Mobile.Service.Security.AuthorizationLevel.Admin)]
+        [AuthorizeLevel(AuthorizationLevel.Admin)]
         // DELETE tables/Pedestrians/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public Task DeletePedestrianModel(string id)
         {

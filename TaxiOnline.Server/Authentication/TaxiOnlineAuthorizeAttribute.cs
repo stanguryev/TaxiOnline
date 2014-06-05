@@ -14,7 +14,10 @@ namespace TaxiOnline.Server.Authentication
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             if (actionContext.Request.Headers.Authorization == null || actionContext.Request.Headers.Authorization.Scheme != TaxiOnlineIdentity.AuthenticationTypeName || string.IsNullOrEmpty(actionContext.Request.Headers.Authorization.Parameter))
+            {
                 HandleUnauthorizedRequest(actionContext);
+                return;
+            }
             AuthenticationRequestDTO request = JsonConvert.DeserializeObject<AuthenticationRequestDTO>(actionContext.Request.Headers.Authorization.Parameter);
             System.Threading.Thread.CurrentPrincipal = new TaxiOnlineUser(request);
         }

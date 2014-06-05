@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.Mobile.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace TaxiOnline.Server.DataObjects
 {
-    public class PedestrianDTO : Microsoft.WindowsAzure.Mobile.Service.EntityData
+    public class PedestrianDTO : EntityData
     {
         public string PhoneNumber { get; set; }
 

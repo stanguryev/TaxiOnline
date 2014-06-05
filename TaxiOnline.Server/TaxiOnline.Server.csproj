@@ -183,12 +183,13 @@
     <Compile Include="Authentication\TaxiOnlineIdentity.cs" />
     <Compile Include="Authentication\TaxiOnlineUser.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
+    <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\PedestriansController.cs" />
     <Compile Include="DataAccess\City.cs" />
     <Compile Include="DataAccess\CityName.cs" />
     <Compile Include="DataAccess\DatabaseModel.cs" />
     <Compile Include="DataAccess\DriverAccount.cs" />
-    <Compile Include="DataAccess\DriverRespons.cs" />
+    <Compile Include="DataAccess\DriverResponse.cs" />
     <Compile Include="DataAccess\DriversInfo.cs" />
     <Compile Include="DataAccess\PedestrianAccount.cs" />
     <Compile Include="DataAccess\PedestrianRequest.cs" />
@@ -196,8 +197,10 @@
     <Compile Include="DataAccess\PersonAccount.cs" />
     <Compile Include="DataAccess\PersonsInfo.cs" />
     <Compile Include="DataObjects\AuthenticationRequestDTO.cs" />
+    <Compile Include="DataObjects\DriverDTO.cs" />
     <Compile Include="DataObjects\PedestrianAuthenticationDTO.cs" />
     <Compile Include="DataObjects\PedestrianDTO.cs" />
+    <Compile Include="DomainManagers\DriversDomainManager.cs" />
     <Compile Include="DomainManagers\PedestriansDomainManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -228,6 +231,12 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TaxiOnline.Toolkit\TaxiOnline.Toolkit.csproj">
+      <Project>{8247f1d1-76c4-4ed7-a089-eb9c648fd885}</Project>
+      <Name>TaxiOnline.Toolkit</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

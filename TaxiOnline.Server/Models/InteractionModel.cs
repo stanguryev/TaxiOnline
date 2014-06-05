@@ -5,17 +5,18 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using TaxiOnline.Server.DataAccess;
+using TaxiOnline.Toolkit.Threading.CollectionsDecorators;
 
 namespace TaxiOnline.Server.Models
 {
     public class InteractionModel
     {
         private static readonly Lazy<InteractionModel> _instance = new Lazy<InteractionModel>(() => new InteractionModel(), true);
-        private readonly ObservableCollection<CityModel> _cities = new ObservableCollection<CityModel>();
+        private readonly ReadonlyCollectionDecorator<CityModel> _cities = new ReadonlyCollectionDecorator<CityModel>();
 
         public IEnumerable<CityModel> Cities
         {
-            get { return _cities; }
+            get { return _cities.Items; }
         }
 
         public static InteractionModel Instance
@@ -31,13 +32,16 @@ namespace TaxiOnline.Server.Models
                 dbContext.Set<City>().Load();
                 cities = dbContext.Set<City>().ToArray();
             }
-            _cities.Clear();
-            foreach (City cityDA in cities)
+            _cities.ModifyCollection(col =>
             {
-                CityModel city = new CityModel(cityDA);
-                city.LoadDb();
-                _cities.Add(city);
-            }
+                col.Clear();
+                foreach (City cityDA in cities)
+                {
+                    CityModel city = new CityModel(cityDA);
+                    city.LoadDb();
+                    col.Add(city);
+                }
+            });
         }
     }
 }
