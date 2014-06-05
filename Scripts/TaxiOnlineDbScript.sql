@@ -437,8 +437,6 @@ GO
 
 CREATE TABLE [dbo].[OnlinePedestrians](
 	[Id] [nvarchar](128) NOT NULL,
-	[Text] [nvarchar](max) NULL,
-	[Complete] [bit] NOT NULL,
 	[Version] [timestamp] NOT NULL,
 	[CreatedAt] [datetimeoffset](7) NOT NULL,
 	[UpdatedAt] [datetimeoffset](7) NULL,
@@ -454,7 +452,7 @@ CREATE TABLE [dbo].[OnlinePedestrians](
 (
 	[Id] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY]
 
 GO
 
@@ -483,8 +481,6 @@ GO
 
 CREATE TABLE [dbo].[OnlineDrivers](
 	[Id] [nvarchar](128) NOT NULL,
-	[Text] [nvarchar](max) NULL,
-	[Complete] [bit] NOT NULL,
 	[Version] [timestamp] NOT NULL,
 	[CreatedAt] [datetimeoffset](7) NOT NULL,
 	[UpdatedAt] [datetimeoffset](7) NULL,
@@ -504,7 +500,7 @@ CREATE TABLE [dbo].[OnlineDrivers](
 (
 	[Id] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY]
 
 GO
 
