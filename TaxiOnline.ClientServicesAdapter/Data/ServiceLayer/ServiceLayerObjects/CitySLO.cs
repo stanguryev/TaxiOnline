@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaxiOnline.ClientInfrastructure.ServicesEntities.DataService;
+using TaxiOnline.ClientServicesAdapter.Data.DataObjects;
 using TaxiOnline.ServiceContract.DataContracts;
 
 namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
@@ -53,6 +54,15 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
             _initialLatitude = dataContract.InitialLatitude;
             _initialLongitude = dataContract.InitialLongitude;
             _initialZoom = dataContract.InitialZoom;
+        }
+
+        public CitySLO(CityDTO dto)
+        {
+            _id = dto.Id;
+            _name = dto.CityName;
+            _initialLatitude = dto.InitialLatitude;
+            _initialLongitude = dto.InitialLongitude;
+            _initialZoom = dto.InitialZoom;
         }
     }
 }

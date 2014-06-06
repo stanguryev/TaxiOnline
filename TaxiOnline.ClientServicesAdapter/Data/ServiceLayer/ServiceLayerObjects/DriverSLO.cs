@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.ClientInfrastructure.ServicesEntities.DataService;
+using TaxiOnline.ClientServicesAdapter.Data.DataObjects;
 using TaxiOnline.ServiceContract.DataContracts;
 
 namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
@@ -46,6 +47,23 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
             _carColor = dataContract.CarColor;
             _carBrand = dataContract.CarBrand;
             _carNumber = dataContract.CarNumber;
+        }
+
+        public DriverSLO(DriverDTO dto)
+            : base(new PersonDataContract
+            {
+                CurrentLocationLatidude = dto.Latitude.Value,
+                CurrentLocationLongitude = dto.Longitude.Value,
+                IsOnline = true,
+                PersonId = Guid.Parse(dto.Id),
+                PhoneNumber = dto.PhoneNumber,
+                SkypeNumber = dto.SkypeNumber
+            })
+        {
+            _personName = dto.PersonName;
+            _carColor = dto.CarColor;
+            _carBrand = dto.CarBrand;
+            _carNumber = dto.CarNumber;
         }
     }
 }

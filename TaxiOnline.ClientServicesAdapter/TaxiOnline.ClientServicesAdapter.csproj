@@ -54,6 +54,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\DataObjects\CityDTO.cs" />
+    <Compile Include="Data\DataObjects\DriverDTO.cs" />
+    <Compile Include="Data\DataObjects\PedestrianDTO.cs" />
+    <Compile Include="Data\ServiceLayer\AzureMobileServiceImpl.cs" />
     <Compile Include="Data\ServiceLayer\CallbackManager.cs" />
     <Compile Include="Data\ServiceLayer\DataServiceImpl.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\AuthenticationRequestSLO.cs" />
@@ -65,6 +69,7 @@
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\PedestrianRequestSLO.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\PedestrianSLO.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\PersonSLO.cs" />
+    <Compile Include="Data\Service\AzureMobileServicesProxy.cs" />
     <Compile Include="Data\Service\CallbackWrapper.cs" />
     <Compile Include="Data\Service\ServiceProxy.cs" />
     <Compile Include="Hardware\HardwareAdapter.cs" />
@@ -78,6 +83,21 @@
     <Compile Include="Settings\SettingsAdapter.cs" />
     <Compile Include="Settings\SettingsObject.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.WindowsAzure.Mobile">
+      <HintPath>..\Libs\Microsoft.WindowsAzure.Mobile.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Libs\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\Libs\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\Libs\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

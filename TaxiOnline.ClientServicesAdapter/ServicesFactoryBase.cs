@@ -14,7 +14,7 @@ namespace TaxiOnline.ClientServicesAdapter
 
         public ServicesFactoryBase()
         {
-            _dataService = new Lazy<IDataService>(() => new TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.DataServiceImpl(GetCurrentSettingsService().CurrentSettings.ServerEndpointAddress), true);
+            _dataService = new Lazy<IDataService>(() => new TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.AzureMobileServiceImpl(GetCurrentSettingsService().CurrentSettings.ServerEndpointAddress), true);
         }
 
         public abstract IMapService GetCurrentMapService();
