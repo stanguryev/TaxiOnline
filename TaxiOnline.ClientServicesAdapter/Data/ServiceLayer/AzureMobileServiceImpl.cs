@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.ClientInfrastructure.Services;
 using TaxiOnline.ClientInfrastructure.ServicesEntities.DataService;
 using TaxiOnline.ClientServicesAdapter.Data.DataObjects;
@@ -17,9 +18,9 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
     {
         private readonly AzureMobileServicesProxy _proxy;
 
-        public ClientInfrastructure.Data.ConnectionState ConnectionState
+        public ConnectionState ConnectionState
         {
-            get { return ClientInfrastructure.Data.ConnectionState.Online; }
+            get { return ConnectionState.Online; }
         }
 
         public event EventHandler ConnectionStateChanged;
@@ -35,78 +36,100 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
             _proxy = new AzureMobileServicesProxy(serverEndpointAddress);
         }
 
-        public Toolkit.Events.ActionResult<IEnumerable<ClientInfrastructure.ServicesEntities.DataService.ICityInfo>> EnumerateCities(string userCultureName)
+        public ActionResult<IEnumerable<ICityInfo>> EnumerateCities(string userCultureName)
         {
             return RequestCollection<ICityInfo, CityDTO>(client => GetAsyncResult(() => client.InvokeApiAsync<IEnumerable<CityDTO>>(string.Format("Dictionary/EnumerateCities/{0}", userCultureName))), dto => new CitySLO(dto));
         }
 
-        public Toolkit.Events.ActionResult<IEnumerable<ClientInfrastructure.ServicesEntities.DataService.IPersonInfo>> EnumerateAllPersons(Guid cityId)
+        public ActionResult<IEnumerable<IPersonInfo>> EnumerateAllPersons(Guid cityId)
         {
             return ActionResult<IEnumerable<IPersonInfo>>.GetValidResult(new IPersonInfo[0]);
         }
 
-        public Toolkit.Events.ActionResult<IEnumerable<ClientInfrastructure.ServicesEntities.DataService.IPedestrianInfo>> EnumeratePedestrians(Guid cityId)
+        public ActionResult<IEnumerable<IPedestrianInfo>> EnumeratePedestrians(Guid cityId)
         {
             return RequestCollection<IPedestrianInfo, PedestrianDTO>(client => GetAsyncResult(() => client.GetTable<PedestrianDTO>().ToCollectionAsync()), dto => new PedestrianSLO(dto));
         }
 
-        public Toolkit.Events.ActionResult<IEnumerable<ClientInfrastructure.ServicesEntities.DataService.IDriverInfo>> EnumerateDrivers(Guid cityId)
+        public ActionResult<IEnumerable<IDriverInfo>> EnumerateDrivers(Guid cityId)
         {
             return RequestCollection<IDriverInfo, DriverDTO>(client => GetAsyncResult(() => client.GetTable<DriverDTO>().ToCollectionAsync()), dto => new DriverSLO(dto));
         }
 
-        public Toolkit.Events.ActionResult<IEnumerable<ClientInfrastructure.ServicesEntities.DataService.IPedestrianRequest>> EnumeratePedestrianRequests(Guid cityId)
+        public ActionResult<IEnumerable<IPedestrianRequest>> EnumeratePedestrianRequests(Guid cityId)
+        {
+            return ActionResult<IEnumerable<IPedestrianRequest>>.GetValidResult(new IPedestrianRequest[0]);
+        }
+
+        public ActionResult<IEnumerable<IDriverResponse>> EnumerateDriverResponses(Guid cityId)
+        {
+            return ActionResult<IEnumerable<IDriverResponse>>.GetValidResult(new IDriverResponse[0]);
+        }
+
+        public IPedestrianRequest CreatePedestrianRequest(Guid pedestrianId, Guid driverId)
+        {
+            return new PedestrianRequestSLO(pedestrianId, driverId);
+        }
+
+        public ActionResult PushPedestrianRequest(IPedestrianRequest requestSLO)
         {
             throw new NotImplementedException();
         }
 
-        public Toolkit.Events.ActionResult<IEnumerable<ClientInfrastructure.ServicesEntities.DataService.IDriverResponse>> EnumerateDriverResponses(Guid cityId)
+        public ActionResult RemovePedestrianRequest(Guid requestId)
         {
             throw new NotImplementedException();
         }
 
-        public ClientInfrastructure.ServicesEntities.DataService.IPedestrianRequest CreatePedestrianRequest(Guid pedestrianId, Guid driverId)
+        public ActionResult<IDriverResponse> ConfirmPedestrianRequest(Guid requestId)
         {
             throw new NotImplementedException();
         }
 
-        public Toolkit.Events.ActionResult PushPedestrianRequest(ClientInfrastructure.ServicesEntities.DataService.IPedestrianRequest requestSLO)
+        public ActionResult RejectPedestrianRequest(Guid requestId)
         {
             throw new NotImplementedException();
         }
 
-        public Toolkit.Events.ActionResult RemovePedestrianRequest(Guid requestId)
+        public ActionResult RemoveDriverResponse(Guid responseId)
         {
             throw new NotImplementedException();
         }
 
-        public Toolkit.Events.ActionResult<ClientInfrastructure.ServicesEntities.DataService.IDriverResponse> ConfirmPedestrianRequest(Guid requestId)
+        public ActionResult StopRejectPedestrianRequest(Guid requestId)
         {
             throw new NotImplementedException();
         }
 
-        public Toolkit.Events.ActionResult RejectPedestrianRequest(Guid requestId)
+        public IAuthenticationRequest CreateAuthenticationRequest(ParticipantTypes requestType, string deviceId, Guid cityId)
         {
-            throw new NotImplementedException();
+            switch (requestType)
+            {
+                case ParticipantTypes.Driver:
+                    return new DriverAuthenticationRequestSLO(cityId);
+                    break;
+                case ParticipantTypes.Pedestrian:
+                    return new PedestrianAuthenticationRequestSLO(cityId);
+                    break;
+                default:
+                    throw new NotImplementedException();
+                    break;
+            }
         }
 
-        public Toolkit.Events.ActionResult RemoveDriverResponse(Guid responseId)
+        public ActionResult<IPersonInfo> Authenticate(IAuthenticationRequest request)
         {
-            throw new NotImplementedException();
-        }
-
-        public Toolkit.Events.ActionResult StopRejectPedestrianRequest(Guid requestId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ClientInfrastructure.ServicesEntities.DataService.IAuthenticationRequest CreateAuthenticationRequest(ClientInfrastructure.Data.ParticipantTypes requestType, string deviceId, Guid cityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Toolkit.Events.ActionResult<ClientInfrastructure.ServicesEntities.DataService.IPersonInfo> Authenticate(ClientInfrastructure.ServicesEntities.DataService.IAuthenticationRequest request)
-        {
+            MobileServiceClient client = _proxy.Channel;
+            if (request is IPedestrianAuthenticationRequest)
+            {
+                ActionResult<PedestrianDTO> dtoResult = _proxy.RunRequestSafe(() => GetAsyncResult(() => client.InvokeApiAsync<PedestrianAuthenticationDTO, PedestrianDTO>("Authentication/AuthenticateAsPedestrian", ((PedestrianAuthenticationRequestSLO)request).CreateDataObject(), System.Net.Http.HttpMethod.Post, new Dictionary<string, string>())), client);
+                return dtoResult.IsValid ? ActionResult<IPersonInfo>.GetValidResult(new PedestrianSLO(dtoResult.Result)) : ActionResult<IPersonInfo>.GetErrorResult(dtoResult); ;
+            }
+            if (request is IDriverAuthenticationRequest)
+            {
+                ActionResult<DriverDTO> dtoResult = _proxy.RunRequestSafe(() => GetAsyncResult(() => client.InvokeApiAsync<DriverAuthenticationDTO, DriverDTO>("Authentication/AuthenticateAsDriver", ((DriverAuthenticationRequestSLO)request).CreateDataObject(), System.Net.Http.HttpMethod.Post, new Dictionary<string, string>())), client);
+                return dtoResult.IsValid ? ActionResult<IPersonInfo>.GetValidResult(new DriverSLO(dtoResult.Result)) : ActionResult<IPersonInfo>.GetErrorResult(dtoResult); ;
+            }
             throw new NotImplementedException();
         }
 

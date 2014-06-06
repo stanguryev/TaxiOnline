@@ -55,7 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DataObjects\CityDTO.cs" />
+    <Compile Include="Data\DataObjects\DriverAuthenticationDTO.cs" />
     <Compile Include="Data\DataObjects\DriverDTO.cs" />
+    <Compile Include="Data\DataObjects\PedestrianAuthenticationDTO.cs" />
     <Compile Include="Data\DataObjects\PedestrianDTO.cs" />
     <Compile Include="Data\ServiceLayer\AzureMobileServiceImpl.cs" />
     <Compile Include="Data\ServiceLayer\CallbackManager.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TaxiOnline.ClientInfrastructure.ServicesEntities.DataService;
+using TaxiOnline.ClientServicesAdapter.Data.DataObjects;
 using TaxiOnline.ServiceContract.DataContracts;
 
 namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
@@ -52,6 +53,22 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
                 CurrentLocationLongitude = CurrentLocation.Longitude,
                 PhoneNumber = PhoneNumber,
                 SkypeNumber = SkypeNumber,
+                PersonName = PersonName,
+                CarColor = CarColor,
+                CarBrand = CarBrand,
+                CarNumber = CarNumber
+            };
+        }
+
+        public DriverAuthenticationDTO CreateDataObject()
+        {
+            return new DriverAuthenticationDTO
+            {
+                CityId = CityId,
+                PhoneNumber = PhoneNumber,
+                SkypeNumber = SkypeNumber,
+                Latitude = CurrentLocation.Latitude,
+                Longitude = CurrentLocation.Longitude,
                 PersonName = PersonName,
                 CarColor = CarColor,
                 CarBrand = CarBrand,
