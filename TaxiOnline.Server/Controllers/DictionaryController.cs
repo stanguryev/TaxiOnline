@@ -14,8 +14,19 @@ namespace TaxiOnline.Server.Controllers
     {
         public ApiServices Services { get; set; }
 
+        // GET api/Dictionary
+        public string Get()
+        {
+            return string.Empty;
+        }
+
         [Route("api/Dictionary/EnumerateCities/{cultureName}")]
         public IEnumerable<CityDTO> EnumerateCities(string cultureName)
+        {
+            return EnumerateCitiesImpl(cultureName).ToArray();
+        }
+
+        public IEnumerable<CityDTO> EnumerateCitiesImpl(string cultureName)
         {
             using (DatabaseModel dbContext = new DatabaseModel())
             {

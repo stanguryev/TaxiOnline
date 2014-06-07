@@ -93,7 +93,10 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Map
 
         protected override TaxiOnline.MapEngine.Common.MapBase CreateMap()
         {
-            return new AndroidMap();
+            return new AndroidMap()
+            {
+                TileSize = new MapEngine.Composing.BitmapSize(256, 256)
+            };
         }
     }
 }

@@ -82,7 +82,12 @@ namespace TaxiOnline.MapEngine.Composing
         public BitmapSize? GetOffsetFromCoordinates(MapPoint coordinates)
         {
             BitmapTile targetTile = _collection.FirstOrDefault(tile => tile.ContainsCoordinates(coordinates));
-            return targetTile == null ? null : (BitmapSize?)targetTile.GetOffsetFromCoordinates(coordinates, _totalSize, _zoom);
+            if (targetTile == null)
+                return null;
+            BitmapRect bounds = GetSquareBitmapBounds(targetTile.Tile);
+            BitmapSize tileOffset = targetTile.GetOffsetFromCoordinates(coordinates, _totalSize, _zoom);
+            return new BitmapSize(bounds.Left + tileOffset.Width, bounds.Top + tileOffset.Height);
+            //return targetTile == null ? null : (BitmapSize?)targetTile.GetOffsetFromCoordinates(coordinates, _totalSize, _zoom);
         }
 
         private IEnumerable<BitmapTile> EnumerateBitmapTiles()

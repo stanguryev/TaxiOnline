@@ -46,7 +46,7 @@ namespace TaxiOnline.Server.Models
 
         public void LoadDb()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

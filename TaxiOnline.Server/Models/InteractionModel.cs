@@ -24,6 +24,11 @@ namespace TaxiOnline.Server.Models
             get { return InteractionModel._instance.Value; }
         }
 
+        public InteractionModel()
+        {
+            LoadDb();
+        }
+
         public void LoadDb()
         {
             City[] cities;

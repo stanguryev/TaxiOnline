@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
   <style name="OverlayButton" parent="@android:style/Widget.Button">
-    <item name="android:background">@color/OverlayButtonColor</item>
+    <!--<item name="android:background">@color/OverlayButtonColor</item>-->
   </style>
   <style name="OverlayImageButton" parent="@android:style/Widget.ImageButton">
-    <item name="android:background">@color/OverlayButtonColor</item>
+    <!--<item name="android:background">@color/OverlayButtonColor</item>-->
   </style>
   <style name="PopupLinearLayout">
     <!--<item name="android:background">@android:color/holo_red_light</item>-->

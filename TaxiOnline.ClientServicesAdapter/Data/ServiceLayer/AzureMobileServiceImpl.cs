@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using TaxiOnline.ClientInfrastructure.Data;
@@ -53,7 +54,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
 
         public ActionResult<IEnumerable<IDriverInfo>> EnumerateDrivers(Guid cityId)
         {
-            return RequestCollection<IDriverInfo, DriverDTO>(client => GetAsyncResult(() => client.GetTable<DriverDTO>().ToCollectionAsync()), dto => new DriverSLO(dto));
+            return RequestCollection<IDriverInfo, Drivers>(client => GetAsyncResult(() => client.GetTable<Drivers>().ToCollectionAsync()), dto => new DriverSLO(dto));
         }
 
         public ActionResult<IEnumerable<IPedestrianRequest>> EnumeratePedestrianRequests(Guid cityId)
@@ -127,7 +128,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
             }
             if (request is IDriverAuthenticationRequest)
             {
-                ActionResult<DriverDTO> dtoResult = _proxy.RunRequestSafe(() => GetAsyncResult(() => client.InvokeApiAsync<DriverAuthenticationDTO, DriverDTO>("Authentication/AuthenticateAsDriver", ((DriverAuthenticationRequestSLO)request).CreateDataObject(), System.Net.Http.HttpMethod.Post, new Dictionary<string, string>())), client);
+                ActionResult<Drivers> dtoResult = _proxy.RunRequestSafe(() => GetAsyncResult(() => client.InvokeApiAsync<DriverAuthenticationDTO, Drivers>("Authentication/AuthenticateAsDriver", ((DriverAuthenticationRequestSLO)request).CreateDataObject(), System.Net.Http.HttpMethod.Post, new Dictionary<string, string>())), client);
                 return dtoResult.IsValid ? ActionResult<IPersonInfo>.GetValidResult(new DriverSLO(dtoResult.Result)) : ActionResult<IPersonInfo>.GetErrorResult(dtoResult); ;
             }
             throw new NotImplementedException();

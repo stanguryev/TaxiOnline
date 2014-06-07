@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaxiOnline.ClientServicesAdapter.Data.DataObjects
 {
-    public class DriverDTO
+    public class Drivers//DriverDTO
     {
         public string Id { get; set; }
 

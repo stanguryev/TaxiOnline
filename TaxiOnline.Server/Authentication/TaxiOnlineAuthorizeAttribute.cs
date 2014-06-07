@@ -15,7 +15,7 @@ namespace TaxiOnline.Server.Authentication
         {
             if (actionContext.Request.Headers.Authorization == null || actionContext.Request.Headers.Authorization.Scheme != TaxiOnlineIdentity.AuthenticationTypeName || string.IsNullOrEmpty(actionContext.Request.Headers.Authorization.Parameter))
             {
-                HandleUnauthorizedRequest(actionContext);
+                //HandleUnauthorizedRequest(actionContext);
                 return;
             }
             AuthenticationRequestDTO request = JsonConvert.DeserializeObject<AuthenticationRequestDTO>(actionContext.Request.Headers.Authorization.Parameter);

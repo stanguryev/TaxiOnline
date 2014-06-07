@@ -26,6 +26,7 @@ namespace TaxiOnline.Server.Controllers
         // GET tables/Drivers
         public IQueryable<DriverDTO> GetAllDriverDTO()
         {
+            InteractionModel.Instance.Cities.ToArray();
             return Query();
         }
 

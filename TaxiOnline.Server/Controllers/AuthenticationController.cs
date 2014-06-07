@@ -23,7 +23,14 @@ namespace TaxiOnline.Server.Controllers
             CityModel cityModel = interactionModel.Cities.FirstOrDefault(city => city.Id == authenticationInfo.CityId);
             if (cityModel == null)
                 return InternalServerError();
-            return Ok();
+            return Ok<PedestrianDTO>(new PedestrianDTO
+            {
+                Id = Guid.NewGuid().ToString(),
+                Latitude = authenticationInfo.Latitude,
+                Longitude = authenticationInfo.Longitude,
+                PhoneNumber = authenticationInfo.PhoneNumber,
+                SkypeNumber = authenticationInfo.SkypeNumber
+            });
         }
 
         [Route("api/Authentication/AuthenticateAsDriver")]
@@ -34,7 +41,18 @@ namespace TaxiOnline.Server.Controllers
             CityModel cityModel = interactionModel.Cities.FirstOrDefault(city => city.Id == authenticationInfo.CityId);
             if (cityModel == null)
                 return InternalServerError();
-            return Ok();
+            return Ok<DriverDTO>(new DriverDTO
+            {
+                Id = Guid.NewGuid().ToString(),
+                Latitude = authenticationInfo.Latitude,
+                Longitude = authenticationInfo.Longitude,
+                PhoneNumber = authenticationInfo.PhoneNumber,
+                SkypeNumber = authenticationInfo.SkypeNumber,
+                PersonName = authenticationInfo.PersonName,
+                CarBrand = authenticationInfo.CarBrand,
+                CarColor = authenticationInfo.CarColor,
+                CarNumber = authenticationInfo.CarNumber
+            });
         }
     }
 }
