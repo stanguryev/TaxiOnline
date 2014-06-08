@@ -31,6 +31,10 @@ namespace TaxiOnline.Android.Activities
 
         public MainActivity()
         {
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                //global::Android.Util.Log.Wtf("", "{0} with {1}", ((Exception)e.ExceptionObject).Message, ((Exception)e.ExceptionObject).StackTrace);
+            };
             AndroidAdaptersExtender extender = new AndroidAdaptersExtender(PreferenceManager.GetDefaultSharedPreferences(Application.Context));
             _model = new InteractionModel(extender);
         }
@@ -40,12 +44,12 @@ namespace TaxiOnline.Android.Activities
             base.OnCreate(bundle);
             _connectionProgressDialogDecorator = new ProgressDialogDecorator(this, Resources.GetString(Resource.String.ConnectingToServerTitle), Resources.GetString(Resource.String.ConnectingToServerMessage));
             RequestWindowFeature(WindowFeatures.ActionBar);
-            SetContentView(Resource.Layout.MainLayout);             
+            SetContentView(Resource.Layout.MainLayout);
             HookModel();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
-        {            
+        {
             ActionBar.SetDisplayShowCustomEnabled(true);
             ActionBar.SetCustomView(Resource.Layout.ActionBarLayout);
             ActionBar.Show();

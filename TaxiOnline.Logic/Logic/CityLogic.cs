@@ -22,6 +22,11 @@ namespace TaxiOnline.Logic.Logic
         private readonly SimpleCollectionLoadDecorator<IDriverResponse> _driverResponses;
         private ActionResult _lastDriverResponsesResult = ActionResult.GetErrorResult(new NotSupportedException());
 
+        public MapPoint? CurrentLocation
+        {
+            get { return _interaction.CurrentLocation; }
+        }
+
         public CityModel Model
         {
             get { return _model; }
@@ -30,6 +35,12 @@ namespace TaxiOnline.Logic.Logic
         public IEnumerable<PersonLogic> Persons
         {
             get { return _persons.Items; }
+        }
+
+        public event EventHandler CurrentLocationChanged
+        {
+            add { _interaction.CurrentLocationChanged += value; }
+            remove { _interaction.CurrentLocationChanged -= value; }
         }
 
         public CityLogic(CityModel model, AdaptersExtender adaptersExtender, InteractionLogic interaction)
@@ -47,10 +58,12 @@ namespace TaxiOnline.Logic.Logic
         public ActionResult<ProfileLogic> Authenticate(AuthenticationRequestModel requestModel)
         {
             requestModel.DeviceId = _adaptersExtender.ServicesFactory.GetCurrentHardwareService().GetDeviceId();
-            ActionResult<MapPoint> locationResult = _adaptersExtender.ServicesFactory.GetCurrentHardwareService().GetCurrentLocation();
-            if (!locationResult.IsValid)
+            //ActionResult<MapPoint> locationResult = _adaptersExtender.ServicesFactory.GetCurrentHardwareService().GetCurrentLocation();
+            //if (!locationResult.IsValid)
+            //    return ActionResult<ProfileLogic>.GetErrorResult(new HardwareServiceException(HardwareServiceErrors.NoLocationService));
+            if (!_interaction.CurrentLocation.HasValue)
                 return ActionResult<ProfileLogic>.GetErrorResult(new HardwareServiceException(HardwareServiceErrors.NoLocationService));
-            requestModel.CurrentLocation = locationResult.Result;
+            requestModel.CurrentLocation = _interaction.CurrentLocation.Value;
             AuthenticationRequestLogic authenticationRequestLogic = AuthenticationRequestLogic.Create(requestModel, _adaptersExtender, this);
             ActionResult<ProfileLogic> result = authenticationRequestLogic.Authenticate();
             if (result.IsValid)

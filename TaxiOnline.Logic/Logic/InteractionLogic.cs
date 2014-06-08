@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using TaxiOnline.ClientInfrastructure.Data;
 using TaxiOnline.ClientInfrastructure.ServicesEntities.DataService;
 using TaxiOnline.Logic.Common;
 using TaxiOnline.Logic.Common.Enums;
@@ -25,6 +26,12 @@ namespace TaxiOnline.Logic.Logic
         private readonly AdaptersExtender _adaptersExtender;
         private readonly UpdatableCollectionLoadDecorator<CityLogic, ICityInfo> _cities;
         private ProfileLogic _currentProfile;
+        private MapPoint? _currentLocation;
+
+        public MapPoint? CurrentLocation
+        {
+            get { return _currentLocation; }
+        }
 
         public ProfileLogic CurrentProfile
         {
@@ -39,12 +46,14 @@ namespace TaxiOnline.Logic.Logic
         public SettingsLogic Settings
         {
             get { return _settings; }
-        } 
+        }
 
         public MapLogic Map
         {
             get { return _map; }
-        } 
+        }
+
+        public event EventHandler CurrentLocationChanged;
 
         public InteractionLogic(InteractionModel model, AdaptersExtender adaptersExtender)
         {
@@ -59,13 +68,18 @@ namespace TaxiOnline.Logic.Logic
             _cities = new UpdatableCollectionLoadDecorator<CityLogic, ICityInfo>(RetriveCities, CompareCityInfo, c => true, CreateCityLogic);
             _cities.RequestFailed += Cities_RequestFailed;
             UpdateConnectionStateInfo();
+            //System.Threading.Tasks.Task.Factory.StartNew(() =>
+            //{
+            adaptersExtender.ServicesFactory.GetCurrentHardwareService().LocationChanged += CityLogic_LocationChanged;
+            //adaptersExtender.ServicesFactory.GetCurrentHardwareService().RequestLocation();
+            //});
         }
 
         private ActionResult<IEnumerable<CityLogic>> EnumerateCities()
         {
             if (_cities.Items == null)
                 _cities.FillItemsList();
-            return _cities.Items == null ? ActionResult<IEnumerable<CityLogic>>.GetErrorResult(new DataServiceException(new Exception())): ActionResult<IEnumerable<CityLogic>>.GetValidResult(_cities.Items);
+            return _cities.Items == null ? ActionResult<IEnumerable<CityLogic>>.GetErrorResult(new DataServiceException(new Exception())) : ActionResult<IEnumerable<CityLogic>>.GetValidResult(_cities.Items);
         }
 
         private ActionResult<IEnumerable<CityLogic>> RetriveCities()
@@ -96,6 +110,13 @@ namespace TaxiOnline.Logic.Logic
             _model.ConnectionState = _adaptersExtender.ServicesFactory.GetCurrentDataService().ConnectionState;
         }
 
+        public virtual void OnCurrentLocationChanged()
+        {
+            EventHandler handler = CurrentLocationChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
         private void InteractionLogic_ConnectionStateChanged(object sender, EventArgs e)
         {
             UpdateConnectionStateInfo();
@@ -111,6 +132,12 @@ namespace TaxiOnline.Logic.Logic
             CityModel currentCity = _model.CurrentCity;
             if (currentCity != null)
                 currentCity.SetMapInitials();
+        }
+
+        private void CityLogic_LocationChanged(object sender, ValueEventArgs<MapPoint> e)
+        {
+            _currentLocation = e.Value;
+            OnCurrentLocationChanged();
         }
     }
 }

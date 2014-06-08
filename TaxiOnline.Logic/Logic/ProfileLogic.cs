@@ -25,8 +25,11 @@ namespace TaxiOnline.Logic.Logic
             _profileModel = model;
             _adaptersExtender = adaptersExtender;
             _city = city;
-            UpdateCurrentLocation();
-            adaptersExtender.ServicesFactory.GetCurrentHardwareService().LocationChanged += ProfileLogic_LocationChanged;
+            city.CurrentLocationChanged += CityLogic_LocationChanged;
+            if (_city.CurrentLocation.HasValue)
+                _profileModel.CurrentLocation = _city.CurrentLocation.Value;
+            //UpdateCurrentLocation();
+            //adaptersExtender.ServicesFactory.GetCurrentHardwareService().LocationChanged += ProfileLogic_LocationChanged;
         }
 
         private void UpdateCurrentLocation()
@@ -36,9 +39,10 @@ namespace TaxiOnline.Logic.Logic
                 _profileModel.CurrentLocation = locationResult.Result;
         }
 
-        private void ProfileLogic_LocationChanged(object sender, ValueEventArgs<MapPoint> e)
+        private void CityLogic_LocationChanged(object sender, EventArgs e)
         {
-            _profileModel.CurrentLocation = e.Value;
+            if (_city.CurrentLocation.HasValue)
+                _profileModel.CurrentLocation = _city.CurrentLocation.Value;
         }
     }
 }

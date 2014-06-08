@@ -23,7 +23,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.Service
 
         protected override MobileServiceClient CreateChannel()
         {
-            return new MobileServiceClient(_serverEndpointAddress);
+            return new MobileServiceClient(_serverEndpointAddress, @"bQxZxfjJWTeAdBmIWsOtHLoUqsgLjK47");
         }
 
         protected override void OpenChannel(MobileServiceClient channel)

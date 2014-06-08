@@ -76,10 +76,25 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Hardware
             }
         }
 
+        //public override void RequestLocation()
+        //{
+        //    Criteria criteria = new Criteria();
+        //    using (LocationManager locationManager = (LocationManager)Application.Context.GetSystemService(Application.LocationService))
+        //    {
+        //        string providerName = locationManager.GetBestProvider(criteria, true);
+        //        using (System.Threading.EventWaitHandle waitLocation = new System.Threading.EventWaitHandle(false, System.Threading.EventResetMode.ManualReset))
+        //        {
+        //            using (LocationListener locationListener = new LocationListener(l => { }))
+        //                ;
+        //        }
+        //    }
+        //}
+
         private void SubscribeToLocationChanged(EventHandler<ValueEventArgs<MapPoint>> handler)
         {
             Criteria criteria = new Criteria();
-            using (LocationManager locationManager = (LocationManager)Application.Context.GetSystemService(Application.LocationService))
+            //using (LocationManager locationManager = (LocationManager)Application.Context.GetSystemService(Application.LocationService))
+            LocationManager locationManager = (LocationManager)Application.Context.GetSystemService(Application.LocationService);
             {
                 string providerName = locationManager.GetBestProvider(criteria, true);
                 LocationListener locationListener = new LocationListener(location =>
@@ -89,6 +104,7 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Hardware
                 });
                 _locationChangedSubscriptions.AddOrUpdate(handler, locationListener, (h, l) => locationListener);
                 locationManager.RequestLocationUpdates(providerName, 100L, 1f, locationListener);
+                locationManager.RequestSingleUpdate(providerName, locationListener, null);
             }
         }
 

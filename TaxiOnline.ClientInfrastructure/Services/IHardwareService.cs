@@ -14,6 +14,7 @@ namespace TaxiOnline.ClientInfrastructure.Services
 
         string GetDeviceId();
         ActionResult<MapPoint> GetCurrentLocation();
+        //void RequestLocation();
         ActionResult PhoneCall(string number);
     }
 }

@@ -171,6 +171,7 @@
     <AndroidResource Include="Resources\Drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <LinkDescription Include="Linker.xml" />
     <Content Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\Drawable\PedestrianIcon.png" />
     <AndroidResource Include="Resources\Drawable\SearchIcon.png" />
