@@ -38,12 +38,12 @@ namespace TaxiOnline.MapEngine.Composing
 
         public BitmapSize GetOffsetFromCoordinates(MapPoint coordinates, BitmapSize totalSize, double mapZoom)
         {
-            double correctionScale = Math.Pow(2.0, mapZoom - _tile.Zoom);
-            double xScale = (double)_bounds.Width / _square.Size.LongitudeOffset * correctionScale;
+            // double correctionScale = Math.Pow(2.0, mapZoom - _tile.Zoom);
+            double xScale = (double)_bounds.Width / _square.Size.LongitudeOffset;// *correctionScale;
             MapVector leftTopOffset = new MapVector(_square.LeftTop.Latitude - coordinates.Latitude, coordinates.Longitude - _square.LeftTop.Longitude);
             int x = (int)Math.Round(/*(double)totalSize.Width / 2.0 */ leftTopOffset.LongitudeOffset * xScale);
             double yTiles = CoordinatesHelper.GetTilesFromLatitude(_square.LeftTop.Latitude, _tile.Zoom) - CoordinatesHelper.GetTilesFromLatitude(coordinates.Latitude, _tile.Zoom);
-            int y = (int)Math.Round(/*(double)totalSize.Height / 2.0*/ -(double)_bounds.Height * yTiles * correctionScale);
+            int y = (int)Math.Round(/*(double)totalSize.Height / 2.0*/ -(double)_bounds.Height * yTiles);// * correctionScale);
             return new BitmapSize(x, y);
         }
     }

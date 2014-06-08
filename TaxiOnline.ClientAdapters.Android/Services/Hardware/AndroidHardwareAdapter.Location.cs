@@ -92,6 +92,8 @@ namespace TaxiOnline.ClientAdapters.Android.Services.Hardware
 
         private void SubscribeToLocationChanged(EventHandler<ValueEventArgs<MapPoint>> handler)
         {
+            //handler(this, new ValueEventArgs<MapPoint>(new MapPoint(59.9982349516688, 30.2508131012369)));
+            //return;
             Criteria criteria = new Criteria();
             //using (LocationManager locationManager = (LocationManager)Application.Context.GetSystemService(Application.LocationService))
             LocationManager locationManager = (LocationManager)Application.Context.GetSystemService(Application.LocationService);

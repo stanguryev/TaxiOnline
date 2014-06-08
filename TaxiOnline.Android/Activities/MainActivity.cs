@@ -21,22 +21,24 @@ namespace TaxiOnline.Android.Activities
     [Activity(Label = "@string/ApplicationName", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        private readonly InteractionModel _model;
+        private static readonly Lazy<InteractionModel> _model = new Lazy<InteractionModel>(() =>
+        {
+            AndroidAdaptersExtender extender = new AndroidAdaptersExtender(PreferenceManager.GetDefaultSharedPreferences(Application.Context));
+            return new InteractionModel(extender);
+        });
         private ProgressDialogDecorator _connectionProgressDialogDecorator;
 
         public InteractionModel Model
         {
-            get { return _model; }
+            get { return _model.Value; }
         }
 
-        public MainActivity()
+        static MainActivity()
         {
             AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
             {
-                //global::Android.Util.Log.Wtf("", "{0} with {1}", ((Exception)e.ExceptionObject).Message, ((Exception)e.ExceptionObject).StackTrace);
+                global::Android.Util.Log.Wtf("TaxiOnline", "{0} with {1}", ((Exception)e.ExceptionObject).Message, ((Exception)e.ExceptionObject).StackTrace);
             };
-            AndroidAdaptersExtender extender = new AndroidAdaptersExtender(PreferenceManager.GetDefaultSharedPreferences(Application.Context));
-            _model = new InteractionModel(extender);
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -57,7 +59,7 @@ namespace TaxiOnline.Android.Activities
             refreshCitiesButton.Click += (sender, e) =>
             {
                 System.Threading.CancellationToken cancelLoad = _connectionProgressDialogDecorator.ShowWithCancel();
-                _model.BeginLoadCities(cancelLoad);
+                _model.Value.BeginLoadCities(cancelLoad);
             };
             ImageButton settingsButton = ActionBar.CustomView.FindViewById<ImageButton>(Resource.Id.settingsButton);
             settingsButton.Click += (sender, e) => UIHelper.GoResultActivity(this, typeof(SettingsActivity), 1);
@@ -75,20 +77,20 @@ namespace TaxiOnline.Android.Activities
 
         private void HookModel()
         {
-            _model.CitiesChanged += Model_CitiesChanged;
-            _model.EnumrateCitiesFailed += Model_EnumrateCitiesFailed;
+            _model.Value.CitiesChanged += Model_CitiesChanged;
+            _model.Value.EnumrateCitiesFailed += Model_EnumrateCitiesFailed;
             System.Threading.CancellationToken cancelLoad = _connectionProgressDialogDecorator.ShowWithCancel();
-            _model.BeginLoadCities(cancelLoad);
+            _model.Value.BeginLoadCities(cancelLoad);
             AutoCompleteTextView cityTextView = FindViewById<AutoCompleteTextView>(Resource.Id.cityTextView);
-            cityTextView.Adapter = new CitiesAdapter(this, _model);
+            cityTextView.Adapter = new CitiesAdapter(this, _model.Value);
             ImageButton chooseCityButton = FindViewById<ImageButton>(Resource.Id.chooseCityButton);
             chooseCityButton.Click += (sender, e) =>
             {
-                IEnumerable<CityModel> cities = _model.Cities;
+                IEnumerable<CityModel> cities = _model.Value.Cities;
                 CityModel city = cities == null ? null : cities.FirstOrDefault(c => c.Name == cityTextView.Text);
                 if (city != null)
                 {
-                    _model.CurrentCity = city;
+                    _model.Value.CurrentCity = city;
                     UIHelper.GoActivity(this, typeof(AuthenticationActivity));
                 }
                 else
