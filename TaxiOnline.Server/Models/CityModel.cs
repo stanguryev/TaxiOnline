@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.Entity;
 using TaxiOnline.Server.DataAccess;
+using TaxiOnline.Toolkit.Threading.CollectionsDecorators;
+using TaxiOnline.Server.DataObjects;
 
 namespace TaxiOnline.Server.Models
 {
     public class CityModel
     {
-        private City _cityDA;
+        private readonly City _cityDA;
+        private readonly ReadonlyCollectionDecorator<PedestrianModel> _pedestrians = new ReadonlyCollectionDecorator<PedestrianModel>();
+
         public Guid Id
         {
             get { return _cityDA.Id; }
@@ -46,7 +51,29 @@ namespace TaxiOnline.Server.Models
 
         public void LoadDb()
         {
-            //throw new NotImplementedException();
+            PedestriansInfo[] cities;
+            using (DatabaseModel dbContext = new DatabaseModel())
+            {
+                dbContext.Set<PedestriansInfo>().Load();
+                cities = dbContext.Set<PedestriansInfo>().ToArray();
+            }
+            _pedestrians.ModifyCollection(col =>
+            {
+                col.Clear();
+                foreach (PedestriansInfo pedestrianDA in cities)
+                {
+                    PedestrianModel pedestrian = new PedestrianModel(this, pedestrianDA);
+                    pedestrian.LoadDb();
+                    col.Add(pedestrian);
+                }
+            });
+        }
+
+        public void AddPedestrian(PedestrianDTO pedestrianDTO)
+        {
+            PedestrianModel pedestrian = new PedestrianModel(this, pedestrianDTO);
+            pedestrian.SaveDb();
+            _pedestrians.ModifyCollection(col => col.Add(pedestrian));
         }
     }
 }

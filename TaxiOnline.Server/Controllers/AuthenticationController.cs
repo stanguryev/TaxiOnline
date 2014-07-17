@@ -23,14 +23,16 @@ namespace TaxiOnline.Server.Controllers
             CityModel cityModel = interactionModel.Cities.FirstOrDefault(city => city.Id == authenticationInfo.CityId);
             if (cityModel == null)
                 return InternalServerError();
-            return Ok<PedestrianDTO>(new PedestrianDTO
+            PedestrianDTO outResult = new PedestrianDTO
             {
                 Id = Guid.NewGuid().ToString(),
                 Latitude = authenticationInfo.Latitude,
                 Longitude = authenticationInfo.Longitude,
                 PhoneNumber = authenticationInfo.PhoneNumber,
                 SkypeNumber = authenticationInfo.SkypeNumber
-            });
+            };
+            cityModel.AddPedestrian(outResult);
+            return Ok<PedestrianDTO>(outResult);
         }
 
         [Route("api/Authentication/AuthenticateAsDriver")]
