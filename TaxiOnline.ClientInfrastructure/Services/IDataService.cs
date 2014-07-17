@@ -13,6 +13,7 @@ namespace TaxiOnline.ClientInfrastructure.Services
     {
         ConnectionState ConnectionState { get; }
         event EventHandler ConnectionStateChanged;
+        event EventHandler<ValueEventArgs<IDriverInfo>> DriverInfoChanged;
         event EventHandler<ValueEventArgs<IPedestrianInfo>> PedestrianInfoChanged;
         event EventHandler<ValueEventArgs<IPedestrianRequest>> PedestrianRequestChanged;
         event EventHandler<ValueEventArgs<IDriverResponse>> DriverResponseChanged;

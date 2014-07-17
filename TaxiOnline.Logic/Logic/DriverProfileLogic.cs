@@ -68,7 +68,7 @@ namespace TaxiOnline.Logic.Logic
             _pedestrianRequests.ItemsCollectionChanged += PedestrianRequests_ItemsCollectionChanged;
             _pedestrianRequests.RequestFailed += PedestrianRequests_RequestFailed;
         }
-
+        
         public void SetResponse(DriverProfileResponseLogic response)
         {
             _model.AddCurrentResponse(response.Model);

@@ -49,7 +49,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects
             _carNumber = dataContract.CarNumber;
         }
 
-        public DriverSLO(Drivers dto)
+        public DriverSLO(DriverDTO dto)
             : base(new PersonDataContract
             {
                 CurrentLocationLatidude = dto.Latitude.Value,

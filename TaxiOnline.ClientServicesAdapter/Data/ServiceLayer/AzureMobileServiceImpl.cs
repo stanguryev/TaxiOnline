@@ -10,14 +10,17 @@ using TaxiOnline.ClientInfrastructure.Services;
 using TaxiOnline.ClientInfrastructure.ServicesEntities.DataService;
 using TaxiOnline.ClientServicesAdapter.Data.DataObjects;
 using TaxiOnline.ClientServicesAdapter.Data.Service;
+using TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.Decorators;
 using TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.ServiceLayerObjects;
 using TaxiOnline.Toolkit.Events;
+using TaxiOnline.Toolkit.Threading.Patterns;
 
 namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
 {
     public class AzureMobileServiceImpl : IDataService
     {
         private readonly AzureMobileServicesProxy _proxy;
+        private CollectionTraceDecorator<DriverDTO, IDriverInfo> _driversTracker;
 
         public ConnectionState ConnectionState
         {
@@ -25,6 +28,8 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
         }
 
         public event EventHandler ConnectionStateChanged;
+
+        public event EventHandler<ValueEventArgs<IDriverInfo>> DriverInfoChanged;
 
         public event EventHandler<Toolkit.Events.ValueEventArgs<ClientInfrastructure.ServicesEntities.DataService.IPedestrianInfo>> PedestrianInfoChanged;
 
@@ -49,12 +54,17 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
 
         public ActionResult<IEnumerable<IPedestrianInfo>> EnumeratePedestrians(Guid cityId)
         {
-            return RequestCollection<IPedestrianInfo, PedestrianDTO>(client => GetAsyncResult(() => client.GetTable<PedestrianDTO>().ToCollectionAsync()), dto => new PedestrianSLO(dto));
+            return RequestCollection<IPedestrianInfo, PedestrianDTO>(client => GetAsyncResult(() => client.GetTable<PedestrianDTO>().Where(dto => dto.CityId == cityId).ToListAsync()), dto => new PedestrianSLO(dto));
         }
 
         public ActionResult<IEnumerable<IDriverInfo>> EnumerateDrivers(Guid cityId)
         {
-            return RequestCollection<IDriverInfo, Drivers>(client => GetAsyncResult(() => client.GetTable<Drivers>().ToCollectionAsync()), dto => new DriverSLO(dto));
+            if (_driversTracker != null)
+                _driversTracker.GotUpdate -= DriversTracker_GotUpdate;
+            _driversTracker = new CollectionTraceDecorator<DriverDTO, IDriverInfo>(_proxy, client => client.GetTable<DriverDTO>(), dto => dto.CityId == cityId, dto => new DriverSLO(dto));
+            _driversTracker.GotUpdate += DriversTracker_GotUpdate;
+            return _driversTracker.Init();
+            //return RequestCollection<IDriverInfo, DriverDTO>(client => GetAsyncResult(() => client.GetTable<DriverDTO>().Where(dto => dto.CityId == cityId).ToListAsync()), dto => new DriverSLO(dto));
         }
 
         public ActionResult<IEnumerable<IPedestrianRequest>> EnumeratePedestrianRequests(Guid cityId)
@@ -128,7 +138,7 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
             }
             if (request is IDriverAuthenticationRequest)
             {
-                ActionResult<Drivers> dtoResult = _proxy.RunRequestSafe(() => GetAsyncResult(() => client.InvokeApiAsync<DriverAuthenticationDTO, Drivers>("Authentication/AuthenticateAsDriver", ((DriverAuthenticationRequestSLO)request).CreateDataObject(), System.Net.Http.HttpMethod.Post, new Dictionary<string, string>())), client);
+                ActionResult<DriverDTO> dtoResult = _proxy.RunRequestSafe(() => GetAsyncResult(() => client.InvokeApiAsync<DriverAuthenticationDTO, DriverDTO>("Authentication/AuthenticateAsDriver", ((DriverAuthenticationRequestSLO)request).CreateDataObject(), System.Net.Http.HttpMethod.Post, new Dictionary<string, string>())), client);
                 return dtoResult.IsValid ? ActionResult<IPersonInfo>.GetValidResult(new DriverSLO(dtoResult.Result)) : ActionResult<IPersonInfo>.GetErrorResult(dtoResult); ;
             }
             throw new NotImplementedException();
@@ -147,6 +157,18 @@ namespace TaxiOnline.ClientServicesAdapter.Data.ServiceLayer
             MobileServiceClient channel = _proxy.Channel;
             ActionResult<IEnumerable<TDataObject>> remoteResult = _proxy.RunRequestSafe(() => requestDelegate(channel), channel);
             return remoteResult.IsValid ? ActionResult<IEnumerable<TResult>>.GetValidResult(remoteResult.Result.Select(d => convertDelegate(d)).ToArray()) : ActionResult<IEnumerable<TResult>>.GetErrorResult(remoteResult);
+        }
+
+        protected virtual void OnDriverInfoChanged(IDriverInfo driverInfo)
+        {
+            EventHandler<ValueEventArgs<IDriverInfo>> handler = DriverInfoChanged;
+            if (handler != null)
+                handler(this, new ValueEventArgs<IDriverInfo>(driverInfo));
+        }
+
+        private void DriversTracker_GotUpdate(object sender, ValueEventArgs<IDriverInfo> e)
+        {
+            OnDriverInfoChanged(e.Value);
         }
     }
 }

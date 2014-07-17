@@ -62,6 +62,8 @@
     <Compile Include="Data\ServiceLayer\AzureMobileServiceImpl.cs" />
     <Compile Include="Data\ServiceLayer\CallbackManager.cs" />
     <Compile Include="Data\ServiceLayer\DataServiceImpl.cs" />
+    <Compile Include="Data\ServiceLayer\Decorators\CollectionTraceDecorator.cs" />
+    <Compile Include="Data\ServiceLayer\Decorators\IUpdateInfo.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\AuthenticationRequestSLO.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\CitySLO.cs" />
     <Compile Include="Data\ServiceLayer\ServiceLayerObjects\DriverAuthenticationRequestSLO.cs" />

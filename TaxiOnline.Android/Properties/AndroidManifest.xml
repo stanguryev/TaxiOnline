@@ -1,10 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:debuggable="true">
 	<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="14" />
-	<application 
-    android:icon="@drawable/Icon" 
-    android:label="@string/ApplicationName" 
-    android:theme="@android:style/Theme.Holo"/>
+	<application android:icon="@drawable/Icon" android:label="@string/ApplicationName" android:theme="@android:style/Theme.Holo" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />

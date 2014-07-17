@@ -1,14 +1,20 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.MobileServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaxiOnline.ClientServicesAdapter.Data.ServiceLayer.Decorators;
 
 namespace TaxiOnline.ClientServicesAdapter.Data.DataObjects
 {
-    public class Drivers//DriverDTO
+    [DataTable("Drivers")]
+    public class DriverDTO : IUpdateInfo
     {
         public string Id { get; set; }
+
+        [UpdatedAt]
+        public DateTimeOffset? UpdatedAt { get; set; }
 
         public string PhoneNumber { get; set; }
 

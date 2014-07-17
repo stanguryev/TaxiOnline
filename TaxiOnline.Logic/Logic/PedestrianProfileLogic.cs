@@ -41,6 +41,7 @@ namespace TaxiOnline.Logic.Logic
             _drivers = new UpdatableCollectionLoadDecorator<DriverLogic, IDriverInfo>(RetriveDrivers, CompareDriversInfo, p => p.IsOnline, CreateDriverLogic);
             _requests = new UpdatableCollectionLoadDecorator<PedestrianProfileRequestLogic, IPedestrianRequest>(RetriveRequests, CompareRequestsInfo, ValidateRequest, CreateRequestLogic);
             _acceptedResponses = new SimpleCollectionLoadDecorator<DriverResponseLogic>(RetriveAcceptedResponse);
+            _adaptersExtender.ServicesFactory.GetCurrentDataService().DriverInfoChanged += DataService_DriverInfoChanged;
             _drivers.ItemsCollectionChanged += Drivers_ItemsCollectionChanged;
             _acceptedResponses.ItemsCollectionChanged += AcceptedResponses_ItemsCollectionChanged;
         }
@@ -190,6 +191,11 @@ namespace TaxiOnline.Logic.Logic
             if (e.OldItems != null)
                 foreach (DriverResponseLogic response in e.OldItems.OfType<DriverResponseLogic>().ToArray())
                     response.ResponseAuthor.Model.HasAcceptedRequest = true;
+        }
+
+        private void DataService_DriverInfoChanged(object sender, ValueEventArgs<IDriverInfo> e)
+        {
+            _drivers.Update(e.Value);
         }
     }
 }
